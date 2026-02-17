@@ -1,9 +1,22 @@
+
 import os
+import sys
 import time
 import streamlit as st
+import importlib.util
+from pathlib import Path
 
-# Import the existing Streamlit app's main function
-from quality_engineering_agentic_framework.web.ui import app as main_app_module
+# --- Universal Project Root Detection ---
+def find_project_root():
+    here = Path(__file__).resolve()
+    for parent in [here] + list(here.parents):
+        if (parent / "requirements.txt").exists() or (parent / ".git").exists():
+            return parent
+    return here.parent
+
+PROJECT_ROOT = find_project_root()
+UI_DIR = PROJECT_ROOT / "quality_engineering_agentic_framework" / "web" / "ui"
+
 
 st.set_page_config(
     page_title="Quality Engineering Agentic Framework",
@@ -12,15 +25,15 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-# Load shared CSS from file
-shared_css_path = os.path.join(os.path.dirname(__file__), "shared_styles.css")
+# Load shared CSS from file (always from UI_DIR)
+shared_css_path = UI_DIR / "shared_styles.css"
 with open(shared_css_path) as f:
     st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
-# Default placeholder image
+# Default placeholder image (always from UI_DIR/img)
 IMAGE_URL = os.environ.get(
     "LOGIN_IMAGE_URL",
-    "quality_engineering_agentic_framework/web/ui/img/Image of.png",
+    str(UI_DIR / "img" / "Image of.png"),
 )
 
 # Initialize session flags
@@ -29,62 +42,72 @@ if "authenticated" not in st.session_state:
 if "remember" not in st.session_state:
     st.session_state.remember = False
 
-# If authenticated, render the main app and show a logout button
+# Dynamically import app.py as main_app_module (always from UI_DIR)
+app_path = UI_DIR / "app.py"
+spec = importlib.util.spec_from_file_location("main_app_module", str(app_path))
+main_app_module = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(main_app_module)
+
 if st.session_state.authenticated:
     with st.sidebar:
         if st.button("Logout"):
             st.session_state.authenticated = False
             st.rerun()
-    # Call the existing app's main function
     main_app_module.main()
 else:
-    # Split-screen login UI
-    left, right = st.columns([1,1], gap="large")
-    with left:
-      import pathlib
-      img_path = pathlib.Path(__file__).parent / "img" / "Image of.png"
-      if img_path.exists():
-        with open(img_path, "rb") as img_file:
-          img_bytes = img_file.read()
-        import base64
-        img_base64 = base64.b64encode(img_bytes).decode()
-        st.markdown(
-          f"""
-          <div style='display: flex; justify-content: center; align-items: center; height: 100%;'>
-            <img src='data:image/png;base64,{img_base64}' style='max-width: 80%; height: auto; display: block; margin: auto;' />
-          </div>
-          """,
-          unsafe_allow_html=True
-        )
-      else:
-        st.warning(f"Image not found: {img_path}")
-    
-    with right:
-        st.markdown(
-            """
-            <h1 style='text-align: center; color: #A100F2; font-size: 32px; font-weight: 700; margin-bottom: 8px;'>USER LOGIN</h1>
-            <p style='text-align: center; color: #666; font-size: 14px; margin-bottom: 32px;'>Enter your credentials to continue</p>
-            """,
-            unsafe_allow_html=True
-        )
-        
-        with st.form(key="login_form"):
-            identifier = st.text_input("Email or Phone / Username", value="", placeholder="Admin")
-            password = st.text_input("Password", value="", type="password", placeholder="Password", label_visibility="visible")
-            # Show password toggle removed
-            remember = st.checkbox("Remember me", value=False)
-            
-            st.markdown("<div style='height: 16px;'></div>", unsafe_allow_html=True)
-            
-            submit_button = st.form_submit_button("Login", type="primary", width='stretch')
-            
-            if submit_button:
-                # Simple credential check
-                if identifier.strip() == "Admin" and password == "Password":
-                    st.session_state.authenticated = True
-                    st.session_state.remember = remember
-                    st.success("Login successful")
-                    time.sleep(0.5)
-                    st.rerun()
-                else:
-                    st.error("Invalid credentials")
+    # --- Main Layout ---
+    col_left, col_right = st.columns([2, 3], gap="large")
+    with col_left:
+        st.markdown("""
+            <span style='font-size:2.5em; font-weight:700;'>Accelerate innovative automation<br>with <span style='color:#7B2FF2;'>AI-driven Assistance</span></span>
+        """, unsafe_allow_html=True)
+        st.write("GenWizard is an Integrated GenAI platform which brings together the end-to-end spectrum of intelligent automation services across the Technology Delivery Lifecycle. This platform helps to transform enterprises and reimagine IT at speed & scale to drive exponential benefits.")
+        st.write("")
+        if 'show_login' not in st.session_state:
+            st.session_state.show_login = False
+        col_btn1, col_btn2 = st.columns([1,2], gap="small")
+        with col_btn1:
+            if st.button("Login →", key="show_login_btn", use_container_width=True):
+                st.session_state.show_login = not st.session_state.show_login
+        st.markdown("<br>", unsafe_allow_html=True)
+    with col_right:
+        if not st.session_state.show_login:
+            gif_path = UI_DIR / "img" / "qeaf_animation.gif"
+            if gif_path.exists():
+                st.image(str(gif_path), caption="Welcome to QEAF", use_container_width=True)
+            else:
+                st.info("[QEAF Animation GIF missing: img/qeaf_animation.gif]")
+        else:
+            # ...removed custom login-card div for minimal UI...
+            with st.form(key="login_form"):
+                identifier = st.text_input("Email or Phone / Username", value="", placeholder="Admin")
+                password = st.text_input("Password", value="", type="password", placeholder="Password", label_visibility="visible")
+                remember = st.checkbox("Remember me", value=False)
+                st.markdown("<div style='height: 16px;'></div>", unsafe_allow_html=True)
+                submit_button = st.form_submit_button("Login", type="primary", use_container_width=True)
+                if submit_button:
+                    if identifier.strip() == "Admin" and password == "Password":
+                        st.session_state.authenticated = True
+                        st.session_state.remember = remember
+                        st.success("Login successful")
+                        time.sleep(0.5)
+                        st.rerun()
+                    else:
+                        st.error("Invalid credentials")
+            st.markdown('</div>', unsafe_allow_html=True)
+    st.markdown("<br><br>", unsafe_allow_html=True)
+    # --- Info Cards ---
+    card_col1, card_col2, card_col3 = st.columns(3)
+    with card_col1:
+        manual_path = UI_DIR / "manual_doc" / "QEAgenticFramework_UserManual_V0.1.pdf"
+        with open(manual_path, "rb") as pdf_file:
+            st.download_button(
+                label="ℹ️ New to QEAF? Click to download user manual",
+                data=pdf_file,
+                file_name="QEAgenticFramework_UserManual_V0.1.pdf",
+                mime="application/pdf"
+            )
+    with card_col2:
+        st.info("**Unleash the Potential**\nDemonstrate the power of GenWizard to your client", icon="🚀")
+    with card_col3:
+        st.info("**Learn GenAI**\nEnroll for GenAI in TDLC training and get access to GenWizard learning environment", icon="🎓")

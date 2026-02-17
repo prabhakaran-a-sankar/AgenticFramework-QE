@@ -98,16 +98,23 @@ else:
     st.markdown("<br><br>", unsafe_allow_html=True)
     # --- Info Cards ---
     card_col1, card_col2, card_col3 = st.columns(3)
+    card_style = """
+        <div style='min-height: 110px; display: flex; align-items: center; justify-content: center; padding: 0.5em 0;'>
+            {content}
+        </div>
+    """
     with card_col1:
-        manual_path = UI_DIR / "manual_doc" / "QEAgenticFramework_UserManual_V0.1.pdf"
-        with open(manual_path, "rb") as pdf_file:
-            st.download_button(
-                label="ℹ️ New to QEAF? Click to download user manual",
-                data=pdf_file,
-                file_name="QEAgenticFramework_UserManual_V0.1.pdf",
-                mime="application/pdf"
+        with st.container():
+            st.markdown(card_style.format(content=""), unsafe_allow_html=True)
+            st.info(
+                f"**New to QEAF?** [Click to download user manual](manual_doc/QEAgenticFramework_UserManual_V0.1.pdf)",
+                icon="ℹ️"
             )
     with card_col2:
-        st.info("**Unleash the Potential**\nDemonstrate the power of GenWizard to your client", icon="🚀")
+        with st.container():
+            st.markdown(card_style.format(content=""), unsafe_allow_html=True)
+            st.info("**Unleash the Potential**\nDemonstrate the power of GenWizard to your client", icon="🚀")
     with card_col3:
-        st.info("**Learn GenAI**\nEnroll for GenAI in TDLC training and get access to GenWizard learning environment", icon="🎓")
+        with st.container():
+            st.markdown(card_style.format(content=""), unsafe_allow_html=True)
+            st.info("**Learn GenAI**\nEnroll for GenAI in TDLC training and get access to GenWizard learning environment", icon="🎓")

@@ -59,6 +59,7 @@ else:
     col_left, col_right = st.columns([2, 3], gap="large")
     with col_left:
         st.markdown("""
+            <span style='font-size:2.1em; font-weight:600; color:#7B2FF2;'>Welcome to QEAF</span><br>
             <span style='font-size:2.5em; font-weight:700;'>Accelerate innovative automation<br>with <span style='color:#7B2FF2;'>AI-driven Assistance</span></span>
         """, unsafe_allow_html=True)
         st.write("GenWizard is an Integrated GenAI platform which brings together the end-to-end spectrum of intelligent automation services across the Technology Delivery Lifecycle. This platform helps to transform enterprises and reimagine IT at speed & scale to drive exponential benefits.")
@@ -69,12 +70,12 @@ else:
         with col_btn1:
             if st.button("Login →", key="show_login_btn", use_container_width=True):
                 st.session_state.show_login = not st.session_state.show_login
-        st.markdown("<br>", unsafe_allow_html=True)
+        st.markdown("<div style='height: 2px;'></div>", unsafe_allow_html=True)
     with col_right:
         if not st.session_state.show_login:
             gif_path = UI_DIR / "img" / "qeaf_animation.gif"
             if gif_path.exists():
-                st.image(str(gif_path), caption="Welcome to QEAF", use_container_width=True)
+                st.image(str(gif_path), use_container_width=True)
             else:
                 st.info("[QEAF Animation GIF missing: img/qeaf_animation.gif]")
         else:
@@ -105,16 +106,36 @@ else:
     """
     with card_col1:
         with st.container():
-            st.markdown(card_style.format(content=""), unsafe_allow_html=True)
-            st.info(
-                f"**New to QEAF?** [Click to download user manual](manual_doc/QEAgenticFramework_UserManual_V0.1.pdf)",
-                icon="ℹ️"
+            st.markdown(
+                '''
+                <div class="custom-info-card">
+                    <span class="info-icon">ℹ️ </span>
+                    <span class="info-title">New to QEAF? \n Then </span>
+                    <span class="info-link"><a href="referenceDoc/QEAgenticFramework_UserManual_V0.1.pdf" target="_blank" rel="noopener noreferrer" download>click here.</a></span>
+                </div>
+                ''',
+                unsafe_allow_html=True
             )
     with card_col2:
         with st.container():
-            st.markdown(card_style.format(content=""), unsafe_allow_html=True)
-            st.info("**Unleash the Potential**\nDemonstrate the power of GenWizard to your client", icon="🚀")
+            st.markdown(
+                '''
+                <div class="custom-info-card">
+                    <span class="info-icon">📩</span>
+                    <span class="info-title">Any queries? Please contact the team\n@ <a href="mailto:your-email@domain.com" class="info-link">your-email@domain.com</a>.</span>
+                </div>
+                ''',
+                unsafe_allow_html=True
+            )
     with card_col3:
         with st.container():
-            st.markdown(card_style.format(content=""), unsafe_allow_html=True)
-            st.info("**Learn GenAI**\nEnroll for GenAI in TDLC training and get access to GenWizard learning environment", icon="🎓")
+            st.markdown(
+                '''
+                <div class="custom-info-card">
+                    <span class="info-icon">🎓</span>
+                    <span class="info-title">Learn GenAI\nEnroll for GenAI in TDLC training and get access to GenWizard learning environment</span>
+                </div>
+                ''',
+                unsafe_allow_html=True
+            )
+           

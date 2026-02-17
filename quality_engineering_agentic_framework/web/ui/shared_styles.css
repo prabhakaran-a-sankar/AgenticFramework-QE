@@ -1,3 +1,72 @@
+
+.custom-info-card {
+	background: #ffffff;
+	border-left: 6px solid #A100F2;
+	color: #0d47a1;
+	border-radius: 12px;
+	padding: 16px 18px;
+	margin: 1.2em 0;
+	font-size: inherit;
+	font-weight: 600;
+	box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+	display: flex;
+	align-items: center;
+	gap: 14px;
+	min-height: 83px;
+}
+.custom-info-card .info-icon {
+	font-size: 1.2em;
+	margin-right: 8px;
+	line-height: 1;
+}
+.custom-info-card .info-title {
+	font-weight: 450;
+	font-size: 1.00em;
+	margin-right: 1px;
+}
+.custom-info-card .info-link {
+	font-size: 1.00em;
+	color: #1976d2;
+	text-decoration: underline;
+	font-weight: 400;
+}
+
+/* Error alert: try to match by icon or aria-label */
+[data-testid="stAlertContainer"]:has(svg[data-testid*="error"]) div,
+[data-testid="stAlertContainer"]:has(svg[aria-label*="error"]) div {
+    background: #ffeaea !important;
+    border-left: 6px solid #d32f2f !important;
+    color: #b71c1c !important;
+}
+
+/* Success alert */
+[data-testid="stAlertContainer"]:has(svg[data-testid*="success"]) div,
+[data-testid="stAlertContainer"]:has(svg[aria-label*="success"]) div {
+    background: #e8f5e9 !important;
+    border-left: 6px solid #388e3c !important;
+    color: #1b5e20 !important;
+}
+
+/* Info alert */
+[data-testid="stAlertContainer"]:has(svg[data-data-baseweb*="notification"]) div,
+[data-testid="stAlertContainer"]:has(svg[aria-label*="info"]) div {
+    background: #e3f2fd !important;
+    border-left: 6px solid #A100F2 !important;
+    color: #f1f1f1 !important;
+}
+/* Custom style for st.info, st.success, st.warning, st.error (alert/info cards)
+[data-testid="stAlertContainer"] {
+	background: #fff !important;
+	border-radius: 14px !important;
+	border: 1.5px solid #A100F2 !important;
+	box-shadow: 0 2px 12px rgba(0,0,0,0.06) !important;
+	padding: 1.2em 1.5em !important;
+	margin-bottom: 1em !important;
+	font-size: 1.08em !important;
+	color: #2a2a2a !important;
+	display: flex !important;
+	align-items: center !important;
+} */
 [data-testid^="stBaseButton-"] {
 	background: #fff !important;
 	background-color: #fff !important;

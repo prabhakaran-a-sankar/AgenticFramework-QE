@@ -60,9 +60,9 @@ else:
     with col_left:
         st.markdown("""
             <span style='font-size:2.1em; font-weight:600; color:#7B2FF2;'>Welcome to QEAF</span><br>
-            <span style='font-size:2.5em; font-weight:700;'>Accelerate innovative automation<br>with <span style='color:#7B2FF2;'>AI-driven Assistance</span></span>
+            <span style='font-size:2.5em; font-weight:700;'>Reinvent Quality Engineering with <br>with <span style='color:#7B2FF2;'>Open‑Source Agentic AI</span></span>
         """, unsafe_allow_html=True)
-        st.write("GenWizard is an Integrated GenAI platform which brings together the end-to-end spectrum of intelligent automation services across the Technology Delivery Lifecycle. This platform helps to transform enterprises and reimagine IT at speed & scale to drive exponential benefits.")
+        st.write("Quality Engineering Agentic Framework (QEAF) is an open‑source, agentic GenAI platform that unifies end‑to‑end intelligent automation across the test delivery lifecycle—helping enterprises transform Quality Engineering with speed, scale, and measurable outcomes.")
         st.write("")
         if 'show_login' not in st.session_state:
             st.session_state.show_login = False
@@ -79,7 +79,6 @@ else:
             else:
                 st.info("[QEAF Animation GIF missing: img/qeaf_animation.gif]")
         else:
-            # ...removed custom login-card div for minimal UI...
             with st.form(key="login_form"):
                 identifier = st.text_input("Email or Phone / Username", value="", placeholder="Admin")
                 password = st.text_input("Password", value="", type="password", placeholder="Password", label_visibility="visible")

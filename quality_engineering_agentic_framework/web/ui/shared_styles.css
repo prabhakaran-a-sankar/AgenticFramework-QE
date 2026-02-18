@@ -1,8 +1,44 @@
+/* Compact login form styling */
+#login_form {
+	max-width: 320px;
+	margin: 0 auto;
+	padding: 18px 16px 10px 16px;
+	border-radius: 12px;
+	background: #fafaff;
+	box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+}
+#login_form input,
+#login_form .stTextInput input,
+#login_form .stTextInput,
+#login_form .stPasswordInput input,
+#login_form .stPasswordInput {
+	font-size: 0.95em !important;
+	padding: 6px 8px !important;
+	height: 32px !important;
+	border-radius: 7px !important;
+}
+#login_form label,
+#login_form .stTextInput label,
+#login_form .stPasswordInput label {
+	font-size: 0.97em !important;
+	margin-bottom: 2px !important;
+}
+#login_form .stCheckbox,
+#login_form .stCheckbox label {
+	font-size: 0.95em !important;
+}
+#login_form button,
+#login_form .stButton button {
+	font-size: 0.97em !important;
+	padding: 6px 0 !important;
+	height: 34px !important;
+	border-radius: 7px !important;
+}
 
 .custom-info-card {
 	background: #ffffff;
 	border-left: 6px solid #A100F2;
-	color: #0d47a1;
+	color: #000000;
 	border-radius: 12px;
 	padding: 16px 18px;
 	margin: 1.2em 0;
@@ -26,7 +62,7 @@
 }
 .custom-info-card .info-link {
 	font-size: 1.00em;
-	color: #1976d2;
+	color: #A100F2;
 	text-decoration: underline;
 	font-weight: 400;
 }
@@ -34,7 +70,7 @@
 /* Error alert: try to match by icon or aria-label */
 [data-testid="stAlertContainer"]:has(svg[data-testid*="error"]) div,
 [data-testid="stAlertContainer"]:has(svg[aria-label*="error"]) div {
-    background: #ffeaea !important;
+    background: #d32f2f !important;
     border-left: 6px solid #d32f2f !important;
     color: #b71c1c !important;
 }
@@ -42,7 +78,7 @@
 /* Success alert */
 [data-testid="stAlertContainer"]:has(svg[data-testid*="success"]) div,
 [data-testid="stAlertContainer"]:has(svg[aria-label*="success"]) div {
-    background: #e8f5e9 !important;
+    background: #388e3c !important;
     border-left: 6px solid #388e3c !important;
     color: #1b5e20 !important;
 }
@@ -54,19 +90,7 @@
     border-left: 6px solid #A100F2 !important;
     color: #f1f1f1 !important;
 }
-/* Custom style for st.info, st.success, st.warning, st.error (alert/info cards)
-[data-testid="stAlertContainer"] {
-	background: #fff !important;
-	border-radius: 14px !important;
-	border: 1.5px solid #A100F2 !important;
-	box-shadow: 0 2px 12px rgba(0,0,0,0.06) !important;
-	padding: 1.2em 1.5em !important;
-	margin-bottom: 1em !important;
-	font-size: 1.08em !important;
-	color: #2a2a2a !important;
-	display: flex !important;
-	align-items: center !important;
-} */
+
 [data-testid^="stBaseButton-"] {
 	background: #fff !important;
 	background-color: #fff !important;
@@ -101,9 +125,7 @@
 	background-color: #fff !important;
 }
 
-[data-testid="stMarkdownContainer"] {
-	background: #fff !important;
-}
+
 /* Remove background for element with id="bui8__anchor" */
 #bui8__anchor {
 	background: none !important;
@@ -203,8 +225,8 @@ div[data-baseweb="tab-highlight"] {
 
 /* Sidebar title block (e.g., LLM Configuration) */
 [data-testid="stSidebar"] h3 {
-	background: linear-gradient(to right, #6B1B9A 0%, #7C3FA8 40%, #5B4B8A 70%, #4A5BA8 100%) !important;
-	color: #ffffff !important;
+	/* background: linear-gradient(to right, #6B1B9A 0%, #7C3FA8 40%, #5B4B8A 70%, #4A5BA8 100%) !important; */
+	color: #000000 !important;
 	padding: 10px 12px !important;
 	border-radius: 10px !important;
 	margin-bottom: 14px !important;
@@ -222,7 +244,7 @@ div[data-baseweb="tab-highlight"] {
 
 [data-testid="stSidebar"] [data-testid="stSelectboxContainer"],
 [data-testid="stSidebar"] [data-testid="stNumberInputContainer"],
-[data-testid="stSidebar"] [data-testid="stTextInput"],
+/* [data-testid="stSidebar"] [data-testid="stTextInput"], */
 [data-testid="stSidebar"] [data-testid="stPasswordInput"] {
 	border-radius: 10px !important;
 	background: rgba(255, 255, 255, 0.45) !important;

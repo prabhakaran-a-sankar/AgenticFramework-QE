@@ -2,6 +2,7 @@
 import os
 import sys
 import time
+import base64
 import streamlit as st
 import importlib.util
 from pathlib import Path
@@ -16,6 +17,20 @@ def find_project_root():
 
 PROJECT_ROOT = find_project_root()
 UI_DIR = PROJECT_ROOT / "quality_engineering_agentic_framework" / "web" / "ui"
+
+manual_path = UI_DIR / "referenceDoc" / "QEAgenticFramework_UserManual_V0.1.pdf"
+manual_link = "?doc=manual"
+
+query_params = st.query_params
+if query_params.get("doc") == "manual" and manual_path.exists():
+    manual_b64 = base64.b64encode(manual_path.read_bytes()).decode("utf-8")
+    st.markdown(
+        f"""
+        <iframe src="data:application/pdf;base64,{manual_b64}" width="100%" height="900px" style="border:0;"></iframe>
+        """,
+        unsafe_allow_html=True,
+    )
+    st.stop()
 
 
 st.set_page_config(
@@ -60,7 +75,7 @@ else:
     with col_left:
         st.markdown("""
             <span style='font-size:2.1em; font-weight:600; color:#7B2FF2;'>Welcome to QEAF</span><br>
-            <span style='font-size:2.5em; font-weight:700;'>Reinvent Quality Engineering with <br>with <span style='color:#7B2FF2;'>Open‑Source Agentic AI</span></span>
+            <span style='font-size:2.5em; font-weight:700;'>Reinvent Quality Engineering with <span style='color:#7B2FF2;'>Open‑Source Agentic AI</span></span>
         """, unsafe_allow_html=True)
         st.write("Quality Engineering Agentic Framework (QEAF) is an open‑source, agentic GenAI platform that unifies end‑to‑end intelligent automation across the test delivery lifecycle—helping enterprises transform Quality Engineering with speed, scale, and measurable outcomes.")
         st.write("")
@@ -106,15 +121,20 @@ else:
     with card_col1:
         with st.container():
             st.markdown(
-                '''
+                f"""
                 <div class="custom-info-card">
                     <span class="info-icon">ℹ️ </span>
-                    <span class="info-title">New to QEAF? \n Then </span>
-                    <span class="info-link"><a href="referenceDoc/QEAgenticFramework_UserManual_V0.1.pdf" target="_blank" rel="noopener noreferrer" download>click here.</a></span>
+                    <span class="info-title">New to QEAF? Then </span>
+                    <span class="info-link">
+                        <a href="{manual_link}" target="_blank" rel="noopener noreferrer">
+                        click here.
+                        </a>
+                    </span>
                 </div>
-                ''',
+                """,
                 unsafe_allow_html=True
-            )
+        )
+
     with card_col2:
         with st.container():
             st.markdown(

@@ -27,7 +27,7 @@ st.set_page_config(
 
 # Load shared CSS from file (always from UI_DIR)
 shared_css_path = UI_DIR / "shared_styles.css"
-with open(shared_css_path) as f:
+with open(shared_css_path, encoding="utf-8") as f:
     st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
 # Default placeholder image (always from UI_DIR/img)

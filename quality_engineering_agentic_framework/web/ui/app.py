@@ -9,95 +9,6 @@ import json
 import yaml
 import logging
 import streamlit as st
-st.markdown(
-        """
-        <style>
-            [data-testid="stTextInput"] input,
-            [data-testid="stPasswordInput"] input {
-                background: #fff !important;
-                border: 1.5px solid #e0e0e0 !important;
-                box-shadow: none !important;
-                color: #222 !important;
-                font-size: 16px !important;
-                padding: 10px 14px !important;
-                border-radius: 8px !important;
-            }
-            [data-testid="stTextInput"] input:focus,
-            [data-testid="stPasswordInput"] input:focus {
-                border: 1.5px solid #A100F2 !important;
-                box-shadow: 0 0 0 2px rgba(161,0,242,0.10) !important;
-            }
-            [data-testid="stTextInput"] input::placeholder,
-            [data-testid="stPasswordInput"] input::placeholder {
-                color: #b0b0b0 !important;
-                opacity: 1 !important;
-            }
-        </style>
-        """,
-        unsafe_allow_html=True
-)
-st.markdown(
-        """
-        <style>
-            /* Engage-style textfield, password, dropdown */
-            input[type="text"], input[type="password"], textarea, select {
-                background: #fff !important;
-                border: 1.5px solid #e0e0e0 !important;
-                border-radius: 8px !important;
-                color: #222 !important;
-                font-size: 16px !important;
-                padding: 10px 14px !important;
-                box-shadow: none !important;
-                outline: none !important;
-                transition: border-color 0.2s;
-            }
-            input[type="text"]:focus, input[type="password"]:focus, textarea:focus, select:focus {
-                border-color: #A100F2 !important;
-                box-shadow: 0 0 0 2px rgba(161,0,242,0.10) !important;
-            }
-            input[type="text"]::placeholder, input[type="password"]::placeholder, textarea::placeholder {
-                color: #b0b0b0 !important;
-                opacity: 1 !important;
-            }
-            select {
-                color: #222 !important;
-                background: #fff !important;
-                border: 1.5px solid #e0e0e0 !important;
-                border-radius: 8px !important;
-                font-size: 16px !important;
-                padding: 10px 14px !important;
-                box-shadow: none !important;
-                outline: none !important;
-                transition: border-color 0.2s;
-            }
-            select:focus {
-                border-color: #A100F2 !important;
-                box-shadow: 0 0 0 2px rgba(161,0,242,0.10) !important;
-            }
-            [data-testid="stNumberInputContainer"] {
-                border-radius: 8px !important;
-                border: 1.5px solid #e0e0e0 !important;
-                background: #fff !important;
-                box-shadow: none !important;
-            }
-            [data-testid="stNumberInputContainer"]:focus-within {
-                border-color: #A100F2 !important;
-                box-shadow: 0 0 0 2px rgba(161,0,242,0.10) !important;
-            }
-            [data-testid="stSelectboxContainer"] {
-                border-radius: 8px !important;
-                border: 1.5px solid #e0e0e0 !important;
-                background: #fff !important;
-                box-shadow: none !important;
-            }
-            [data-testid="stSelectboxContainer"]:focus-within {
-                border-color: #A100F2 !important;
-                box-shadow: 0 0 0 2px rgba(161,0,242,0.10) !important;
-            }
-        </style>
-        """,
-        unsafe_allow_html=True
-)
 from typing import Dict, List, Any, Optional, Union
 import tempfile
 from datetime import datetime
@@ -117,7 +28,7 @@ import os
 
 # Load shared CSS from file
 shared_css_path = os.path.join(os.path.dirname(__file__), "shared_styles.css")
-with open(shared_css_path) as f:
+with open(shared_css_path, encoding="utf-8") as f:
     st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 if 'generate_data' not in st.session_state:
     st.session_state.generate_data = False
@@ -445,30 +356,32 @@ def main():
         .banner-wrapper {
             background: linear-gradient(to right, #6B1B9A 0%, #7C3FA8 40%, #5B4B8A 70%, #4A5BA8 100%);
             color: white;
-            padding: 80px 60px;
-            margin: -24px -24px 48px -24px;
+            padding: 28px 32px;
+            margin: -16px -16px 20px -16px;
             text-align: center;
             width: 100%;
             box-sizing: border-box;
         }
         .banner-wrapper h1 {
             color: white !important;
-            font-size: 48px !important;
+            font-size: 40px !important;
             font-weight: 800 !important;
-            margin: 0 0 16px 0 !important;
+            margin: 0 0 8px 0 !important;
             letter-spacing: -0.8px !important;
+            line-height: 1.15 !important;
         }
         .banner-wrapper p {
             color: white !important;
-            font-size: 18px !important;
+            font-size: 16px !important;
             margin: 0 !important;
             font-weight: 400 !important;
             letter-spacing: 0.3px !important;
+            line-height: 1.25 !important;
         }
     </style>
     <div class='banner-wrapper'>
-        <h1>Welcome to Quality Engineering Agentic Framework</h1>
-        <p>Where Precision Meets Automation</p>
+        <h1>Quality Engineering Agentic Framework</h1>
+        <p>Agentic by Design, Quality by Default</p>
     </div>
     """
     st.markdown(banner_html, unsafe_allow_html=True)
@@ -1015,11 +928,11 @@ def main():
         # Integrated Solution Sub-tab
         with sub_tab1:
             st.subheader("Integrated Solution")
-            st.info("Generate test scripts from test cases created in the Test Case Generation tab")
+           # st.info("No test cases available. Please generate test cases first in the 'Test Case Generation' tab.")
             
             # Check if we have test cases from generation
             if 'test_cases' not in st.session_state or not st.session_state.test_cases:
-                st.warning("⚠️ No test cases available. Please generate test cases first in the 'Test Case Generation' tab.")
+                st.info("⚠️ No test cases available. Please generate test cases first in the 'Test Case Generation' tab.")
             else:
                 # Display available test cases
                 st.subheader("Available Test Cases")

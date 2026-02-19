@@ -141,7 +141,7 @@ else:
                 '''
                 <div class="custom-info-card">
                     <span class="info-icon">📩</span>
-                    <span class="info-title">Any queries? Please contact the team\n@ <a href="mailto:your-email@domain.com" class="info-link">your-email@domain.com</a>.</span>
+                    <span class="info-title">Any queries? Please contact the team\n@ <a href="mailto:qeaf-support@accenture.com" class="info-link">qeaf-support@accenture.com</a>.</span>
                 </div>
                 ''',
                 unsafe_allow_html=True
@@ -152,7 +152,7 @@ else:
                 '''
                 <div class="custom-info-card">
                     <span class="info-icon">🎓</span>
-                    <span class="info-title">Learn GenAI\nEnroll for GenAI in TDLC training and get access to GenWizard learning environment</span>
+                    <span class="info-title">Uplift your AI profile through AI learning - <a href="https://ts.accenture.com/sites/nextgenengineeringnge/SitePages/AI-Transform-Hub.aspx" target="_blank" rel="noopener noreferrer">click here</a></span>
                 </div>
                 ''',
                 unsafe_allow_html=True

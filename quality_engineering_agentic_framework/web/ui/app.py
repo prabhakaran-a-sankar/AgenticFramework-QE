@@ -435,6 +435,10 @@ def main():
             step=100,
         )
         
+        # Display version in sidebar
+        st.divider()
+        st.markdown("### Version 1.0")
+        
         if llm_api_key:
             st.session_state[f"{llm_provider}_api_key"] = llm_api_key
         

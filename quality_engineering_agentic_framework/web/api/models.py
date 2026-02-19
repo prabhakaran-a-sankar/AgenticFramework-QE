@@ -44,11 +44,13 @@ class TestCaseGenerationRequest(BaseModel):
     requirements: str = Field(..., description="Requirements text")
     llm_config: LLMConfig
     agent_config: Optional[AgentConfig] = None
+    selected_documents: Optional[List[str]] = Field(None, description="List of specific filenames to use for RAG")
 
 
 class TestCaseGenerationResponse(BaseModel):
     """Response model for test case generation."""
     test_cases: List[TestCase]
+    product_context: Optional[str] = Field(None, description="Synthesized product context from RAG")
 
 
 class APITestCaseGenerationRequest(BaseModel):
@@ -121,6 +123,7 @@ class ChatRequest(BaseModel):
     llm_config: LLMConfig
     agent_type: str = Field(..., description="Type of agent to chat with (test_case, test_script, test_data)")
     session_id: Optional[str] = Field(None, description="Session ID for conversation tracking")
+    selected_documents: Optional[List[str]] = Field(None, description="List of specific filenames to use for RAG")
 
 
 class ChatArtifact(BaseModel):
@@ -132,6 +135,7 @@ class TestCaseArtifact(ChatArtifact):
     """Test case artifact model."""
     type: str = "test_cases"
     test_cases: List[TestCase]
+    product_context: Optional[str] = Field(None, description="Synthesized product context from RAG")
 
 
 class TestScriptArtifact(ChatArtifact):

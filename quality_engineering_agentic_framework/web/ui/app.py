@@ -20,16 +20,16 @@ import random
 import string
 import pandas as pd
 from io import StringIO
-
 # Configure logging
 logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
+# ...existing code...
+import streamlit as st
+import os
 
-# Configure the API URL
-# Both frontend and backend run on the same server, so use localhost
-API_URL = "http://localhost:8080"
-
-# Initialize session state
+# Load shared CSS from file
+shared_css_path = os.path.join(os.path.dirname(__file__), "shared_styles.css")
+with open(shared_css_path, encoding="utf-8") as f:
+    st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 if 'generate_data' not in st.session_state:
     st.session_state.generate_data = False
     st.session_state.test_data = None
@@ -41,7 +41,7 @@ if 'generate_data' not in st.session_state:
     st.session_state.llm_temperature = 0.7
     st.session_state.llm_max_tokens = 1000
 
-async def generate_test_cases(requirements, llm_provider, llm_model, llm_api_key, llm_temperature, llm_max_tokens, mode="requirement"):
+async def generate_test_cases(requirements, llm_provider, llm_model, llm_api_key, llm_temperature, llm_max_tokens, mode="requirement", selected_documents=None):
     """Generate test cases by calling the correct backend API based on mode."""
     print("\n=== Starting generate_test_cases ===")
     print(f"Requirements: {requirements[:100]}...")
@@ -82,7 +82,8 @@ async def generate_test_cases(requirements, llm_provider, llm_model, llm_api_key
                     "api_key": llm_api_key,
                     "temperature": float(llm_temperature),
                     "max_tokens": int(llm_max_tokens)
-                }
+                },
+                "selected_documents": selected_documents
             }
             api_url = f"{API_URL}/api/test-case-generation"
 
@@ -112,6 +113,9 @@ async def generate_test_cases(requirements, llm_provider, llm_model, llm_api_key
             # Handle response format
             if isinstance(response_data, dict) and "test_cases" in response_data:
                 result = response_data["test_cases"]
+                # Store product context if available
+                if "product_context" in response_data:
+                    st.session_state.product_context = response_data["product_context"]
             elif isinstance(response_data, list):
                 result = response_data
             elif isinstance(response_data, dict):
@@ -177,10 +181,11 @@ async def generate_test_cases(requirements, llm_provider, llm_model, llm_api_key
                         "test_data": {}
                     })
                 
-            print(f"\n=== Returning validated test cases ===")
-            print(f"Type: {type(validated_result)}")
-            print(f"Count: {len(validated_result)}")
-            return validated_result
+            print(f"\n=== Returning validated results ===")
+            return {
+                "test_cases": validated_result,
+                "product_context": response_data.get("product_context") if isinstance(response_data, dict) else None
+            }
             
         except json.JSONDecodeError as e:
             print(f"\n!!! Failed to parse JSON: {str(e)}")
@@ -202,8 +207,17 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-# API URL is already defined at the top of the file
-# Both services run on the same AWS instance
+# Apply Accenture Engage theme - ULTRA AGGRESSIVE
+st.markdown(
+    """
+    """,
+    unsafe_allow_html=True,
+)
+
+# Define API URL
+# Define API URL
+API_URL = os.environ.get("API_URL", "http://127.0.0.1:8080")
+# API_URL = "https://agenticframework-qe-4.onrender.com"
 
 def generate_sample_data(data_format: str, size: int, fields: List[Dict[str, str]]) -> Union[dict, str]:
     """Generate sample test data in the specified format.
@@ -333,14 +347,50 @@ def main():
     if 'test_scripts' not in st.session_state:
         st.session_state.test_scripts = {}
         
+    if 'selected_documents' not in st.session_state:
+        st.session_state.selected_documents = []
+    
+    # Add header banner (Engage style) - ROBUST VERSION
+    banner_html = """
+    <style>
+        .banner-wrapper {
+            background: linear-gradient(to right, #6B1B9A 0%, #7C3FA8 40%, #5B4B8A 70%, #4A5BA8 100%);
+            color: white;
+            padding: 28px 32px;
+            margin: -16px -16px 20px -16px;
+            text-align: center;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .banner-wrapper h1 {
+            color: white !important;
+            font-size: 40px !important;
+            font-weight: 800 !important;
+            margin: 0 0 8px 0 !important;
+            letter-spacing: -0.8px !important;
+            line-height: 1.15 !important;
+        }
+        .banner-wrapper p {
+            color: white !important;
+            font-size: 16px !important;
+            margin: 0 !important;
+            font-weight: 400 !important;
+            letter-spacing: 0.3px !important;
+            line-height: 1.25 !important;
+        }
+    </style>
+    <div class='banner-wrapper'>
+        <h1>Quality Engineering Agentic Framework</h1>
+        <p>Agentic by Design, Quality by Default</p>
+    </div>
+    """
+    st.markdown(banner_html, unsafe_allow_html=True)
+    
     # Debug flag - set to True to see debug info
     debug = False  # Disabled by default
     
-    st.title("Quality Engineering Agentic Framework")
-    
     # Sidebar for configuration
     with st.sidebar:
-        st.header("Configuration")
         
         # LLM Configuration
         st.subheader("LLM Configuration")
@@ -395,9 +445,13 @@ def main():
         # Load API key from session state if available
         if f"{llm_provider}_api_key" in st.session_state:
             llm_api_key = st.session_state[f"{llm_provider}_api_key"]
+            
+        # Pinned to bottom of sidebar
+        st.markdown("---")
+        st.caption("Version 2.0.0")
     
     # Main content - tabs
-    tab_names = ["Test Case Generation", "Test Script Generation", "Test Data Generation"]
+    tab_names = ["Knowledge Hub", "Test Case Generation", "Test Script Generation", "Test Data Generation"]
     
     # Create tabs and verify count
     try:
@@ -407,14 +461,17 @@ def main():
             st.stop()
         
         # Verify tab indices are within bounds
-        if len(tabs) < 3:
-            st.error(f"Not enough tabs created. Expected 3, got {len(tabs)}.")
+        if len(tabs) < 4:
+            st.error(f"Not enough tabs created. Expected 4, got {len(tabs)}.")
             st.stop()
         
         # Define tab indices as constants for better maintainability
-        TAB_TEST_CASE_GEN = 0
-        TAB_TEST_SCRIPT_GEN = 1
-        TAB_TEST_DATA_GEN = 2
+        TAB_KNOWLEDGE_HUB = 0
+        TAB_TEST_CASE_GEN = 1
+        TAB_TEST_SCRIPT_GEN = 2
+        TAB_TEST_DATA_GEN = 3
+        # TAB_CHAT_BOT = 4  # Commented out - tab removed
+        # TAB_API_TEST_CASE_GEN = 5  # Commented out - tab removed
         
     except Exception as e:
         st.error(f"Error creating tabs: {str(e)}")
@@ -450,24 +507,44 @@ def main():
                 with st.spinner("Generating comprehensive test cases... (this may take a moment)"):
                     try:
                         # Generate test cases using the API
-                        test_cases = asyncio.run(generate_test_cases(
+                        result = asyncio.run(generate_test_cases(
                             requirements=requirements_text,
                             llm_provider=llm_provider,
                             llm_model=llm_model,
                             llm_api_key=llm_api_key,
                             llm_temperature=llm_temperature,
-                            llm_max_tokens=llm_max_tokens
+                            llm_max_tokens=llm_max_tokens,
+                            selected_documents=st.session_state.get('selected_documents', [])
                         ))
                         
+                        if isinstance(result, dict):
+                            test_cases = result.get("test_cases", [])
+                            product_context = result.get("product_context")
+                        else:
+                            test_cases = result
+                            product_context = None
+
                         if test_cases:  # Only update if we got results
                             # Store in session state
                             st.session_state.test_cases = test_cases
+                            if product_context:
+                                st.session_state.product_context = product_context
                             
                             # Show success message
                             st.success(f"✅ Generated {len(test_cases)} comprehensive test cases!")
                         
                     except Exception as e:
                         st.error(f"Error generating test cases: {str(e)}")
+        
+        # Display product context if available
+        if 'product_context' in st.session_state and st.session_state.product_context:
+            with st.expander("🔍 View Synthesized Product Knowledge (RAG Output)", expanded=False):
+                st.info("The information below was synthesized from your product documentation to provide context for test generation.")
+                # Remove JSON Mapping section (everything after ```json)
+                product_context = st.session_state.product_context
+                if "```json" in product_context:
+                    product_context = product_context[:product_context.index("```json")].strip()
+                st.markdown(product_context)
         
         # Display test cases if available
         if 'test_cases' in st.session_state and st.session_state.test_cases:
@@ -501,7 +578,8 @@ def main():
                         'preconditions': [],
                         'actions': [],
                         'expected_results': [],
-                        'test_data': {}
+                        'test_data': {},
+                        'rag_ref': ''
                     }
                     
                     # Safely copy values from the original test case
@@ -532,6 +610,10 @@ def main():
                             # Handle test data
                             if 'test_data' in tc and isinstance(tc['test_data'], dict):
                                 safe_tc['test_data'] = {str(k): v for k, v in tc['test_data'].items()}
+                            
+                            # Handle RAG reference
+                            if 'rag_ref' in tc and tc['rag_ref']:
+                                safe_tc['rag_ref'] = str(tc['rag_ref'])
                         
                         elif isinstance(tc, str):
                             safe_tc['description'] = tc
@@ -561,6 +643,10 @@ def main():
                                 st.write("**Expected Results:**")
                                 for j, result in enumerate(safe_tc['expected_results'], 1):
                                     st.write(f"{j}. {result}")
+                            
+                            # RAG Reference (Proof it worked)
+                            if safe_tc['rag_ref']:
+                                st.info(f"💡 **RAG Reference:** {safe_tc['rag_ref']}")
                             
                             # Test Data
                             if safe_tc['test_data']:
@@ -654,6 +740,187 @@ def main():
                 except Exception as e:
                     st.error(f"Error generating CSV: {str(e)}")
     
+    # Knowledge Hub Tab
+    with tabs[TAB_KNOWLEDGE_HUB]:
+        st.header("Knowledge Hub")
+        st.write("Select Documents for Test Case Generation")
+        
+        # session state for selected documents is initialized at startup
+        
+        # Helper function to clear vector DB
+        def clear_vector_db():
+            """Clear the vector database and cache"""
+            from quality_engineering_agentic_framework.utils.rag.rag_system import DB_PATH
+            import shutil
+            
+            if os.path.exists(DB_PATH):
+                try:
+                    shutil.rmtree(DB_PATH)
+                    print(f"[Knowledge Hub] Cleared vector DB at {DB_PATH}")
+                    return True
+                except Exception as e:
+                    print(f"[Requirements Hub] Failed to clear vector DB: {e}")
+                    return False
+            return True
+        
+        # Document List Section with Selection
+        
+        try:
+            from quality_engineering_agentic_framework.utils.rag.rag_system import DATA_PATH
+            
+            if os.path.exists(DATA_PATH):
+                files = sorted([f for f in os.listdir(DATA_PATH) if os.path.isfile(os.path.join(DATA_PATH, f))])
+                
+                if not files:
+                    st.warning("No requirement documents found. Add documents below to get started.")
+                else:
+                    # Document count display
+                    st.caption(f"{len(st.session_state.selected_documents)} of {len(files)} documents selected")
+                    st.divider()
+                    
+                    # Display documents with checkboxes and delete buttons
+                    # Add CSS to make checkbox purple when selected and align elements
+                    st.markdown("""
+                    <style>
+                    [data-baseweb="checkbox"] {
+                        accent-color: #A100F2 !important;
+                    }
+                    [data-testid="stColumn"] {
+                        vertical-align: middle !important;
+                        display: flex !important;
+                        align-items: center !important;
+                        justify-content: flex-start !important;
+                    }
+                    .stMarkdownContainer {
+                        display: flex !important;
+                        align-items: center !important;
+                        height: 100% !important;
+                        padding: 0 !important;
+                        margin: 0 !important;
+                    }
+                    .stMarkdownContainer p {
+                        margin: 0 !important;
+                        padding: 0 !important;
+                    }
+                    </style>
+                    """, unsafe_allow_html=True)
+                    
+                    for filename in files:
+                        file_path = os.path.join(DATA_PATH, filename)
+                        file_stats = os.stat(file_path)
+                        
+                        col1, col2, col3, col4 = st.columns([0.6, 2.2, 1.1, 0.7])
+                        
+                        with col1:
+                            is_selected = filename in st.session_state.selected_documents
+                            checkbox_key = f"select_{filename}"
+                            
+                            # Initialize checkbox state if not exists
+                            if checkbox_key not in st.session_state:
+                                st.session_state[checkbox_key] = is_selected
+                            
+                            # Handle checkbox change
+                            new_state = st.checkbox(
+                                f"Select {filename}",
+                                key=checkbox_key,
+                                label_visibility="collapsed"
+                            )
+                            
+                            # If state changed, update selected_documents
+                            if new_state != is_selected:
+                                if new_state:
+                                    if filename not in st.session_state.selected_documents:
+                                        st.session_state.selected_documents.append(filename)
+                                else:
+                                    if filename in st.session_state.selected_documents:
+                                        st.session_state.selected_documents.remove(filename)
+                                st.rerun()
+                        
+                        with col2:
+                            st.write(f"**{filename}**")
+                        
+                        with col3:
+                            st.caption(f"{file_stats.st_size:,} bytes")
+                        
+                        with col4:
+                            if st.button("🗑️", key=f"del_{filename}", help="Delete document", type="primary"):
+                                try:
+                                    os.remove(file_path)
+                                    if filename in st.session_state.selected_documents:
+                                        st.session_state.selected_documents.remove(filename)
+                                    st.success(f"Deleted {filename}")
+                                    st.rerun()
+                                except Exception as e:
+                                    st.error(f"Failed to delete: {str(e)}")
+            else:
+                st.warning(f"Requirements directory not found: {DATA_PATH}")
+        except Exception as e:
+            st.error(f"Error loading documents: {str(e)}")
+        
+        st.divider()
+        
+        # Upload Document Section
+        st.subheader("Upload Requirement Document")
+        
+        # Initialize upload counter if not exists
+        if 'upload_counter' not in st.session_state:
+            st.session_state.upload_counter = 0
+        
+        upload_file = st.file_uploader("Choose a file to upload", type=["txt", "md", "pdf", "docx"], key=f"upload_req_file_{st.session_state.upload_counter}")
+        
+        if upload_file is not None:
+            col_upload, col_cancel = st.columns([1, 3])
+            with col_upload:
+                if st.button("Upload & Select", key="upload_btn"):
+                    try:
+                        from quality_engineering_agentic_framework.utils.rag.rag_system import DATA_PATH
+                        
+                        file_path = os.path.join(DATA_PATH, upload_file.name)
+                        os.makedirs(DATA_PATH, exist_ok=True)
+                        
+                        with open(file_path, 'wb') as f:
+                            f.write(upload_file.getvalue())
+                        
+                        # Automatically select the uploaded file
+                        if upload_file.name not in st.session_state.selected_documents:
+                            st.session_state.selected_documents.append(upload_file.name)
+                        
+                        # Clear vector DB to force rebuild
+                        clear_vector_db()
+                        
+                        # Increment counter to clear file uploader
+                        st.session_state.upload_counter += 1
+                        
+                        st.success(f"✅ Uploaded and selected '{upload_file.name}'")
+                        st.rerun()
+                    except Exception as e:
+                        st.error(f"Error uploading file: {str(e)}")
+        
+        st.divider()
+        
+        # Information Section
+        with st.expander("How It Works"):
+            st.markdown("""
+            ### Document Selection & Vector Database
+            
+            1. **Select Documents**: Check the boxes next to documents you want to use
+            2. **Automatic Rebuild**: The vector database is cleared and will be rebuilt using ONLY selected documents
+            3. **Upload/Create**: New documents are automatically selected and trigger a rebuild
+            4. **Delete**: Removing a document clears the vector DB for a fresh rebuild
+            
+            ### Test Case Generation
+            
+            - Only **selected documents** are indexed in the vector database
+            - When you enter requirements (e.g., "test performance"), the system searches only the selected documents
+            - This gives you precise control over which documentation influences test generation
+            
+            ### Tips
+            
+            - Select documents relevant to your current testing scope
+            - Deselect documents to exclude them from test generation
+            - The vector DB rebuilds automatically on the next test generation
+            """)
+    
     # Test Script Generation Tab
     with tabs[TAB_TEST_SCRIPT_GEN]:
         st.header("Test Script Generation")
@@ -665,11 +932,11 @@ def main():
         # Integrated Solution Sub-tab
         with sub_tab1:
             st.subheader("Integrated Solution")
-            st.info("Generate test scripts from test cases created in the Test Case Generation tab")
+           # st.info("No test cases available. Please generate test cases first in the 'Test Case Generation' tab.")
             
             # Check if we have test cases from generation
             if 'test_cases' not in st.session_state or not st.session_state.test_cases:
-                st.warning("⚠️ No test cases available. Please generate test cases first in the 'Test Case Generation' tab.")
+                st.info("⚠️ No test cases available. Please generate test cases first in the 'Test Case Generation' tab.")
             else:
                 # Display available test cases
                 st.subheader("Available Test Cases")
@@ -900,7 +1167,7 @@ def main():
                     
                     # Display the uploaded test cases
                     st.subheader("Uploaded Test Cases")
-                    st.dataframe(df, use_container_width=True)
+                    st.dataframe(df, width='stretch')
                     
                     # Store the test cases in a temporary session variable for standalone
                     st.session_state.standalone_test_cases = df.to_dict('records')
@@ -1202,177 +1469,19 @@ def main():
                         key=f"download_{dataset_name}"
                     )
     
-    # # API Test Case Generation Tab (COMMENTED OUT - NOT VISIBLE TO END USER)
+    # API Test Case Generation Tab - COMMENTED OUT
     # with tabs[TAB_API_TEST_CASE_GEN]:
-    #     st.header("API Test Case Generation")
+    #     st.header("🚧 API Test Case Generation")
+    #     st.info("This feature is currently disabled. Please check back later.")
     #     st.write("Generate test cases for your APIs by providing the details below.")
-    #
-    #     with st.form("api_test_case_form"):
-    #         base_url = st.text_input("API Base URL", help="e.g. https://api.example.com")
-    #         endpoint = st.text_input("Endpoint Path", help="e.g. /v1/resource")
-    #         method = st.selectbox("HTTP Method", ["GET", "POST", "PUT", "DELETE", "PATCH"])
-    #         headers = st.text_area("Headers (JSON)", value="{}", help='e.g. {"Authorization": "Bearer ..."}')
-    #         params = st.text_area("Query Parameters (JSON)", value="{}", help='e.g. {"page": 1}')
-    #         body = st.text_area("Request Body (JSON)", value="{}", help='For POST/PUT/PATCH, e.g. {"name": "foo"}')
-    #         auth = st.text_area("Authentication Info (JSON)", value="{}", help='e.g. {"type": "basic", "username": "...", "password": "..."}')
-    #
-    #         submitted = st.form_submit_button("Generate API Test Cases")
-    #
-    #     if submitted:
-        #         # Validate JSON fields
-    #         def safe_json_loads(s, field):
-    #             try:
-    #                 return json.loads(s) if s.strip() else {}
-    #             except Exception as e:
-    #                 st.error(f"Invalid JSON in {field}: {e}")
-    #                 return None
-    #
-    #         headers_json = safe_json_loads(headers, "Headers")
-    #         params_json = safe_json_loads(params, "Query Parameters")
-    #         body_json = safe_json_loads(body, "Request Body")
-    #         auth_json = safe_json_loads(auth, "Authentication Info")
-    #
-    #         if None in (headers_json, params_json, body_json, auth_json):
-    #             st.stop()
-    #
-    #         if not base_url.strip() or not endpoint.strip():
-    #             st.error("Base URL and Endpoint Path are required.")
-    #             st.stop()
-    #
-    #         api_details = {
-    #             "base_url": base_url.strip(),
-    #             "endpoint": endpoint.strip(),
-    #             "method": method,
-    #             "headers": headers_json,
-    #             "params": params_json,
-    #             "body": body_json,
-    #             "auth": auth_json,
-    #         }
-    #
-    #         # Validate LLM config fields
-    #         if not all([llm_provider, llm_model, llm_api_key, llm_temperature, llm_max_tokens]):
-    #             st.error("All LLM configuration fields are required.")
-    #             st.stop()
-    #
-    #         # Prepare request for backend
-    #         request_data = {
-    #             "api_details": api_details,
-    #             "llm_config": {
-    #                 "provider": llm_provider,
-    #                 "model": llm_model,
-    #                 "api_key": llm_api_key,
-    #                 "temperature": float(llm_temperature),
-    #                 "max_tokens": int(llm_max_tokens),
-    #             },
-    #         }
-    #
-    #
-    #         with st.spinner("Generating API test cases..."):
-    #             try:
-    #                 response = requests.post(
-    #                     f"{API_URL}/api/api-test-case-generation",
-    #                     json=request_data,
-    #                     timeout=30,
-    #                 )
-    #                 response.raise_for_status()
-    #                 data = response.json()
-    #                 test_cases = data.get("test_cases", [])
-    #                 if test_cases:
-    #                     st.success(f"Generated {len(test_cases)} API test cases!")
-    #                     for i, tc in enumerate(test_cases, 1):
-    #                         with st.expander(f"{i}. {tc.get('title', 'Untitled Test Case')}"):
-    #                             st.json(tc)
-    #                 else:
-    #                     st.warning("No test cases generated.")
-    #             except Exception as e:
-    #                 st.error(f"Error generating API test cases: {e}")
+    #     st.warning("⚠️ This tab is temporarily disabled for maintenance.")
 
-    # # Chat Bot Tab (COMMENTED OUT - NOT VISIBLE TO END USER)
+    # Chat Bot Tab - COMMENTED OUT
     # with tabs[TAB_CHAT_BOT]:
-    #     st.header("Chat Bot")
-    #     st.write("Have a conversation with our simple AI assistant")
-    #     
-    #     # Initialize chat history if not already present
-    #     if "chat_history" not in st.session_state:
-    #         st.session_state.chat_history = []
-    #     
-    #     # Display chat history
-    #     for message in st.session_state.chat_history:
-    #         with st.chat_message(message["role"]):
-    #             st.write(message["content"])
-    #     
-    #     # Chat input area
-    #     user_input = st.chat_input("Type your message here...", key="chat_input")
-    #     
-    #     # Process message when user sends input
-    #     if user_input:
-    #         # Add user message to chat history
-    #         st.session_state.chat_history.append({"role": "user", "content": user_input})
-    #         
-    #         with st.chat_message("assistant"):
-    #             with st.spinner("Thinking..."):
-    #                 try:
-    #                     # Check if this is a test case generation request
-    #                     if "generate test case" in user_input.lower() or "create test case" in user_input.lower() or "test case" in user_input.lower():
-    #                         # Generate test cases using the extract_fields_from_test_cases function
-    #                         test_cases = extract_fields_from_test_cases(user_input)
-    #                         
-    #                         # Store test cases in session state for use in the Test Case Generation tab
-    #                         st.session_state.test_cases = test_cases
-    #                         
-    #                         # Create a response with the generated test cases
-    #                         bot_response = f"I've generated {len(test_cases)} test cases based on your requirements. Here's a summary:\n\n"
-    #                         for i, tc in enumerate(test_cases, 1):
-    #                             bot_response += f"{i}. {tc.get('name', 'Unnamed Test Case')}\n"
-    #                         
-    #                         # Add a note about where to find the full test cases
-    #                         bot_response += "\nYou can view and download the full test cases in the 'Test Case Generation' tab."
-    #                         
-    #                     else:
-    #                         # Prepare request data for regular chat
-    #                         request_data = {
-    #                             "message": user_input,
-    #                             "history": [msg for msg in st.session_state.chat_history if msg["role"] != "user"],
-    #                             "llm_config": {
-    #                                 "provider": llm_provider,
-    #                                 "model": llm_model,
-    #                                 "api_key": llm_api_key,
-    #                                 "temperature": float(llm_temperature),
-    #                                 "max_tokens": int(llm_max_tokens),
-    #                             },
-    #                             "system_prompt": "You are a helpful assistant who provides clear and concise responses.",
-    #                             "chat_model": "Basic"
-    #                         }
-    #                         
-    #                         # Make the API request
-    #                         response = requests.post(
-    #                             f"{API_URL}/api/chat",
-    #                             json=request_data,
-    #                             timeout=10  # 10 seconds timeout
-    #                         )
-    #                         
-    #                         if response.status_code == 200:
-    #                             response_data = response.json()
-    #                             bot_response = response_data.get("response", "I don't have a response for that.")
-    #                         else:
-    #                             # Fall back to a generic response if the API fails
-    #                             bot_response = "I'm having trouble connecting to the chat service. Please try again later."
-    #                     
-    #                     # Display the bot's response
-    #                     st.write(bot_response)
-    #                     
-    #                     # Add bot's response to chat history
-    #                     st.session_state.chat_history.append({"role": "assistant", "content": bot_response})
-    #                     
-    #                     # Rerun to update the UI
-    #                     st.rerun()
-    #                     
-    #                 except Exception as e:
-    #                     # Handle any unexpected errors
-    #                     error_msg = f"Error processing your request: {str(e)}"
-    #                     logger.error(error_msg)
-    #                     st.error(error_msg)
-    #                     st.session_state.chat_history.append({"role": "assistant", "content": error_msg})
+    #     st.header("🚧 Chat Bot")
+    #     st.info("This feature is currently disabled. Please check back later.")
+    #     st.write("Have a conversation with our simple AI assistant.")
+    #     st.warning("⚠️ This tab is temporarily disabled for maintenance.")
 
 def load_prompt_template(template_name: str) -> Optional[str]:
     """Load a prompt template from the API."""
@@ -1408,16 +1517,16 @@ def save_prompt_template(template_name: str, content: str) -> bool:
 
 
 if __name__ == "__main__":
-    # Ensure we use the standard asyncio event loop policy, not uvloop
-    # as nest_asyncio does not support patching uvloop
-    asyncio.set_event_loop_policy(asyncio.DefaultEventLoopPolicy())
-    
-    # Create an event loop and run the async code
-    loop = asyncio.new_event_loop()
-    asyncio.set_event_loop(loop)
-    
-    # Run the Streamlit app with async support
-    nest_asyncio.apply()
+    # Apply nest_asyncio to allow nested event loops (useful for Streamlit)
+    try:
+        import nest_asyncio
+        nest_asyncio.apply()
+    except RuntimeError:
+        # Silently ignore - uvloop and other loop types don't support patching
+        pass
+    except Exception as e:
+        # Just log warning for other exceptions, don't crash
+        print(f"Warning: Could not apply nest_asyncio: {e}")
     
     # Start the Streamlit app
     main()

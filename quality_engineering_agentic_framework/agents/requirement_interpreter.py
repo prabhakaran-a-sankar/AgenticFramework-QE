@@ -13,6 +13,7 @@ from quality_engineering_agentic_framework.agents.agent_interface import AgentIn
 from quality_engineering_agentic_framework.llm.llm_interface import LLMInterface
 from quality_engineering_agentic_framework.utils.logger import get_logger
 from quality_engineering_agentic_framework.web.api.models import ChatMessage, TestCase
+from quality_engineering_agentic_framework.utils.rag.rag_system import DATA_PATH, load_documents, split_documents, create_vector_db, synthesize_requirements, synthesize_requirements_for_query
 
 logger = get_logger(__name__)
 
@@ -57,13 +58,17 @@ class TestCaseGenerationAgent(AgentInterface):
             Prompt template as a string
         """
         default_template = """
-        You are a test case generator that converts software requirements into structured test cases.
+        You are a test case generator and working a senior QA engineer that converts software requirements into structured test cases.
         
+        Product/System Context:
+        {product_context}
+        
+
         Given the following software requirement:
         
         {requirement}
         
-        Generate all unique, non-redundant test cases as possible, covering all combinations, edge cases, and scenarios, in {output_format} format.
+        Generate required unique, non-redundant test cases as possible, covering all combinations, edge cases, and scenarios, in {output_format} format.
         
         Each test case should include:
         - A clear title/description
@@ -85,26 +90,213 @@ class TestCaseGenerationAgent(AgentInterface):
         
         return default_template
     
-    async def process(self, input_data: str) -> List[Dict[str, Any]]:
+    async def process(self, input_data: str, selected_documents: Optional[List[str]] = None) -> List[Dict[str, Any]]:
         """
         Process the requirements and generate structured test cases.
         
         Args:
             input_data: Requirements text
+            selected_documents: Optional list of specific filenames to use for RAG
             
         Returns:
             List of structured test cases
         """
+        print("\n\n!!! TestCaseGenerationAgent.process CALLED !!!\n\n")
         logger.info("Processing requirements with Test Case Generation agent")
         
         # Update context
         self.context["last_requirements"] = input_data
         
-        # Prepare the prompt
-        prompt = self.prompt_template.format(
-            requirement=input_data,
-            output_format=self.output_format
-        )
+        # 1. Synthesize Product/System Context using RAG
+        try:
+            # Re-using the functions from rag_system module
+            from quality_engineering_agentic_framework.utils.rag.rag_system import (
+                load_documents, split_documents, create_vector_db, 
+                synthesize_requirements_for_query, get_selection_fingerprint, CACHE_PATH
+            )
+            from langchain_core.documents import Document
+            import os
+            import json
+            
+            logger.info("Calling RAG: load_documents")
+            print(f"[RAG DEBUG] Starting RAG system with selected_documents: {selected_documents}")
+            
+            api_key = self.llm.config.get('api_key') if hasattr(self.llm, 'config') else None
+            llm_model = self.llm.config.get('model') if hasattr(self.llm, 'config') else None
+            
+            # FAST PATH: Check fingerprint before loading anything
+            current_fingerprint = get_selection_fingerprint(file_list=selected_documents)
+            print(f"[RAG DEBUG] Selection fingerprint: {current_fingerprint}")
+            
+            reuse_cache = False
+            if os.path.exists(CACHE_PATH):
+                try:
+                    with open(CACHE_PATH, 'r') as f:
+                        cached_fp = json.load(f).get("fingerprint")
+                        if cached_fp == current_fingerprint:
+                            reuse_cache = True
+                            print("[RAG DEBUG] CACHE HIT: Skipping all ingestion steps.")
+                except: pass
+
+            if not reuse_cache:
+                # 2. INGESTION PATH
+                documents = load_documents(file_list=selected_documents)
+                
+                if not documents:
+                    if selected_documents is not None and len(selected_documents) == 0:
+                        error_detail = "No documents selected in the Knowledge Hub. Please select at least one document to provide context."
+                    elif selected_documents:
+                        error_detail = f"None of the selected documents could be loaded: {selected_documents}"
+                    else:
+                        error_detail = f"No documents found in Knowledge Hub directory ({DATA_PATH})"
+                    
+                    logger.warning(error_detail)
+                    print(f"[RAG DEBUG] {error_detail}")
+                    product_context = f"Unable to retrieve documentation. {error_detail}"
+                else:
+                    logger.info(f"Loaded {len(documents)} documents")
+                    print(f"[RAG DEBUG] Successfully loaded {len(documents)} documents")
+                    
+                    # LAYERED INDEXING: Generate summaries for each document
+                    from quality_engineering_agentic_framework.utils.rag.rag_system import summarize_document
+                    summary_documents = []
+                    docs_by_source = {}
+                    for d in documents:
+                        src = d.metadata.get("source", "unknown")
+                        if src not in docs_by_source:
+                            docs_by_source[src] = []
+                        docs_by_source[src].append(d.page_content)
+                    
+                    for src, contents in docs_by_source.items():
+                        print(f"[RAG DEBUG] Summarizing document: {src}")
+                        full_content = "\n\n".join(contents)
+                        summary_text, doc_type = summarize_document(full_content, src, openai_api_key=api_key, model=llm_model)
+                        summary_documents.append(Document(
+                            page_content=summary_text,
+                            metadata={
+                                "source": src,
+                                "layer": "document_summary",
+                                "type": doc_type
+                            }
+                        ))
+                    
+                    # Split raw documents into chunks
+                    raw_chunks = split_documents(documents)
+                    all_chunks = raw_chunks + summary_documents
+                    
+                    if not all_chunks:
+                        print("[RAG DEBUG] Processing resulted in 0 manageable data segments")
+                        product_context = "No specific project documentation found. (Processing resulted in 0 segments)"
+                    else:
+                        print(f"[RAG DEBUG] Indexing {len(all_chunks)} segments (raw + summaries)")
+                        try:
+                            print("[RAG DEBUG] Creating vector database...")
+                            vector_db = create_vector_db(all_chunks, openai_api_key=api_key, fingerprint=current_fingerprint)
+                            print("[RAG DEBUG] Vector DB ready")
+                        except Exception as inner_error:
+                            print(f"[RAG DEBUG] Vector DB creation FAILED: {inner_error}")
+                            raise inner_error
+            else:
+                # 3. CACHE HIT PATH
+                try:
+                    print("[RAG DEBUG] Loading existing vector database from cache...")
+                    vector_db = create_vector_db(None, openai_api_key=api_key, fingerprint=current_fingerprint)
+                    print("[RAG DEBUG] Vector DB loaded from cache.")
+                except Exception as cache_err:
+                    print(f"[RAG DEBUG] Cache load FAILED: {cache_err}. FORCING RE-INGESTION...")
+                    # FALLBACK: If cache load fails, recurse or repeat ingestion logic
+                    # To keep it simple, we'll just repeat the ingestion logic here or clear reuse_cache
+                    reuse_cache = False
+                    # Triggering ingestion path manually by repeating the block
+                    documents = load_documents(file_list=selected_documents)
+                    if documents:
+                        # Re-run full ingestion logic to be safe
+                        from quality_engineering_agentic_framework.utils.rag.rag_system import summarize_document
+                        summary_documents = []
+                        docs_by_source = {}
+                        for d in documents:
+                            src = d.metadata.get("source", "unknown")
+                            if src not in docs_by_source:
+                                docs_by_source[src] = []
+                            docs_by_source[src].append(d.page_content)
+                        
+                        for src, contents in docs_by_source.items():
+                            full_content = "\n\n".join(contents)
+                            summary_text, _ = summarize_document(full_content, src, openai_api_key=api_key, model=llm_model)
+                            summary_documents.append(Document(page_content=summary_text, metadata={"source": src, "layer": "document_summary"}))
+                        
+                        raw_chunks = split_documents(documents)
+                        all_chunks = raw_chunks + summary_documents
+                        vector_db = create_vector_db(all_chunks, openai_api_key=api_key, fingerprint=current_fingerprint)
+                    else:
+                        raise cache_err
+
+            # If we have a DB (either new or cached), retrieve context
+            if 'vector_db' in locals():
+                print("[RAG DEBUG] Retrieving relevant context based on user input...")
+                product_context = synthesize_requirements_for_query(
+                    vector_db, 
+                    query=input_data,
+                    openai_api_key=api_key, 
+                    model=llm_model,
+                    top_k=20
+                )
+                print("[RAG DEBUG] Context retrieved and synthesized successfully")
+            else:
+                # Handle cases where DB fails to load or load_documents fails
+                if 'product_context' not in locals():
+                    product_context = "No specific project documentation found. (Database could not be initialized)"
+                    
+        except Exception as e:
+            import traceback
+            error_msg = str(e)
+            print(f"[RAG DEBUG] TOP-LEVEL EXCEPTION: {type(e).__name__}: {error_msg}")
+            logger.error(f"Failed to synthesize requirements via RAG: {e}")
+            logger.error(traceback.format_exc())
+            
+            # Add user-friendly error handling for common issues
+            if "readonly database" in error_msg.lower() or "code: 1032" in error_msg.lower():
+                friendly_msg = (
+                    "Database Persistence Error: The system encountered a filesystem lock while trying to update the knowledge base. "
+                    "I've implemented a fallback mechanism, so please try again—it should work on the next attempt."
+                )
+            elif "api_key" in error_msg.lower() or "unauthorized" in error_msg.lower():
+                friendly_msg = "API Key Error: Please check if your OpenAI API key is correct and has sufficient credits."
+            else:
+                friendly_msg = f"Knowledge synthesis encountered an issue: {error_msg}"
+                
+            product_context = f"Unable to retrieve documentation. {friendly_msg}"
+
+        
+        # Prepare the final prompt with product context
+        prompt = f"""
+        ### PROJECT SOURCE OF TRUTH (Product Details)
+        The following information is the authoritative documentation for the software under test. 
+        Treat this as your primary reference for all feature behavior, technical details, and business rules.
+        
+        --- START PROJECT DETAILS ---
+        {product_context}
+        --- END PROJECT DETAILS ---
+        
+        ### USER REQUIREMENT
+        The user wants to test the following:
+        "{input_data}"
+        
+        ### INSTRUCTION
+        Please generate comprehensive test cases based on the User Requirement above.
+        - If 'Project Source of Truth' contains specific details, use them to fill in all missing data and logic.
+        - If 'Project Source of Truth' indicates no documentation was found, use general industry standards and best practices for the domain mentioned in the User Requirement.
+        
+        Cite your sources in the 'rag_ref' field (if no documentation, mention 'General Knowledge').
+        """
+        
+        print("\n" + "#" * 80)
+        print("FINAL PROMPT SENT TO LLM (VERIFY RAG CONTENT BELOW)")
+        print("#" * 80)
+        print(f"\nPRODUCT CONTEXT RETRIEVED:\n{product_context[:1000]}...\n")
+        print("#" * 80 + "\n")
+        
+        logger.info(f"Generated Prompt (First 2000 chars):\n{prompt[:2000]}...")
         
         # Define the expected JSON schema for the output
         json_schema = {
@@ -120,9 +312,10 @@ class TestCaseGenerationAgent(AgentInterface):
                             "preconditions": {"type": "array", "items": {"type": "string"}},
                             "actions": {"type": "array", "items": {"type": "string"}},
                             "expected_results": {"type": "array", "items": {"type": "string"}},
-                            "test_data": {"type": "object"}
+                            "test_data": {"type": "object"},
+                            "rag_ref": {"type": "string", "description": "Cite a specific detail from the Product Context used in this test case"}
                         },
-                        "required": ["title", "preconditions", "actions", "expected_results"]
+                        "required": ["title", "preconditions", "actions", "expected_results", "rag_ref"]
                     }
                 }
             },
@@ -130,8 +323,22 @@ class TestCaseGenerationAgent(AgentInterface):
         }
         
         system_message = f"""
-        You are a test case generator that converts software requirements into structured test cases.
-        You must analyze the requirements carefully and create comprehensive test cases that cover all aspects.
+        You are a Quality Engineering Expert and Test Architect.
+        
+        Your mission is to map incoming "User Requirements" against the "Project Source of Truth" documentation.
+        
+          CRITICAL RULES:
+          1. AUTHORITATIVE DATA: Never use generic placeholders if the Project Details contain specific data (e.g., specific usernames like 'performance_glitch_user', specific error strings, or specific URLs).
+          2. BEHAVIORAL FIDELITY: Ensure the 'Actions' and 'Expected Results' exactly match the logic described in the Project Details.
+          3. PROJECT IDENTITY: Test cases should explicitly name the product (e.g., 'Verify Login') and reference its specific components.
+          4. DATA DICTIONARY: Populate the 'test_data' field with real values found in the Project Details.
+          5. LOGIN/NAVIGATION/URL STEPS (MANDATORY WHEN PRESENT IN RAG):
+              - If the Product Details mention authentication, login, SSO/MFA, base URLs, or navigation paths, you MUST include those as explicit steps inside 'Actions'.
+              - Do NOT skip initial steps (open URL, login, navigate) when they are present in the context.
+              - Each such step must be grounded in the Product Details and referenced in 'rag_ref'.
+        
+        For each test case, you MUST populate the 'rag_ref' field with the specific section or quote from the Project Details that justifies this test case.
+        
         Your output must be in valid JSON format according to the provided schema.
         """
         
@@ -149,7 +356,10 @@ class TestCaseGenerationAgent(AgentInterface):
             # Update context
             self.context["last_generated_count"] = len(test_cases)
             
-            return test_cases
+            return {
+                "test_cases": test_cases,
+                "product_context": product_context
+            }
         
         except Exception as e:
             logger.error(f"Error generating test cases: {str(e)}")

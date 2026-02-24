@@ -1,0 +1,2631 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accessibility Report - www.aib.ie</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; line-height: 1.6; color: #333; background: #f5f5f5; padding: 20px; }
+        .container { max-width: 1200px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        h1 { color: #2c3e50; margin-bottom: 10px; }
+        .meta { color: #7f8c8d; margin-bottom: 30px; }
+        .summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin-bottom: 30px; }
+        .summary-card { padding: 20px; border-radius: 6px; text-align: center; }
+        .summary-card h3 { font-size: 32px; margin-bottom: 5px; }
+        .summary-card p { color: #7f8c8d; font-size: 14px; }
+        .critical-card { background: #fee; border-left: 4px solid #e74c3c; }
+        .serious-card { background: #fff3e0; border-left: 4px solid #f39c12; }
+        .moderate-card { background: #fff9e6; border-left: 4px solid #f1c40f; }
+        .minor-card { background: #e8f5e9; border-left: 4px solid #27ae60; }
+        .issue { background: #fafafa; border-left: 4px solid #3498db; padding: 20px; margin-bottom: 20px; border-radius: 4px; }
+        .issue.critical { border-left-color: #e74c3c; }
+        .issue.serious { border-left-color: #f39c12; }
+        .issue.moderate { border-left-color: #f1c40f; }
+        .issue.minor { border-left-color: #27ae60; }
+        .issue-header { display: flex; justify-content: space-between; align-items: start; margin-bottom: 15px; }
+        .issue-title { font-size: 18px; font-weight: 600; color: #2c3e50; }
+        .severity-badge { padding: 4px 12px; border-radius: 12px; font-size: 12px; font-weight: 600; text-transform: uppercase; }
+        .severity-critical { background: #e74c3c; color: white; }
+        .severity-serious { background: #f39c12; color: white; }
+        .severity-moderate { background: #f1c40f; color: #333; }
+        .severity-minor { background: #27ae60; color: white; }
+        .issue-description { margin-bottom: 10px; color: #555; }
+        .code-block { background: #2c3e50; color: #ecf0f1; padding: 15px; border-radius: 4px; overflow-x: auto; margin: 10px 0; font-family: 'Courier New', monospace; font-size: 14px; }
+        .ai-section { background: #e8f4f8; padding: 15px; border-radius: 4px; margin-top: 10px; }
+        .ai-section h4 { color: #2980b9; margin-bottom: 8px; font-size: 14px; }
+        .wcag-ref { color: #3498db; text-decoration: none; font-size: 14px; }
+        .wcag-ref:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Accessibility Test Report</h1>
+        <div class="meta">
+            <p><strong>Target:</strong> www.aib.ie</p>
+            <p><strong>Tested:</strong> 2026-02-24 10:28:43</p>
+            <p><strong>Duration:</strong> 10.03s</p>
+        </div>
+        
+        <div class="summary">
+            <div class="summary-card critical-card">
+                <h3>14</h3>
+                <p>Critical</p>
+            </div>
+            <div class="summary-card serious-card">
+                <h3>40</h3>
+                <p>Serious</p>
+            </div>
+            <div class="summary-card moderate-card">
+                <h3>8</h3>
+                <p>Moderate</p>
+            </div>
+            <div class="summary-card minor-card">
+                <h3>2</h3>
+                <p>Minor</p>
+            </div>
+        </div>
+        
+        <h2 style="margin-bottom: 20px;">Issues Found (64)</h2>
+        
+        
+        <div class="issue critical">
+            <div class="issue-header">
+                <div class="issue-title">Certain ARIA roles must contain particular children</div>
+                <span class="severity-badge severity-critical">critical</span>
+            </div>
+            
+            <p class="issue-description"><strong>Rule:</strong> aria-required-children</p>
+            
+            
+            <p><a href="WCAG 1.3.1 (https://dequeuniversity.com/rules/axe/4.8/aria-required-children?application=axeAPI)" class="wcag-ref" target="_blank">WCAG Reference →</a></p>
+            
+            
+            
+            <div class="code-block"><ul class="row row-double-md nav-sections" role="menubar" aria-label="navigation" id="navigation"></div>
+            
+            
+            
+            <div class="ai-section">
+                <h4>🤖 AI Explanation</h4>
+                <p>Certain ARIA roles must contain particular children. This violates accessibility standards and may prevent users with disabilities from accessing content.</p>
+                
+                <p style="margin-top: 8px;"><strong>Impact:</strong> This issue affects users who rely on assistive technologies</p>
+                
+            </div>
+            
+            
+            
+            <div class="ai-section" style="background: #e8f5e9;">
+                <h4>✨ Suggested Fix</h4>
+                <div class="code-block"><ul class="row row-double-md nav-sections" role="menubar" aria-label="navigation" id="navigation"></div>
+            </div>
+            
+            
+            
+            <p style="margin-top: 10px; color: #555;"><strong>Recommendation:</strong> Fix any of the following:
+  Element has children which are not allowed: li[tabindex]
+  Element uses aria-busy="true" while showing a loader</p>
+            
+        </div>
+        
+        <div class="issue critical">
+            <div class="issue-header">
+                <div class="issue-title">Certain ARIA roles must contain particular children</div>
+                <span class="severity-badge severity-critical">critical</span>
+            </div>
+            
+            <p class="issue-description"><strong>Rule:</strong> aria-required-children</p>
+            
+            
+            <p><a href="WCAG 1.3.1 (https://dequeuniversity.com/rules/axe/4.8/aria-required-children?application=axeAPI)" class="wcag-ref" target="_blank">WCAG Reference →</a></p>
+            
+            
+            
+            <div class="code-block"><div class="login-inner" role="menubar" aria-label="login button" id="login"></div>
+            
+            
+            
+            <div class="ai-section">
+                <h4>🤖 AI Explanation</h4>
+                <p>Certain ARIA roles must contain particular children. This violates accessibility standards and may prevent users with disabilities from accessing content.</p>
+                
+                <p style="margin-top: 8px;"><strong>Impact:</strong> This issue affects users who rely on assistive technologies</p>
+                
+            </div>
+            
+            
+            
+            <div class="ai-section" style="background: #e8f5e9;">
+                <h4>✨ Suggested Fix</h4>
+                <div class="code-block"><div class="login-inner" role="menubar" aria-label="login button" id="login"></div>
+            </div>
+            
+            
+            
+            <p style="margin-top: 10px; color: #555;"><strong>Recommendation:</strong> Fix any of the following:
+  Element has children which are not allowed: [role=button]
+  Element uses aria-busy="true" while showing a loader</p>
+            
+        </div>
+        
+        <div class="issue critical">
+            <div class="issue-header">
+                <div class="issue-title">Certain ARIA roles must contain particular children</div>
+                <span class="severity-badge severity-critical">critical</span>
+            </div>
+            
+            <p class="issue-description"><strong>Rule:</strong> aria-required-children</p>
+            
+            
+            <p><a href="WCAG 1.3.1 (https://dequeuniversity.com/rules/axe/4.8/aria-required-children?application=axeAPI)" class="wcag-ref" target="_blank">WCAG Reference →</a></p>
+            
+            
+            
+            <div class="code-block"><ul class="green-chevron my-3" role="tablist"></div>
+            
+            
+            
+            <div class="ai-section">
+                <h4>🤖 AI Explanation</h4>
+                <p>Certain ARIA roles must contain particular children. This violates accessibility standards and may prevent users with disabilities from accessing content.</p>
+                
+                <p style="margin-top: 8px;"><strong>Impact:</strong> This issue affects users who rely on assistive technologies</p>
+                
+            </div>
+            
+            
+            
+            <div class="ai-section" style="background: #e8f5e9;">
+                <h4>✨ Suggested Fix</h4>
+                <div class="code-block"><ul class="green-chevron my-3" role="tablist"></div>
+            </div>
+            
+            
+            
+            <p style="margin-top: 10px; color: #555;"><strong>Recommendation:</strong> Fix any of the following:
+  Element has children which are not allowed: li[tabindex]
+  Element uses aria-busy="true" while showing a loader</p>
+            
+        </div>
+        
+        <div class="issue critical">
+            <div class="issue-header">
+                <div class="issue-title">Certain ARIA roles must be contained by particular parents</div>
+                <span class="severity-badge severity-critical">critical</span>
+            </div>
+            
+            <p class="issue-description"><strong>Rule:</strong> aria-required-parent</p>
+            
+            
+            <p><a href="WCAG 1.3.1 (https://dequeuniversity.com/rules/axe/4.8/aria-required-parent?application=axeAPI)" class="wcag-ref" target="_blank">WCAG Reference →</a></p>
+            
+            
+            
+            <div class="code-block"><div data-action="nav.section" data-payload="section=I want to" class="nav-section-title font-weight-medium nav-menu-item nav-popup-element" role="menuitem" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-hidden="false">
+                      I want to
+                    </div></div>
+            
+            
+            
+            <div class="ai-section">
+                <h4>🤖 AI Explanation</h4>
+                <p>Certain ARIA roles must be contained by particular parents. This violates accessibility standards and may prevent users with disabilities from accessing content.</p>
+                
+                <p style="margin-top: 8px;"><strong>Impact:</strong> This issue affects users who rely on assistive technologies</p>
+                
+            </div>
+            
+            
+            
+            <div class="ai-section" style="background: #e8f5e9;">
+                <h4>✨ Suggested Fix</h4>
+                <div class="code-block"><div data-action="nav.section" data-payload="section=I want to" class="nav-section-title font-weight-medium nav-menu-item nav-popup-element" role="menuitem" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-hidden="false">
+                      I want to
+                    </div></div>
+            </div>
+            
+            
+            
+            <p style="margin-top: 10px; color: #555;"><strong>Recommendation:</strong> Fix any of the following:
+  Required ARIA parents role not present: menu, menubar, group</p>
+            
+        </div>
+        
+        <div class="issue critical">
+            <div class="issue-header">
+                <div class="issue-title">Certain ARIA roles must be contained by particular parents</div>
+                <span class="severity-badge severity-critical">critical</span>
+            </div>
+            
+            <p class="issue-description"><strong>Rule:</strong> aria-required-parent</p>
+            
+            
+            <p><a href="WCAG 1.3.1 (https://dequeuniversity.com/rules/axe/4.8/aria-required-parent?application=axeAPI)" class="wcag-ref" target="_blank">WCAG Reference →</a></p>
+            
+            
+            
+            <div class="code-block"><div data-action="nav.section" data-payload="section=I am" class="nav-section-title font-weight-medium nav-menu-item nav-popup-element" role="menuitem" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-hidden="false">
+                      I am
+                    </div></div>
+            
+            
+            
+            <div class="ai-section">
+                <h4>🤖 AI Explanation</h4>
+                <p>Certain ARIA roles must be contained by particular parents. This violates accessibility standards and may prevent users with disabilities from accessing content.</p>
+                
+                <p style="margin-top: 8px;"><strong>Impact:</strong> This issue affects users who rely on assistive technologies</p>
+                
+            </div>
+            
+            
+            
+            <div class="ai-section" style="background: #e8f5e9;">
+                <h4>✨ Suggested Fix</h4>
+                <div class="code-block"><div data-action="nav.section" data-payload="section=I am" class="nav-section-title font-weight-medium nav-menu-item nav-popup-element" role="menuitem" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-hidden="false">
+                      I am
+                    </div></div>
+            </div>
+            
+            
+            
+            <p style="margin-top: 10px; color: #555;"><strong>Recommendation:</strong> Fix any of the following:
+  Required ARIA parents role not present: menu, menubar, group</p>
+            
+        </div>
+        
+        <div class="issue critical">
+            <div class="issue-header">
+                <div class="issue-title">Certain ARIA roles must be contained by particular parents</div>
+                <span class="severity-badge severity-critical">critical</span>
+            </div>
+            
+            <p class="issue-description"><strong>Rule:</strong> aria-required-parent</p>
+            
+            
+            <p><a href="WCAG 1.3.1 (https://dequeuniversity.com/rules/axe/4.8/aria-required-parent?application=axeAPI)" class="wcag-ref" target="_blank">WCAG Reference →</a></p>
+            
+            
+            
+            <div class="code-block"><div data-action="nav.section" data-payload="section=Mortgages" class="nav-section-title font-weight-medium nav-menu-item nav-popup-element" role="menuitem" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-hidden="false">
+                      Mortgages
+                    </div></div>
+            
+            
+            
+            <div class="ai-section">
+                <h4>🤖 AI Explanation</h4>
+                <p>Certain ARIA roles must be contained by particular parents. This violates accessibility standards and may prevent users with disabilities from accessing content.</p>
+                
+                <p style="margin-top: 8px;"><strong>Impact:</strong> This issue affects users who rely on assistive technologies</p>
+                
+            </div>
+            
+            
+            
+            <div class="ai-section" style="background: #e8f5e9;">
+                <h4>✨ Suggested Fix</h4>
+                <div class="code-block"><div data-action="nav.section" data-payload="section=Mortgages" class="nav-section-title font-weight-medium nav-menu-item nav-popup-element" role="menuitem" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-hidden="false">
+                      Mortgages
+                    </div></div>
+            </div>
+            
+            
+            
+            <p style="margin-top: 10px; color: #555;"><strong>Recommendation:</strong> Fix any of the following:
+  Required ARIA parents role not present: menu, menubar, group</p>
+            
+        </div>
+        
+        <div class="issue critical">
+            <div class="issue-header">
+                <div class="issue-title">Certain ARIA roles must be contained by particular parents</div>
+                <span class="severity-badge severity-critical">critical</span>
+            </div>
+            
+            <p class="issue-description"><strong>Rule:</strong> aria-required-parent</p>
+            
+            
+            <p><a href="WCAG 1.3.1 (https://dequeuniversity.com/rules/axe/4.8/aria-required-parent?application=axeAPI)" class="wcag-ref" target="_blank">WCAG Reference →</a></p>
+            
+            
+            
+            <div class="code-block"><div data-action="nav.section" data-payload="section=Make a plan " class="nav-section-title font-weight-medium nav-menu-item nav-popup-element" role="menuitem" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-hidden="false">
+                      Make a plan 
+                    </div></div>
+            
+            
+            
+            <div class="ai-section">
+                <h4>🤖 AI Explanation</h4>
+                <p>Certain ARIA roles must be contained by particular parents. This violates accessibility standards and may prevent users with disabilities from accessing content.</p>
+                
+                <p style="margin-top: 8px;"><strong>Impact:</strong> This issue affects users who rely on assistive technologies</p>
+                
+            </div>
+            
+            
+            
+            <div class="ai-section" style="background: #e8f5e9;">
+                <h4>✨ Suggested Fix</h4>
+                <div class="code-block"><div data-action="nav.section" data-payload="section=Make a plan " class="nav-section-title font-weight-medium nav-menu-item nav-popup-element" role="menuitem" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-hidden="false">
+                      Make a plan 
+                    </div></div>
+            </div>
+            
+            
+            
+            <p style="margin-top: 10px; color: #555;"><strong>Recommendation:</strong> Fix any of the following:
+  Required ARIA parents role not present: menu, menubar, group</p>
+            
+        </div>
+        
+        <div class="issue critical">
+            <div class="issue-header">
+                <div class="issue-title">Certain ARIA roles must be contained by particular parents</div>
+                <span class="severity-badge severity-critical">critical</span>
+            </div>
+            
+            <p class="issue-description"><strong>Rule:</strong> aria-required-parent</p>
+            
+            
+            <p><a href="WCAG 1.3.1 (https://dequeuniversity.com/rules/axe/4.8/aria-required-parent?application=axeAPI)" class="wcag-ref" target="_blank">WCAG Reference →</a></p>
+            
+            
+            
+            <div class="code-block"><div data-action="nav.section" data-payload="section=Products" class="nav-section-title font-weight-medium nav-menu-item nav-popup-element" role="menuitem" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-hidden="false">
+                      Products
+                    </div></div>
+            
+            
+            
+            <div class="ai-section">
+                <h4>🤖 AI Explanation</h4>
+                <p>Certain ARIA roles must be contained by particular parents. This violates accessibility standards and may prevent users with disabilities from accessing content.</p>
+                
+                <p style="margin-top: 8px;"><strong>Impact:</strong> This issue affects users who rely on assistive technologies</p>
+                
+            </div>
+            
+            
+            
+            <div class="ai-section" style="background: #e8f5e9;">
+                <h4>✨ Suggested Fix</h4>
+                <div class="code-block"><div data-action="nav.section" data-payload="section=Products" class="nav-section-title font-weight-medium nav-menu-item nav-popup-element" role="menuitem" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-hidden="false">
+                      Products
+                    </div></div>
+            </div>
+            
+            
+            
+            <p style="margin-top: 10px; color: #555;"><strong>Recommendation:</strong> Fix any of the following:
+  Required ARIA parents role not present: menu, menubar, group</p>
+            
+        </div>
+        
+        <div class="issue critical">
+            <div class="issue-header">
+                <div class="issue-title">Certain ARIA roles must be contained by particular parents</div>
+                <span class="severity-badge severity-critical">critical</span>
+            </div>
+            
+            <p class="issue-description"><strong>Rule:</strong> aria-required-parent</p>
+            
+            
+            <p><a href="WCAG 1.3.1 (https://dequeuniversity.com/rules/axe/4.8/aria-required-parent?application=axeAPI)" class="wcag-ref" target="_blank">WCAG Reference →</a></p>
+            
+            
+            
+            <div class="code-block"><div data-action="nav.section" data-payload="section=Ways to bank" class="nav-section-title font-weight-medium nav-menu-item nav-popup-element" role="menuitem" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-hidden="false">
+                      Ways to bank
+                    </div></div>
+            
+            
+            
+            <div class="ai-section">
+                <h4>🤖 AI Explanation</h4>
+                <p>Certain ARIA roles must be contained by particular parents. This violates accessibility standards and may prevent users with disabilities from accessing content.</p>
+                
+                <p style="margin-top: 8px;"><strong>Impact:</strong> This issue affects users who rely on assistive technologies</p>
+                
+            </div>
+            
+            
+            
+            <div class="ai-section" style="background: #e8f5e9;">
+                <h4>✨ Suggested Fix</h4>
+                <div class="code-block"><div data-action="nav.section" data-payload="section=Ways to bank" class="nav-section-title font-weight-medium nav-menu-item nav-popup-element" role="menuitem" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-hidden="false">
+                      Ways to bank
+                    </div></div>
+            </div>
+            
+            
+            
+            <p style="margin-top: 10px; color: #555;"><strong>Recommendation:</strong> Fix any of the following:
+  Required ARIA parents role not present: menu, menubar, group</p>
+            
+        </div>
+        
+        <div class="issue critical">
+            <div class="issue-header">
+                <div class="issue-title">Certain ARIA roles must be contained by particular parents</div>
+                <span class="severity-badge severity-critical">critical</span>
+            </div>
+            
+            <p class="issue-description"><strong>Rule:</strong> aria-required-parent</p>
+            
+            
+            <p><a href="WCAG 1.3.1 (https://dequeuniversity.com/rules/axe/4.8/aria-required-parent?application=axeAPI)" class="wcag-ref" target="_blank">WCAG Reference →</a></p>
+            
+            
+            
+            <div class="code-block"><div data-action="nav.section" data-payload="section=Help and guidance" class="nav-section-title font-weight-medium nav-menu-item nav-popup-element" role="menuitem" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-hidden="false"></div>
+            
+            
+            
+            <div class="ai-section">
+                <h4>🤖 AI Explanation</h4>
+                <p>Certain ARIA roles must be contained by particular parents. This violates accessibility standards and may prevent users with disabilities from accessing content.</p>
+                
+                <p style="margin-top: 8px;"><strong>Impact:</strong> This issue affects users who rely on assistive technologies</p>
+                
+            </div>
+            
+            
+            
+            <div class="ai-section" style="background: #e8f5e9;">
+                <h4>✨ Suggested Fix</h4>
+                <div class="code-block"><div data-action="nav.section" data-payload="section=Help and guidance" class="nav-section-title font-weight-medium nav-menu-item nav-popup-element" role="menuitem" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-hidden="false"></div>
+            </div>
+            
+            
+            
+            <p style="margin-top: 10px; color: #555;"><strong>Recommendation:</strong> Fix any of the following:
+  Required ARIA parents role not present: menu, menubar, group</p>
+            
+        </div>
+        
+        <div class="issue critical">
+            <div class="issue-header">
+                <div class="issue-title">Certain ARIA roles must be contained by particular parents</div>
+                <span class="severity-badge severity-critical">critical</span>
+            </div>
+            
+            <p class="issue-description"><strong>Rule:</strong> aria-required-parent</p>
+            
+            
+            <p><a href="WCAG 1.3.1 (https://dequeuniversity.com/rules/axe/4.8/aria-required-parent?application=axeAPI)" class="wcag-ref" target="_blank">WCAG Reference →</a></p>
+            
+            
+            
+            <div class="code-block"><span class="title accordion--title" tabindex="0" aria-expanded="false" aria-selected="false" role="tab" data-keyshortcuts-open="Press Enter to activate" data-keyshortcuts-close="Press Control + Enter to close" aria-keyshortcuts="Press Enter to activate" lang="en" id="accordion-heading-1"></div>
+            
+            
+            
+            <div class="ai-section">
+                <h4>🤖 AI Explanation</h4>
+                <p>Certain ARIA roles must be contained by particular parents. This violates accessibility standards and may prevent users with disabilities from accessing content.</p>
+                
+                <p style="margin-top: 8px;"><strong>Impact:</strong> This issue affects users who rely on assistive technologies</p>
+                
+            </div>
+            
+            
+            
+            <div class="ai-section" style="background: #e8f5e9;">
+                <h4>✨ Suggested Fix</h4>
+                <div class="code-block"><span class="title accordion--title" tabindex="0" aria-expanded="false" aria-selected="false" role="tab" data-keyshortcuts-open="Press Enter to activate" data-keyshortcuts-close="Press Control + Enter to close" aria-keyshortcuts="Press Enter to activate" lang="en" id="accordion-heading-1"></div>
+            </div>
+            
+            
+            
+            <p style="margin-top: 10px; color: #555;"><strong>Recommendation:</strong> Fix any of the following:
+  Required ARIA parent role not present: tablist</p>
+            
+        </div>
+        
+        <div class="issue critical">
+            <div class="issue-header">
+                <div class="issue-title">Certain ARIA roles must be contained by particular parents</div>
+                <span class="severity-badge severity-critical">critical</span>
+            </div>
+            
+            <p class="issue-description"><strong>Rule:</strong> aria-required-parent</p>
+            
+            
+            <p><a href="WCAG 1.3.1 (https://dequeuniversity.com/rules/axe/4.8/aria-required-parent?application=axeAPI)" class="wcag-ref" target="_blank">WCAG Reference →</a></p>
+            
+            
+            
+            <div class="code-block"><span class="title accordion--title" tabindex="0" aria-expanded="false" aria-selected="false" role="tab" data-keyshortcuts-open="Press Enter to activate" data-keyshortcuts-close="Press Control + Enter to close" aria-keyshortcuts="Press Enter to activate" lang="en" id="accordion-heading-2"></div>
+            
+            
+            
+            <div class="ai-section">
+                <h4>🤖 AI Explanation</h4>
+                <p>Certain ARIA roles must be contained by particular parents. This violates accessibility standards and may prevent users with disabilities from accessing content.</p>
+                
+                <p style="margin-top: 8px;"><strong>Impact:</strong> This issue affects users who rely on assistive technologies</p>
+                
+            </div>
+            
+            
+            
+            <div class="ai-section" style="background: #e8f5e9;">
+                <h4>✨ Suggested Fix</h4>
+                <div class="code-block"><span class="title accordion--title" tabindex="0" aria-expanded="false" aria-selected="false" role="tab" data-keyshortcuts-open="Press Enter to activate" data-keyshortcuts-close="Press Control + Enter to close" aria-keyshortcuts="Press Enter to activate" lang="en" id="accordion-heading-2"></div>
+            </div>
+            
+            
+            
+            <p style="margin-top: 10px; color: #555;"><strong>Recommendation:</strong> Fix any of the following:
+  Required ARIA parent role not present: tablist</p>
+            
+        </div>
+        
+        <div class="issue critical">
+            <div class="issue-header">
+                <div class="issue-title">Certain ARIA roles must be contained by particular parents</div>
+                <span class="severity-badge severity-critical">critical</span>
+            </div>
+            
+            <p class="issue-description"><strong>Rule:</strong> aria-required-parent</p>
+            
+            
+            <p><a href="WCAG 1.3.1 (https://dequeuniversity.com/rules/axe/4.8/aria-required-parent?application=axeAPI)" class="wcag-ref" target="_blank">WCAG Reference →</a></p>
+            
+            
+            
+            <div class="code-block"><span class="title accordion--title" tabindex="0" aria-expanded="false" aria-selected="false" role="tab" data-keyshortcuts-open="Press Enter to activate" data-keyshortcuts-close="Press Control + Enter to close" aria-keyshortcuts="Press Enter to activate" lang="en" id="accordion-heading-3"></div>
+            
+            
+            
+            <div class="ai-section">
+                <h4>🤖 AI Explanation</h4>
+                <p>Certain ARIA roles must be contained by particular parents. This violates accessibility standards and may prevent users with disabilities from accessing content.</p>
+                
+                <p style="margin-top: 8px;"><strong>Impact:</strong> This issue affects users who rely on assistive technologies</p>
+                
+            </div>
+            
+            
+            
+            <div class="ai-section" style="background: #e8f5e9;">
+                <h4>✨ Suggested Fix</h4>
+                <div class="code-block"><span class="title accordion--title" tabindex="0" aria-expanded="false" aria-selected="false" role="tab" data-keyshortcuts-open="Press Enter to activate" data-keyshortcuts-close="Press Control + Enter to close" aria-keyshortcuts="Press Enter to activate" lang="en" id="accordion-heading-3"></div>
+            </div>
+            
+            
+            
+            <p style="margin-top: 10px; color: #555;"><strong>Recommendation:</strong> Fix any of the following:
+  Required ARIA parent role not present: tablist</p>
+            
+        </div>
+        
+        <div class="issue critical">
+            <div class="issue-header">
+                <div class="issue-title">Certain ARIA roles must be contained by particular parents</div>
+                <span class="severity-badge severity-critical">critical</span>
+            </div>
+            
+            <p class="issue-description"><strong>Rule:</strong> aria-required-parent</p>
+            
+            
+            <p><a href="WCAG 1.3.1 (https://dequeuniversity.com/rules/axe/4.8/aria-required-parent?application=axeAPI)" class="wcag-ref" target="_blank">WCAG Reference →</a></p>
+            
+            
+            
+            <div class="code-block"><span class="title accordion--title" tabindex="0" aria-expanded="false" aria-selected="false" role="tab" data-keyshortcuts-open="Press Enter to activate" data-keyshortcuts-close="Press Control + Enter to close" aria-keyshortcuts="Press Enter to activate" lang="en" id="accordion-heading-4"></div>
+            
+            
+            
+            <div class="ai-section">
+                <h4>🤖 AI Explanation</h4>
+                <p>Certain ARIA roles must be contained by particular parents. This violates accessibility standards and may prevent users with disabilities from accessing content.</p>
+                
+                <p style="margin-top: 8px;"><strong>Impact:</strong> This issue affects users who rely on assistive technologies</p>
+                
+            </div>
+            
+            
+            
+            <div class="ai-section" style="background: #e8f5e9;">
+                <h4>✨ Suggested Fix</h4>
+                <div class="code-block"><span class="title accordion--title" tabindex="0" aria-expanded="false" aria-selected="false" role="tab" data-keyshortcuts-open="Press Enter to activate" data-keyshortcuts-close="Press Control + Enter to close" aria-keyshortcuts="Press Enter to activate" lang="en" id="accordion-heading-4"></div>
+            </div>
+            
+            
+            
+            <p style="margin-top: 10px; color: #555;"><strong>Recommendation:</strong> Fix any of the following:
+  Required ARIA parent role not present: tablist</p>
+            
+        </div>
+        
+        <div class="issue serious">
+            <div class="issue-header">
+                <div class="issue-title">Elements must meet enhanced color contrast ratio thresholds</div>
+                <span class="severity-badge severity-serious">serious</span>
+            </div>
+            
+            <p class="issue-description"><strong>Rule:</strong> color-contrast-enhanced</p>
+            
+            
+            <p><a href="WCAG 1.4.6 (https://dequeuniversity.com/rules/axe/4.8/color-contrast-enhanced?application=axeAPI)" class="wcag-ref" target="_blank">WCAG Reference →</a></p>
+            
+            
+            
+            <div class="code-block"><span class="d-inline">Log In</span></div>
+            
+            
+            
+            <div class="ai-section">
+                <h4>🤖 AI Explanation</h4>
+                <p>Elements must meet enhanced color contrast ratio thresholds. This violates accessibility standards and may prevent users with disabilities from accessing content.</p>
+                
+                <p style="margin-top: 8px;"><strong>Impact:</strong> This issue affects users who rely on assistive technologies</p>
+                
+            </div>
+            
+            
+            
+            <div class="ai-section" style="background: #e8f5e9;">
+                <h4>✨ Suggested Fix</h4>
+                <div class="code-block"><span class="d-inline">Log In</span></div>
+            </div>
+            
+            
+            
+            <p style="margin-top: 10px; color: #555;"><strong>Recommendation:</strong> Fix any of the following:
+  Element has insufficient color contrast of 5.37 (foreground color: #ffffff, background color: #007961, font size: 12.0pt (16px), font weight: bold). Expected contrast ratio of 7:1</p>
+            
+        </div>
+        
+        <div class="issue serious">
+            <div class="issue-header">
+                <div class="issue-title">Elements must meet enhanced color contrast ratio thresholds</div>
+                <span class="severity-badge severity-serious">serious</span>
+            </div>
+            
+            <p class="issue-description"><strong>Rule:</strong> color-contrast-enhanced</p>
+            
+            
+            <p><a href="WCAG 1.4.6 (https://dequeuniversity.com/rules/axe/4.8/color-contrast-enhanced?application=axeAPI)" class="wcag-ref" target="_blank">WCAG Reference →</a></p>
+            
+            
+            
+            <div class="code-block"><a title="Call 0818 303 034 " href="tel:0818303034">0818 303 034<b>&nbsp;</b></a></div>
+            
+            
+            
+            <div class="ai-section">
+                <h4>🤖 AI Explanation</h4>
+                <p>Elements must meet enhanced color contrast ratio thresholds. This violates accessibility standards and may prevent users with disabilities from accessing content.</p>
+                
+                <p style="margin-top: 8px;"><strong>Impact:</strong> This issue affects users who rely on assistive technologies</p>
+                
+            </div>
+            
+            
+            
+            <div class="ai-section" style="background: #e8f5e9;">
+                <h4>✨ Suggested Fix</h4>
+                <div class="code-block"><a title="Call 0818 303 034 " href="tel:0818303034">0818 303 034<b>&nbsp;</b></a></div>
+            </div>
+            
+            
+            
+            <p style="margin-top: 10px; color: #555;"><strong>Recommendation:</strong> Fix any of the following:
+  Element has insufficient color contrast of 4.93 (foreground color: #007961, background color: #f8f4f8, font size: 12.0pt (16px), font weight: normal). Expected contrast ratio of 7:1</p>
+            
+        </div>
+        
+        <div class="issue serious">
+            <div class="issue-header">
+                <div class="issue-title">Elements must meet enhanced color contrast ratio thresholds</div>
+                <span class="severity-badge severity-serious">serious</span>
+            </div>
+            
+            <p class="issue-description"><strong>Rule:</strong> color-contrast-enhanced</p>
+            
+            
+            <p><a href="WCAG 1.4.6 (https://dequeuniversity.com/rules/axe/4.8/color-contrast-enhanced?application=axeAPI)" class="wcag-ref" target="_blank">WCAG Reference →</a></p>
+            
+            
+            
+            <div class="code-block"><a href="/our-products/savings-and-deposits">More about savings &amp; deposits</a></div>
+            
+            
+            
+            <div class="ai-section">
+                <h4>🤖 AI Explanation</h4>
+                <p>Elements must meet enhanced color contrast ratio thresholds. This violates accessibility standards and may prevent users with disabilities from accessing content.</p>
+                
+                <p style="margin-top: 8px;"><strong>Impact:</strong> This issue affects users who rely on assistive technologies</p>
+                
+            </div>
+            
+            
+            
+            <div class="ai-section" style="background: #e8f5e9;">
+                <h4>✨ Suggested Fix</h4>
+                <div class="code-block"><a href="/our-products/savings-and-deposits">More about savings &amp; deposits</a></div>
+            </div>
+            
+            
+            
+            <p style="margin-top: 10px; color: #555;"><strong>Recommendation:</strong> Fix any of the following:
+  Element has insufficient color contrast of 5.37 (foreground color: #007961, background color: #ffffff, font size: 13.5pt (18px), font weight: normal). Expected contrast ratio of 7:1</p>
+            
+        </div>
+        
+        <div class="issue serious">
+            <div class="issue-header">
+                <div class="issue-title">Elements must meet enhanced color contrast ratio thresholds</div>
+                <span class="severity-badge severity-serious">serious</span>
+            </div>
+            
+            <p class="issue-description"><strong>Rule:</strong> color-contrast-enhanced</p>
+            
+            
+            <p><a href="WCAG 1.4.6 (https://dequeuniversity.com/rules/axe/4.8/color-contrast-enhanced?application=axeAPI)" class="wcag-ref" target="_blank">WCAG Reference →</a></p>
+            
+            
+            
+            <div class="code-block"><b>More information on how we can help you here</b></div>
+            
+            
+            
+            <div class="ai-section">
+                <h4>🤖 AI Explanation</h4>
+                <p>Elements must meet enhanced color contrast ratio thresholds. This violates accessibility standards and may prevent users with disabilities from accessing content.</p>
+                
+                <p style="margin-top: 8px;"><strong>Impact:</strong> This issue affects users who rely on assistive technologies</p>
+                
+            </div>
+            
+            
+            
+            <div class="ai-section" style="background: #e8f5e9;">
+                <h4>✨ Suggested Fix</h4>
+                <div class="code-block"><b>More information on how we can help you here</b></div>
+            </div>
+            
+            
+            
+            <p style="margin-top: 10px; color: #555;"><strong>Recommendation:</strong> Fix any of the following:
+  Element has insufficient color contrast of 5.37 (foreground color: #007961, background color: #ffffff, font size: 13.5pt (18px), font weight: bold). Expected contrast ratio of 7:1</p>
+            
+        </div>
+        
+        <div class="issue serious">
+            <div class="issue-header">
+                <div class="issue-title">Elements must meet enhanced color contrast ratio thresholds</div>
+                <span class="severity-badge severity-serious">serious</span>
+            </div>
+            
+            <p class="issue-description"><strong>Rule:</strong> color-contrast-enhanced</p>
+            
+            
+            <p><a href="WCAG 1.4.6 (https://dequeuniversity.com/rules/axe/4.8/color-contrast-enhanced?application=axeAPI)" class="wcag-ref" target="_blank">WCAG Reference →</a></p>
+            
+            
+            
+            <div class="code-block"><a href="/help-and-guidance/need-extra-help/trusted-contact-person">More information on Trusted Contact Person</a></div>
+            
+            
+            
+            <div class="ai-section">
+                <h4>🤖 AI Explanation</h4>
+                <p>Elements must meet enhanced color contrast ratio thresholds. This violates accessibility standards and may prevent users with disabilities from accessing content.</p>
+                
+                <p style="margin-top: 8px;"><strong>Impact:</strong> This issue affects users who rely on assistive technologies</p>
+                
+            </div>
+            
+            
+            
+            <div class="ai-section" style="background: #e8f5e9;">
+                <h4>✨ Suggested Fix</h4>
+                <div class="code-block"><a href="/help-and-guidance/need-extra-help/trusted-contact-person">More information on Trusted Contact Person</a></div>
+            </div>
+            
+            
+            
+            <p style="margin-top: 10px; color: #555;"><strong>Recommendation:</strong> Fix any of the following:
+  Element has insufficient color contrast of 5.37 (foreground color: #007961, background color: #ffffff, font size: 13.5pt (18px), font weight: normal). Expected contrast ratio of 7:1</p>
+            
+        </div>
+        
+        <div class="issue serious">
+            <div class="issue-header">
+                <div class="issue-title">Elements must meet enhanced color contrast ratio thresholds</div>
+                <span class="severity-badge severity-serious">serious</span>
+            </div>
+            
+            <p class="issue-description"><strong>Rule:</strong> color-contrast-enhanced</p>
+            
+            
+            <p><a href="WCAG 1.4.6 (https://dequeuniversity.com/rules/axe/4.8/color-contrast-enhanced?application=axeAPI)" class="wcag-ref" target="_blank">WCAG Reference →</a></p>
+            
+            
+            
+            <div class="code-block"><a href="/visapromotion">Visit promotion page</a></div>
+            
+            
+            
+            <div class="ai-section">
+                <h4>🤖 AI Explanation</h4>
+                <p>Elements must meet enhanced color contrast ratio thresholds. This violates accessibility standards and may prevent users with disabilities from accessing content.</p>
+                
+                <p style="margin-top: 8px;"><strong>Impact:</strong> This issue affects users who rely on assistive technologies</p>
+                
+            </div>
+            
+            
+            
+            <div class="ai-section" style="background: #e8f5e9;">
+                <h4>✨ Suggested Fix</h4>
+                <div class="code-block"><a href="/visapromotion">Visit promotion page</a></div>
+            </div>
+            
+            
+            
+            <p style="margin-top: 10px; color: #555;"><strong>Recommendation:</strong> Fix any of the following:
+  Element has insufficient color contrast of 5.37 (foreground color: #007961, background color: #ffffff, font size: 13.5pt (18px), font weight: normal). Expected contrast ratio of 7:1</p>
+            
+        </div>
+        
+        <div class="issue serious">
+            <div class="issue-header">
+                <div class="issue-title">Elements must meet enhanced color contrast ratio thresholds</div>
+                <span class="severity-badge severity-serious">serious</span>
+            </div>
+            
+            <p class="issue-description"><strong>Rule:</strong> color-contrast-enhanced</p>
+            
+            
+            <p><a href="WCAG 1.4.6 (https://dequeuniversity.com/rules/axe/4.8/color-contrast-enhanced?application=axeAPI)" class="wcag-ref" target="_blank">WCAG Reference →</a></p>
+            
+            
+            
+            <div class="code-block"><a href="/our-products/mortgages/manage-your-aib-mortgage">More information on mortgages</a></div>
+            
+            
+            
+            <div class="ai-section">
+                <h4>🤖 AI Explanation</h4>
+                <p>Elements must meet enhanced color contrast ratio thresholds. This violates accessibility standards and may prevent users with disabilities from accessing content.</p>
+                
+                <p style="margin-top: 8px;"><strong>Impact:</strong> This issue affects users who rely on assistive technologies</p>
+                
+            </div>
+            
+            
+            
+            <div class="ai-section" style="background: #e8f5e9;">
+                <h4>✨ Suggested Fix</h4>
+                <div class="code-block"><a href="/our-products/mortgages/manage-your-aib-mortgage">More information on mortgages</a></div>
+            </div>
+            
+            
+            
+            <p style="margin-top: 10px; color: #555;"><strong>Recommendation:</strong> Fix any of the following:
+  Element has insufficient color contrast of 5.37 (foreground color: #007961, background color: #ffffff, font size: 13.5pt (18px), font weight: normal). Expected contrast ratio of 7:1</p>
+            
+        </div>
+        
+        <div class="issue serious">
+            <div class="issue-header">
+                <div class="issue-title">Elements must meet enhanced color contrast ratio thresholds</div>
+                <span class="severity-badge severity-serious">serious</span>
+            </div>
+            
+            <p class="issue-description"><strong>Rule:</strong> color-contrast-enhanced</p>
+            
+            
+            <p><a href="WCAG 1.4.6 (https://dequeuniversity.com/rules/axe/4.8/color-contrast-enhanced?application=axeAPI)" class="wcag-ref" target="_blank">WCAG Reference →</a></p>
+            
+            
+            
+            <div class="code-block"><a href="/help-centre" id="titletext-bringmetothehelpcentre" data-title="TITLE TEXT BRING ME TO THE HELP CENTRE">Bring me to the help centre</a></div>
+            
+            
+            
+            <div class="ai-section">
+                <h4>🤖 AI Explanation</h4>
+                <p>Elements must meet enhanced color contrast ratio thresholds. This violates accessibility standards and may prevent users with disabilities from accessing content.</p>
+                
+                <p style="margin-top: 8px;"><strong>Impact:</strong> This issue affects users who rely on assistive technologies</p>
+                
+            </div>
+            
+            
+            
+            <div class="ai-section" style="background: #e8f5e9;">
+                <h4>✨ Suggested Fix</h4>
+                <div class="code-block"><a href="/help-centre" id="titletext-bringmetothehelpcentre" data-title="TITLE TEXT BRING ME TO THE HELP CENTRE">Bring me to the help centre</a></div>
+            </div>
+            
+            
+            
+            <p style="margin-top: 10px; color: #555;"><strong>Recommendation:</strong> Fix any of the following:
+  Element has insufficient color contrast of 5.37 (foreground color: #007961, background color: #ffffff, font size: 13.5pt (18px), font weight: normal). Expected contrast ratio of 7:1</p>
+            
+        </div>
+        
+        <div class="issue serious">
+            <div class="issue-header">
+                <div class="issue-title">Elements must meet enhanced color contrast ratio thresholds</div>
+                <span class="severity-badge severity-serious">serious</span>
+            </div>
+            
+            <p class="issue-description"><strong>Rule:</strong> color-contrast-enhanced</p>
+            
+            
+            <p><a href="WCAG 1.4.6 (https://dequeuniversity.com/rules/axe/4.8/color-contrast-enhanced?application=axeAPI)" class="wcag-ref" target="_blank">WCAG Reference →</a></p>
+            
+            
+            
+            <div class="code-block"><b>Find out more on how we can help you here</b></div>
+            
+            
+            
+            <div class="ai-section">
+                <h4>🤖 AI Explanation</h4>
+                <p>Elements must meet enhanced color contrast ratio thresholds. This violates accessibility standards and may prevent users with disabilities from accessing content.</p>
+                
+                <p style="margin-top: 8px;"><strong>Impact:</strong> This issue affects users who rely on assistive technologies</p>
+                
+            </div>
+            
+            
+            
+            <div class="ai-section" style="background: #e8f5e9;">
+                <h4>✨ Suggested Fix</h4>
+                <div class="code-block"><b>Find out more on how we can help you here</b></div>
+            </div>
+            
+            
+            
+            <p style="margin-top: 10px; color: #555;"><strong>Recommendation:</strong> Fix any of the following:
+  Element has insufficient color contrast of 5.37 (foreground color: #007961, background color: #ffffff, font size: 13.5pt (18px), font weight: bold). Expected contrast ratio of 7:1</p>
+            
+        </div>
+        
+        <div class="issue serious">
+            <div class="issue-header">
+                <div class="issue-title">Elements must meet enhanced color contrast ratio thresholds</div>
+                <span class="severity-badge severity-serious">serious</span>
+            </div>
+            
+            <p class="issue-description"><strong>Rule:</strong> color-contrast-enhanced</p>
+            
+            
+            <p><a href="WCAG 1.4.6 (https://dequeuniversity.com/rules/axe/4.8/color-contrast-enhanced?application=axeAPI)" class="wcag-ref" target="_blank">WCAG Reference →</a></p>
+            
+            
+            
+            <div class="code-block"><a href="/help-and-guidance/frequently-asked-questions" id="accordion-viewfullfaq" data-title="ACCORDION VIEW FULL FAQ">View full FAQ</a></div>
+            
+            
+            
+            <div class="ai-section">
+                <h4>🤖 AI Explanation</h4>
+                <p>Elements must meet enhanced color contrast ratio thresholds. This violates accessibility standards and may prevent users with disabilities from accessing content.</p>
+                
+                <p style="margin-top: 8px;"><strong>Impact:</strong> This issue affects users who rely on assistive technologies</p>
+                
+            </div>
+            
+            
+            
+            <div class="ai-section" style="background: #e8f5e9;">
+                <h4>✨ Suggested Fix</h4>
+                <div class="code-block"><a href="/help-and-guidance/frequently-asked-questions" id="accordion-viewfullfaq" data-title="ACCORDION VIEW FULL FAQ">View full FAQ</a></div>
+            </div>
+            
+            
+            
+            <p style="margin-top: 10px; color: #555;"><strong>Recommendation:</strong> Fix any of the following:
+  Element has insufficient color contrast of 5.16 (foreground color: #007961, background color: #fcfafa, font size: 13.5pt (18px), font weight: normal). Expected contrast ratio of 7:1</p>
+            
+        </div>
+        
+        <div class="issue serious">
+            <div class="issue-header">
+                <div class="issue-title">Elements must meet enhanced color contrast ratio thresholds</div>
+                <span class="severity-badge severity-serious">serious</span>
+            </div>
+            
+            <p class="issue-description"><strong>Rule:</strong> color-contrast-enhanced</p>
+            
+            
+            <p><a href="WCAG 1.4.6 (https://dequeuniversity.com/rules/axe/4.8/color-contrast-enhanced?application=axeAPI)" class="wcag-ref" target="_blank">WCAG Reference →</a></p>
+            
+            
+            
+            <div class="code-block"><a href="/business">Learn more about Business Banking</a></div>
+            
+            
+            
+            <div class="ai-section">
+                <h4>🤖 AI Explanation</h4>
+                <p>Elements must meet enhanced color contrast ratio thresholds. This violates accessibility standards and may prevent users with disabilities from accessing content.</p>
+                
+                <p style="margin-top: 8px;"><strong>Impact:</strong> This issue affects users who rely on assistive technologies</p>
+                
+            </div>
+            
+            
+            
+            <div class="ai-section" style="background: #e8f5e9;">
+                <h4>✨ Suggested Fix</h4>
+                <div class="code-block"><a href="/business">Learn more about Business Banking</a></div>
+            </div>
+            
+            
+            
+            <p style="margin-top: 10px; color: #555;"><strong>Recommendation:</strong> Fix any of the following:
+  Element has insufficient color contrast of 5.37 (foreground color: #007961, background color: #ffffff, font size: 13.5pt (18px), font weight: normal). Expected contrast ratio of 7:1</p>
+            
+        </div>
+        
+        <div class="issue serious">
+            <div class="issue-header">
+                <div class="issue-title">Elements must meet enhanced color contrast ratio thresholds</div>
+                <span class="severity-badge severity-serious">serious</span>
+            </div>
+            
+            <p class="issue-description"><strong>Rule:</strong> color-contrast-enhanced</p>
+            
+            
+            <p><a href="WCAG 1.4.6 (https://dequeuniversity.com/rules/axe/4.8/color-contrast-enhanced?application=axeAPI)" class="wcag-ref" target="_blank">WCAG Reference →</a></p>
+            
+            
+            
+            <div class="code-block"><a href="/corporate">More about Corporate banking</a></div>
+            
+            
+            
+            <div class="ai-section">
+                <h4>🤖 AI Explanation</h4>
+                <p>Elements must meet enhanced color contrast ratio thresholds. This violates accessibility standards and may prevent users with disabilities from accessing content.</p>
+                
+                <p style="margin-top: 8px;"><strong>Impact:</strong> This issue affects users who rely on assistive technologies</p>
+                
+            </div>
+            
+            
+            
+            <div class="ai-section" style="background: #e8f5e9;">
+                <h4>✨ Suggested Fix</h4>
+                <div class="code-block"><a href="/corporate">More about Corporate banking</a></div>
+            </div>
+            
+            
+            
+            <p style="margin-top: 10px; color: #555;"><strong>Recommendation:</strong> Fix any of the following:
+  Element has insufficient color contrast of 5.37 (foreground color: #007961, background color: #ffffff, font size: 13.5pt (18px), font weight: normal). Expected contrast ratio of 7:1</p>
+            
+        </div>
+        
+        <div class="issue serious">
+            <div class="issue-header">
+                <div class="issue-title">Elements must meet enhanced color contrast ratio thresholds</div>
+                <span class="severity-badge severity-serious">serious</span>
+            </div>
+            
+            <p class="issue-description"><strong>Rule:</strong> color-contrast-enhanced</p>
+            
+            
+            <p><a href="WCAG 1.4.6 (https://dequeuniversity.com/rules/axe/4.8/color-contrast-enhanced?application=axeAPI)" class="wcag-ref" target="_blank">WCAG Reference →</a></p>
+            
+            
+            
+            <div class="code-block"><a href="https://aib.ie/privatebanking">More on Private Banking</a></div>
+            
+            
+            
+            <div class="ai-section">
+                <h4>🤖 AI Explanation</h4>
+                <p>Elements must meet enhanced color contrast ratio thresholds. This violates accessibility standards and may prevent users with disabilities from accessing content.</p>
+                
+                <p style="margin-top: 8px;"><strong>Impact:</strong> This issue affects users who rely on assistive technologies</p>
+                
+            </div>
+            
+            
+            
+            <div class="ai-section" style="background: #e8f5e9;">
+                <h4>✨ Suggested Fix</h4>
+                <div class="code-block"><a href="https://aib.ie/privatebanking">More on Private Banking</a></div>
+            </div>
+            
+            
+            
+            <p style="margin-top: 10px; color: #555;"><strong>Recommendation:</strong> Fix any of the following:
+  Element has insufficient color contrast of 5.37 (foreground color: #007961, background color: #ffffff, font size: 13.5pt (18px), font weight: normal). Expected contrast ratio of 7:1</p>
+            
+        </div>
+        
+        <div class="issue serious">
+            <div class="issue-header">
+                <div class="issue-title">Elements must meet enhanced color contrast ratio thresholds</div>
+                <span class="severity-badge severity-serious">serious</span>
+            </div>
+            
+            <p class="issue-description"><strong>Rule:</strong> color-contrast-enhanced</p>
+            
+            
+            <p><a href="WCAG 1.4.6 (https://dequeuniversity.com/rules/axe/4.8/color-contrast-enhanced?application=axeAPI)" class="wcag-ref" target="_blank">WCAG Reference →</a></p>
+            
+            
+            
+            <div class="code-block"><a class="nav-link-title text-dark" href="https://aib.ie/legal" target="_self" data-position="1">
+                  LEGAL 
+                </a></div>
+            
+            
+            
+            <div class="ai-section">
+                <h4>🤖 AI Explanation</h4>
+                <p>Elements must meet enhanced color contrast ratio thresholds. This violates accessibility standards and may prevent users with disabilities from accessing content.</p>
+                
+                <p style="margin-top: 8px;"><strong>Impact:</strong> This issue affects users who rely on assistive technologies</p>
+                
+            </div>
+            
+            
+            
+            <div class="ai-section" style="background: #e8f5e9;">
+                <h4>✨ Suggested Fix</h4>
+                <div class="code-block"><a class="nav-link-title text-dark" href="https://aib.ie/legal" target="_self" data-position="1">
+                  LEGAL 
+                </a></div>
+            </div>
+            
+            
+            
+            <p style="margin-top: 10px; color: #555;"><strong>Recommendation:</strong> Fix any of the following:
+  Element has insufficient color contrast of 4.88 (foreground color: #717171, background color: #ffffff, font size: 12.0pt (16px), font weight: normal). Expected contrast ratio of 7:1</p>
+            
+        </div>
+        
+        <div class="issue serious">
+            <div class="issue-header">
+                <div class="issue-title">Elements must meet enhanced color contrast ratio thresholds</div>
+                <span class="severity-badge severity-serious">serious</span>
+            </div>
+            
+            <p class="issue-description"><strong>Rule:</strong> color-contrast-enhanced</p>
+            
+            
+            <p><a href="WCAG 1.4.6 (https://dequeuniversity.com/rules/axe/4.8/color-contrast-enhanced?application=axeAPI)" class="wcag-ref" target="_blank">WCAG Reference →</a></p>
+            
+            
+            
+            <div class="code-block"><a class="nav-link-title text-dark" href="https://aib.ie/aib-terms-of-business.pdf" target="_self" data-position="2">
+                  TERMS OF BUSINESS 
+                </a></div>
+            
+            
+            
+            <div class="ai-section">
+                <h4>🤖 AI Explanation</h4>
+                <p>Elements must meet enhanced color contrast ratio thresholds. This violates accessibility standards and may prevent users with disabilities from accessing content.</p>
+                
+                <p style="margin-top: 8px;"><strong>Impact:</strong> This issue affects users who rely on assistive technologies</p>
+                
+            </div>
+            
+            
+            
+            <div class="ai-section" style="background: #e8f5e9;">
+                <h4>✨ Suggested Fix</h4>
+                <div class="code-block"><a class="nav-link-title text-dark" href="https://aib.ie/aib-terms-of-business.pdf" target="_self" data-position="2">
+                  TERMS OF BUSINESS 
+                </a></div>
+            </div>
+            
+            
+            
+            <p style="margin-top: 10px; color: #555;"><strong>Recommendation:</strong> Fix any of the following:
+  Element has insufficient color contrast of 4.88 (foreground color: #717171, background color: #ffffff, font size: 12.0pt (16px), font weight: normal). Expected contrast ratio of 7:1</p>
+            
+        </div>
+        
+        <div class="issue serious">
+            <div class="issue-header">
+                <div class="issue-title">Elements must meet enhanced color contrast ratio thresholds</div>
+                <span class="severity-badge severity-serious">serious</span>
+            </div>
+            
+            <p class="issue-description"><strong>Rule:</strong> color-contrast-enhanced</p>
+            
+            
+            <p><a href="WCAG 1.4.6 (https://dequeuniversity.com/rules/axe/4.8/color-contrast-enhanced?application=axeAPI)" class="wcag-ref" target="_blank">WCAG Reference →</a></p>
+            
+            
+            
+            <div class="code-block"><a class="nav-link-title text-dark" href="https://aib.ie/AIB-Interest-Rates" target="_self" data-position="3">
+                  INTEREST RATES 
+                </a></div>
+            
+            
+            
+            <div class="ai-section">
+                <h4>🤖 AI Explanation</h4>
+                <p>Elements must meet enhanced color contrast ratio thresholds. This violates accessibility standards and may prevent users with disabilities from accessing content.</p>
+                
+                <p style="margin-top: 8px;"><strong>Impact:</strong> This issue affects users who rely on assistive technologies</p>
+                
+            </div>
+            
+            
+            
+            <div class="ai-section" style="background: #e8f5e9;">
+                <h4>✨ Suggested Fix</h4>
+                <div class="code-block"><a class="nav-link-title text-dark" href="https://aib.ie/AIB-Interest-Rates" target="_self" data-position="3">
+                  INTEREST RATES 
+                </a></div>
+            </div>
+            
+            
+            
+            <p style="margin-top: 10px; color: #555;"><strong>Recommendation:</strong> Fix any of the following:
+  Element has insufficient color contrast of 4.88 (foreground color: #717171, background color: #ffffff, font size: 12.0pt (16px), font weight: normal). Expected contrast ratio of 7:1</p>
+            
+        </div>
+        
+        <div class="issue serious">
+            <div class="issue-header">
+                <div class="issue-title">Elements must meet enhanced color contrast ratio thresholds</div>
+                <span class="severity-badge severity-serious">serious</span>
+            </div>
+            
+            <p class="issue-description"><strong>Rule:</strong> color-contrast-enhanced</p>
+            
+            
+            <p><a href="WCAG 1.4.6 (https://dequeuniversity.com/rules/axe/4.8/color-contrast-enhanced?application=axeAPI)" class="wcag-ref" target="_blank">WCAG Reference →</a></p>
+            
+            
+            
+            <div class="code-block"><a class="nav-link-title text-dark" href="https://jobs.aib.ie/aib" target="_self" data-position="4">
+                  CAREERS 
+                </a></div>
+            
+            
+            
+            <div class="ai-section">
+                <h4>🤖 AI Explanation</h4>
+                <p>Elements must meet enhanced color contrast ratio thresholds. This violates accessibility standards and may prevent users with disabilities from accessing content.</p>
+                
+                <p style="margin-top: 8px;"><strong>Impact:</strong> This issue affects users who rely on assistive technologies</p>
+                
+            </div>
+            
+            
+            
+            <div class="ai-section" style="background: #e8f5e9;">
+                <h4>✨ Suggested Fix</h4>
+                <div class="code-block"><a class="nav-link-title text-dark" href="https://jobs.aib.ie/aib" target="_self" data-position="4">
+                  CAREERS 
+                </a></div>
+            </div>
+            
+            
+            
+            <p style="margin-top: 10px; color: #555;"><strong>Recommendation:</strong> Fix any of the following:
+  Element has insufficient color contrast of 4.88 (foreground color: #717171, background color: #ffffff, font size: 12.0pt (16px), font weight: normal). Expected contrast ratio of 7:1</p>
+            
+        </div>
+        
+        <div class="issue serious">
+            <div class="issue-header">
+                <div class="issue-title">Elements must meet enhanced color contrast ratio thresholds</div>
+                <span class="severity-badge severity-serious">serious</span>
+            </div>
+            
+            <p class="issue-description"><strong>Rule:</strong> color-contrast-enhanced</p>
+            
+            
+            <p><a href="WCAG 1.4.6 (https://dequeuniversity.com/rules/axe/4.8/color-contrast-enhanced?application=axeAPI)" class="wcag-ref" target="_blank">WCAG Reference →</a></p>
+            
+            
+            
+            <div class="code-block"><a class="nav-link-title text-dark" href="https://aib.ie/dataprotection" target="_self" data-position="5">
+                  DATA PROTECTION NOTICE 
+                </a></div>
+            
+            
+            
+            <div class="ai-section">
+                <h4>🤖 AI Explanation</h4>
+                <p>Elements must meet enhanced color contrast ratio thresholds. This violates accessibility standards and may prevent users with disabilities from accessing content.</p>
+                
+                <p style="margin-top: 8px;"><strong>Impact:</strong> This issue affects users who rely on assistive technologies</p>
+                
+            </div>
+            
+            
+            
+            <div class="ai-section" style="background: #e8f5e9;">
+                <h4>✨ Suggested Fix</h4>
+                <div class="code-block"><a class="nav-link-title text-dark" href="https://aib.ie/dataprotection" target="_self" data-position="5">
+                  DATA PROTECTION NOTICE 
+                </a></div>
+            </div>
+            
+            
+            
+            <p style="margin-top: 10px; color: #555;"><strong>Recommendation:</strong> Fix any of the following:
+  Element has insufficient color contrast of 4.88 (foreground color: #717171, background color: #ffffff, font size: 12.0pt (16px), font weight: normal). Expected contrast ratio of 7:1</p>
+            
+        </div>
+        
+        <div class="issue serious">
+            <div class="issue-header">
+                <div class="issue-title">Elements must meet enhanced color contrast ratio thresholds</div>
+                <span class="severity-badge severity-serious">serious</span>
+            </div>
+            
+            <p class="issue-description"><strong>Rule:</strong> color-contrast-enhanced</p>
+            
+            
+            <p><a href="WCAG 1.4.6 (https://dequeuniversity.com/rules/axe/4.8/color-contrast-enhanced?application=axeAPI)" class="wcag-ref" target="_blank">WCAG Reference →</a></p>
+            
+            
+            
+            <div class="code-block"><a class="nav-link-title text-dark" href="https://aib.ie/accessibility" target="_self" data-position="6">
+                  ACCESSIBILITY 
+                </a></div>
+            
+            
+            
+            <div class="ai-section">
+                <h4>🤖 AI Explanation</h4>
+                <p>Elements must meet enhanced color contrast ratio thresholds. This violates accessibility standards and may prevent users with disabilities from accessing content.</p>
+                
+                <p style="margin-top: 8px;"><strong>Impact:</strong> This issue affects users who rely on assistive technologies</p>
+                
+            </div>
+            
+            
+            
+            <div class="ai-section" style="background: #e8f5e9;">
+                <h4>✨ Suggested Fix</h4>
+                <div class="code-block"><a class="nav-link-title text-dark" href="https://aib.ie/accessibility" target="_self" data-position="6">
+                  ACCESSIBILITY 
+                </a></div>
+            </div>
+            
+            
+            
+            <p style="margin-top: 10px; color: #555;"><strong>Recommendation:</strong> Fix any of the following:
+  Element has insufficient color contrast of 4.88 (foreground color: #717171, background color: #ffffff, font size: 12.0pt (16px), font weight: normal). Expected contrast ratio of 7:1</p>
+            
+        </div>
+        
+        <div class="issue serious">
+            <div class="issue-header">
+                <div class="issue-title">Elements must meet enhanced color contrast ratio thresholds</div>
+                <span class="severity-badge severity-serious">serious</span>
+            </div>
+            
+            <p class="issue-description"><strong>Rule:</strong> color-contrast-enhanced</p>
+            
+            
+            <p><a href="WCAG 1.4.6 (https://dequeuniversity.com/rules/axe/4.8/color-contrast-enhanced?application=axeAPI)" class="wcag-ref" target="_blank">WCAG Reference →</a></p>
+            
+            
+            
+            <div class="code-block"><a class="nav-link-title text-dark" href="https://aib.ie/Fees-and-Charges" target="_self" data-position="7">
+                  PERSONAL FEES &amp; CHARGES
+                </a></div>
+            
+            
+            
+            <div class="ai-section">
+                <h4>🤖 AI Explanation</h4>
+                <p>Elements must meet enhanced color contrast ratio thresholds. This violates accessibility standards and may prevent users with disabilities from accessing content.</p>
+                
+                <p style="margin-top: 8px;"><strong>Impact:</strong> This issue affects users who rely on assistive technologies</p>
+                
+            </div>
+            
+            
+            
+            <div class="ai-section" style="background: #e8f5e9;">
+                <h4>✨ Suggested Fix</h4>
+                <div class="code-block"><a class="nav-link-title text-dark" href="https://aib.ie/Fees-and-Charges" target="_self" data-position="7">
+                  PERSONAL FEES &amp; CHARGES
+                </a></div>
+            </div>
+            
+            
+            
+            <p style="margin-top: 10px; color: #555;"><strong>Recommendation:</strong> Fix any of the following:
+  Element has insufficient color contrast of 4.88 (foreground color: #717171, background color: #ffffff, font size: 12.0pt (16px), font weight: normal). Expected contrast ratio of 7:1</p>
+            
+        </div>
+        
+        <div class="issue serious">
+            <div class="issue-header">
+                <div class="issue-title">Elements must meet enhanced color contrast ratio thresholds</div>
+                <span class="severity-badge severity-serious">serious</span>
+            </div>
+            
+            <p class="issue-description"><strong>Rule:</strong> color-contrast-enhanced</p>
+            
+            
+            <p><a href="WCAG 1.4.6 (https://dequeuniversity.com/rules/axe/4.8/color-contrast-enhanced?application=axeAPI)" class="wcag-ref" target="_blank">WCAG Reference →</a></p>
+            
+            
+            
+            <div class="code-block"><span></div>
+            
+            
+            
+            <div class="ai-section">
+                <h4>🤖 AI Explanation</h4>
+                <p>Elements must meet enhanced color contrast ratio thresholds. This violates accessibility standards and may prevent users with disabilities from accessing content.</p>
+                
+                <p style="margin-top: 8px;"><strong>Impact:</strong> This issue affects users who rely on assistive technologies</p>
+                
+            </div>
+            
+            
+            
+            <div class="ai-section" style="background: #e8f5e9;">
+                <h4>✨ Suggested Fix</h4>
+                <div class="code-block"><span></div>
+            </div>
+            
+            
+            
+            <p style="margin-top: 10px; color: #555;"><strong>Recommendation:</strong> Fix any of the following:
+  Element has insufficient color contrast of 4.88 (foreground color: #717171, background color: #ffffff, font size: 13.5pt (18px), font weight: normal). Expected contrast ratio of 7:1</p>
+            
+        </div>
+        
+        <div class="issue serious">
+            <div class="issue-header">
+                <div class="issue-title">Elements must meet enhanced color contrast ratio thresholds</div>
+                <span class="severity-badge severity-serious">serious</span>
+            </div>
+            
+            <p class="issue-description"><strong>Rule:</strong> color-contrast-enhanced</p>
+            
+            
+            <p><a href="WCAG 1.4.6 (https://dequeuniversity.com/rules/axe/4.8/color-contrast-enhanced?application=axeAPI)" class="wcag-ref" target="_blank">WCAG Reference →</a></p>
+            
+            
+            
+            <div class="code-block"><a href="https://aib.ie/security-centre"><b>AIB Fraud &amp; Security Centre</b><br>
+ Always safe &amp; secure</a></div>
+            
+            
+            
+            <div class="ai-section">
+                <h4>🤖 AI Explanation</h4>
+                <p>Elements must meet enhanced color contrast ratio thresholds. This violates accessibility standards and may prevent users with disabilities from accessing content.</p>
+                
+                <p style="margin-top: 8px;"><strong>Impact:</strong> This issue affects users who rely on assistive technologies</p>
+                
+            </div>
+            
+            
+            
+            <div class="ai-section" style="background: #e8f5e9;">
+                <h4>✨ Suggested Fix</h4>
+                <div class="code-block"><a href="https://aib.ie/security-centre"><b>AIB Fraud &amp; Security Centre</b><br>
+ Always safe &amp; secure</a></div>
+            </div>
+            
+            
+            
+            <p style="margin-top: 10px; color: #555;"><strong>Recommendation:</strong> Fix any of the following:
+  Element has insufficient color contrast of 5.37 (foreground color: #007961, background color: #ffffff, font size: 13.5pt (18px), font weight: normal). Expected contrast ratio of 7:1</p>
+            
+        </div>
+        
+        <div class="issue serious">
+            <div class="issue-header">
+                <div class="issue-title">Elements must meet enhanced color contrast ratio thresholds</div>
+                <span class="severity-badge severity-serious">serious</span>
+            </div>
+            
+            <p class="issue-description"><strong>Rule:</strong> color-contrast-enhanced</p>
+            
+            
+            <p><a href="WCAG 1.4.6 (https://dequeuniversity.com/rules/axe/4.8/color-contrast-enhanced?application=axeAPI)" class="wcag-ref" target="_blank">WCAG Reference →</a></p>
+            
+            
+            
+            <div class="code-block"><b>AIB Fraud &amp; Security Centre</b></div>
+            
+            
+            
+            <div class="ai-section">
+                <h4>🤖 AI Explanation</h4>
+                <p>Elements must meet enhanced color contrast ratio thresholds. This violates accessibility standards and may prevent users with disabilities from accessing content.</p>
+                
+                <p style="margin-top: 8px;"><strong>Impact:</strong> This issue affects users who rely on assistive technologies</p>
+                
+            </div>
+            
+            
+            
+            <div class="ai-section" style="background: #e8f5e9;">
+                <h4>✨ Suggested Fix</h4>
+                <div class="code-block"><b>AIB Fraud &amp; Security Centre</b></div>
+            </div>
+            
+            
+            
+            <p style="margin-top: 10px; color: #555;"><strong>Recommendation:</strong> Fix any of the following:
+  Element has insufficient color contrast of 5.37 (foreground color: #007961, background color: #ffffff, font size: 13.5pt (18px), font weight: bold). Expected contrast ratio of 7:1</p>
+            
+        </div>
+        
+        <div class="issue serious">
+            <div class="issue-header">
+                <div class="issue-title">Elements must meet enhanced color contrast ratio thresholds</div>
+                <span class="severity-badge severity-serious">serious</span>
+            </div>
+            
+            <p class="issue-description"><strong>Rule:</strong> color-contrast-enhanced</p>
+            
+            
+            <p><a href="WCAG 1.4.6 (https://dequeuniversity.com/rules/axe/4.8/color-contrast-enhanced?application=axeAPI)" class="wcag-ref" target="_blank">WCAG Reference →</a></p>
+            
+            
+            
+            <div class="code-block"><span>Tel: <a href="tel:0035316600311">+353 (0)1 6600311</a> Registered in Ireland: Registered No. 24173 Allied Irish Banks, p.l.c. is regulated by the Central Bank of Ireland. Copyright Allied Irish Banks, p.l.c. 1995</span></div>
+            
+            
+            
+            <div class="ai-section">
+                <h4>🤖 AI Explanation</h4>
+                <p>Elements must meet enhanced color contrast ratio thresholds. This violates accessibility standards and may prevent users with disabilities from accessing content.</p>
+                
+                <p style="margin-top: 8px;"><strong>Impact:</strong> This issue affects users who rely on assistive technologies</p>
+                
+            </div>
+            
+            
+            
+            <div class="ai-section" style="background: #e8f5e9;">
+                <h4>✨ Suggested Fix</h4>
+                <div class="code-block"><span>Tel: <a href="tel:0035316600311">+353 (0)1 6600311</a> Registered in Ireland: Registered No. 24173 Allied Irish Banks, p.l.c. is regulated by the Central Bank of Ireland. Copyright Allied Irish Banks, p.l.c. 1995</span></div>
+            </div>
+            
+            
+            
+            <p style="margin-top: 10px; color: #555;"><strong>Recommendation:</strong> Fix any of the following:
+  Element has insufficient color contrast of 4.88 (foreground color: #717171, background color: #ffffff, font size: 13.5pt (18px), font weight: normal). Expected contrast ratio of 7:1</p>
+            
+        </div>
+        
+        <div class="issue serious">
+            <div class="issue-header">
+                <div class="issue-title">Elements must meet enhanced color contrast ratio thresholds</div>
+                <span class="severity-badge severity-serious">serious</span>
+            </div>
+            
+            <p class="issue-description"><strong>Rule:</strong> color-contrast-enhanced</p>
+            
+            
+            <p><a href="WCAG 1.4.6 (https://dequeuniversity.com/rules/axe/4.8/color-contrast-enhanced?application=axeAPI)" class="wcag-ref" target="_blank">WCAG Reference →</a></p>
+            
+            
+            
+            <div class="code-block"><h2 id="onetrust-policy-title">This website uses cookies</h2></div>
+            
+            
+            
+            <div class="ai-section">
+                <h4>🤖 AI Explanation</h4>
+                <p>Elements must meet enhanced color contrast ratio thresholds. This violates accessibility standards and may prevent users with disabilities from accessing content.</p>
+                
+                <p style="margin-top: 8px;"><strong>Impact:</strong> This issue affects users who rely on assistive technologies</p>
+                
+            </div>
+            
+            
+            
+            <div class="ai-section" style="background: #e8f5e9;">
+                <h4>✨ Suggested Fix</h4>
+                <div class="code-block"><h2 id="onetrust-policy-title">This website uses cookies</h2></div>
+            </div>
+            
+            
+            
+            <p style="margin-top: 10px; color: #555;"><strong>Recommendation:</strong> Fix any of the following:
+  Element has insufficient color contrast of 5.48 (foreground color: #696969, background color: #ffffff, font size: 15.0pt (20px), font weight: normal). Expected contrast ratio of 7:1</p>
+            
+        </div>
+        
+        <div class="issue serious">
+            <div class="issue-header">
+                <div class="issue-title">Elements must meet minimum color contrast ratio thresholds</div>
+                <span class="severity-badge severity-serious">serious</span>
+            </div>
+            
+            <p class="issue-description"><strong>Rule:</strong> color-contrast</p>
+            
+            
+            <p><a href="WCAG 1.4.3 (https://dequeuniversity.com/rules/axe/4.8/color-contrast?application=axeAPI)" class="wcag-ref" target="_blank">WCAG Reference →</a></p>
+            
+            
+            
+            <div class="code-block"><a href="https://aib.ie/AIB-Terms-and-Conditions">Terms and Condition<u>s</u></a></div>
+            
+            
+            
+            <div class="ai-section">
+                <h4>🤖 AI Explanation</h4>
+                <p>Elements must meet minimum color contrast ratio thresholds. This violates accessibility standards and may prevent users with disabilities from accessing content.</p>
+                
+                <p style="margin-top: 8px;"><strong>Impact:</strong> This issue affects users who rely on assistive technologies</p>
+                
+            </div>
+            
+            
+            
+            <div class="ai-section" style="background: #e8f5e9;">
+                <h4>✨ Suggested Fix</h4>
+                <div class="code-block"><a href="https://aib.ie/AIB-Terms-and-Conditions">Terms and Condition<u>s</u></a></div>
+            </div>
+            
+            
+            
+            <p style="margin-top: 10px; color: #555;"><strong>Recommendation:</strong> Fix any of the following:
+  Element has insufficient color contrast of 3.68 (foreground color: #339481, background color: #ffffff, font size: 13.5pt (18px), font weight: normal). Expected contrast ratio of 4.5:1</p>
+            
+        </div>
+        
+        <div class="issue serious">
+            <div class="issue-header">
+                <div class="issue-title">Elements must meet minimum color contrast ratio thresholds</div>
+                <span class="severity-badge severity-serious">serious</span>
+            </div>
+            
+            <p class="issue-description"><strong>Rule:</strong> color-contrast</p>
+            
+            
+            <p><a href="WCAG 1.4.3 (https://dequeuniversity.com/rules/axe/4.8/color-contrast?application=axeAPI)" class="wcag-ref" target="_blank">WCAG Reference →</a></p>
+            
+            
+            
+            <div class="code-block"><a href="https://aib.ie/Privacy-Statement">Privacy</a></div>
+            
+            
+            
+            <div class="ai-section">
+                <h4>🤖 AI Explanation</h4>
+                <p>Elements must meet minimum color contrast ratio thresholds. This violates accessibility standards and may prevent users with disabilities from accessing content.</p>
+                
+                <p style="margin-top: 8px;"><strong>Impact:</strong> This issue affects users who rely on assistive technologies</p>
+                
+            </div>
+            
+            
+            
+            <div class="ai-section" style="background: #e8f5e9;">
+                <h4>✨ Suggested Fix</h4>
+                <div class="code-block"><a href="https://aib.ie/Privacy-Statement">Privacy</a></div>
+            </div>
+            
+            
+            
+            <p style="margin-top: 10px; color: #555;"><strong>Recommendation:</strong> Fix any of the following:
+  Element has insufficient color contrast of 3.68 (foreground color: #339481, background color: #ffffff, font size: 13.5pt (18px), font weight: normal). Expected contrast ratio of 4.5:1</p>
+            
+        </div>
+        
+        <div class="issue serious">
+            <div class="issue-header">
+                <div class="issue-title">Elements must meet minimum color contrast ratio thresholds</div>
+                <span class="severity-badge severity-serious">serious</span>
+            </div>
+            
+            <p class="issue-description"><strong>Rule:</strong> color-contrast</p>
+            
+            
+            <p><a href="WCAG 1.4.3 (https://dequeuniversity.com/rules/axe/4.8/color-contrast?application=axeAPI)" class="wcag-ref" target="_blank">WCAG Reference →</a></p>
+            
+            
+            
+            <div class="code-block"><a href="https://aib.ie/cookie-policy">Cookie</a></div>
+            
+            
+            
+            <div class="ai-section">
+                <h4>🤖 AI Explanation</h4>
+                <p>Elements must meet minimum color contrast ratio thresholds. This violates accessibility standards and may prevent users with disabilities from accessing content.</p>
+                
+                <p style="margin-top: 8px;"><strong>Impact:</strong> This issue affects users who rely on assistive technologies</p>
+                
+            </div>
+            
+            
+            
+            <div class="ai-section" style="background: #e8f5e9;">
+                <h4>✨ Suggested Fix</h4>
+                <div class="code-block"><a href="https://aib.ie/cookie-policy">Cookie</a></div>
+            </div>
+            
+            
+            
+            <p style="margin-top: 10px; color: #555;"><strong>Recommendation:</strong> Fix any of the following:
+  Element has insufficient color contrast of 3.68 (foreground color: #339481, background color: #ffffff, font size: 13.5pt (18px), font weight: normal). Expected contrast ratio of 4.5:1</p>
+            
+        </div>
+        
+        <div class="issue serious">
+            <div class="issue-header">
+                <div class="issue-title">Elements must meet minimum color contrast ratio thresholds</div>
+                <span class="severity-badge severity-serious">serious</span>
+            </div>
+            
+            <p class="issue-description"><strong>Rule:</strong> color-contrast</p>
+            
+            
+            <p><a href="WCAG 1.4.3 (https://dequeuniversity.com/rules/axe/4.8/color-contrast?application=axeAPI)" class="wcag-ref" target="_blank">WCAG Reference →</a></p>
+            
+            
+            
+            <div class="code-block"><a href="tel:0035316600311">+353 (0)1 6600311</a></div>
+            
+            
+            
+            <div class="ai-section">
+                <h4>🤖 AI Explanation</h4>
+                <p>Elements must meet minimum color contrast ratio thresholds. This violates accessibility standards and may prevent users with disabilities from accessing content.</p>
+                
+                <p style="margin-top: 8px;"><strong>Impact:</strong> This issue affects users who rely on assistive technologies</p>
+                
+            </div>
+            
+            
+            
+            <div class="ai-section" style="background: #e8f5e9;">
+                <h4>✨ Suggested Fix</h4>
+                <div class="code-block"><a href="tel:0035316600311">+353 (0)1 6600311</a></div>
+            </div>
+            
+            
+            
+            <p style="margin-top: 10px; color: #555;"><strong>Recommendation:</strong> Fix any of the following:
+  Element has insufficient color contrast of 3.68 (foreground color: #339481, background color: #ffffff, font size: 13.5pt (18px), font weight: normal). Expected contrast ratio of 4.5:1</p>
+            
+        </div>
+        
+        <div class="issue minor">
+            <div class="issue-header">
+                <div class="issue-title">Headings should not be empty</div>
+                <span class="severity-badge severity-minor">minor</span>
+            </div>
+            
+            <p class="issue-description"><strong>Rule:</strong> empty-heading</p>
+            
+            
+            <p><a href="https://dequeuniversity.com/rules/axe/4.8/empty-heading?application=axeAPI" class="wcag-ref" target="_blank">WCAG Reference →</a></p>
+            
+            
+            
+            <div class="code-block"><h2 class="h1-mobile"></h2></div>
+            
+            
+            
+            <div class="ai-section">
+                <h4>🤖 AI Explanation</h4>
+                <p>Headings should not be empty. This violates accessibility standards and may prevent users with disabilities from accessing content.</p>
+                
+                <p style="margin-top: 8px;"><strong>Impact:</strong> This issue affects users who rely on assistive technologies</p>
+                
+            </div>
+            
+            
+            
+            <div class="ai-section" style="background: #e8f5e9;">
+                <h4>✨ Suggested Fix</h4>
+                <div class="code-block"><h2 class="h1-mobile"></h2></div>
+            </div>
+            
+            
+            
+            <p style="margin-top: 10px; color: #555;"><strong>Recommendation:</strong> Fix any of the following:
+  Element does not have text that is visible to screen readers
+  aria-label attribute does not exist or is empty
+  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty
+  Element has no title attribute</p>
+            
+        </div>
+        
+        <div class="issue moderate">
+            <div class="issue-header">
+                <div class="issue-title">Banner landmark should not be contained in another landmark</div>
+                <span class="severity-badge severity-moderate">moderate</span>
+            </div>
+            
+            <p class="issue-description"><strong>Rule:</strong> landmark-banner-is-top-level</p>
+            
+            
+            <p><a href="https://dequeuniversity.com/rules/axe/4.8/landmark-banner-is-top-level?application=axeAPI" class="wcag-ref" target="_blank">WCAG Reference →</a></p>
+            
+            
+            
+            <div class="code-block"><header class="bg-primary text-white "></div>
+            
+            
+            
+            <div class="ai-section">
+                <h4>🤖 AI Explanation</h4>
+                <p>Banner landmark should not be contained in another landmark. This violates accessibility standards and may prevent users with disabilities from accessing content.</p>
+                
+                <p style="margin-top: 8px;"><strong>Impact:</strong> This issue affects users who rely on assistive technologies</p>
+                
+            </div>
+            
+            
+            
+            <div class="ai-section" style="background: #e8f5e9;">
+                <h4>✨ Suggested Fix</h4>
+                <div class="code-block"><header class="bg-primary text-white "></div>
+            </div>
+            
+            
+            
+            <p style="margin-top: 10px; color: #555;"><strong>Recommendation:</strong> Fix any of the following:
+  The null landmark is contained in another landmark.</p>
+            
+        </div>
+        
+        <div class="issue moderate">
+            <div class="issue-header">
+                <div class="issue-title">Banner landmark should not be contained in another landmark</div>
+                <span class="severity-badge severity-moderate">moderate</span>
+            </div>
+            
+            <p class="issue-description"><strong>Rule:</strong> landmark-banner-is-top-level</p>
+            
+            
+            <p><a href="https://dequeuniversity.com/rules/axe/4.8/landmark-banner-is-top-level?application=axeAPI" class="wcag-ref" target="_blank">WCAG Reference →</a></p>
+            
+            
+            
+            <div class="code-block"><section class="banner card card py-3 py-md-5 " role="banner" id="_content_aib_personal_jcr_content_root_responsivegrid_responsivegrid_copy_multipurposebanner_c"></div>
+            
+            
+            
+            <div class="ai-section">
+                <h4>🤖 AI Explanation</h4>
+                <p>Banner landmark should not be contained in another landmark. This violates accessibility standards and may prevent users with disabilities from accessing content.</p>
+                
+                <p style="margin-top: 8px;"><strong>Impact:</strong> This issue affects users who rely on assistive technologies</p>
+                
+            </div>
+            
+            
+            
+            <div class="ai-section" style="background: #e8f5e9;">
+                <h4>✨ Suggested Fix</h4>
+                <div class="code-block"><section class="banner card card py-3 py-md-5 " role="banner" id="_content_aib_personal_jcr_content_root_responsivegrid_responsivegrid_copy_multipurposebanner_c"></div>
+            </div>
+            
+            
+            
+            <p style="margin-top: 10px; color: #555;"><strong>Recommendation:</strong> Fix any of the following:
+  The banner landmark is contained in another landmark.</p>
+            
+        </div>
+        
+        <div class="issue moderate">
+            <div class="issue-header">
+                <div class="issue-title">Contentinfo landmark should not be contained in another landmark</div>
+                <span class="severity-badge severity-moderate">moderate</span>
+            </div>
+            
+            <p class="issue-description"><strong>Rule:</strong> landmark-contentinfo-is-top-level</p>
+            
+            
+            <p><a href="https://dequeuniversity.com/rules/axe/4.8/landmark-contentinfo-is-top-level?application=axeAPI" class="wcag-ref" target="_blank">WCAG Reference →</a></p>
+            
+            
+            
+            <div class="code-block"><div class="upper-footer bg-primary text-white py-5 frontdoor" role="contentinfo"></div>
+            
+            
+            
+            <div class="ai-section">
+                <h4>🤖 AI Explanation</h4>
+                <p>Contentinfo landmark should not be contained in another landmark. This violates accessibility standards and may prevent users with disabilities from accessing content.</p>
+                
+                <p style="margin-top: 8px;"><strong>Impact:</strong> This issue affects users who rely on assistive technologies</p>
+                
+            </div>
+            
+            
+            
+            <div class="ai-section" style="background: #e8f5e9;">
+                <h4>✨ Suggested Fix</h4>
+                <div class="code-block"><div class="upper-footer bg-primary text-white py-5 frontdoor" role="contentinfo"></div>
+            </div>
+            
+            
+            
+            <p style="margin-top: 10px; color: #555;"><strong>Recommendation:</strong> Fix any of the following:
+  The contentinfo landmark is contained in another landmark.</p>
+            
+        </div>
+        
+        <div class="issue moderate">
+            <div class="issue-header">
+                <div class="issue-title">Contentinfo landmark should not be contained in another landmark</div>
+                <span class="severity-badge severity-moderate">moderate</span>
+            </div>
+            
+            <p class="issue-description"><strong>Rule:</strong> landmark-contentinfo-is-top-level</p>
+            
+            
+            <p><a href="https://dequeuniversity.com/rules/axe/4.8/landmark-contentinfo-is-top-level?application=axeAPI" class="wcag-ref" target="_blank">WCAG Reference →</a></p>
+            
+            
+            
+            <div class="code-block"><div class="lower-footer " role="contentinfo"></div>
+            
+            
+            
+            <div class="ai-section">
+                <h4>🤖 AI Explanation</h4>
+                <p>Contentinfo landmark should not be contained in another landmark. This violates accessibility standards and may prevent users with disabilities from accessing content.</p>
+                
+                <p style="margin-top: 8px;"><strong>Impact:</strong> This issue affects users who rely on assistive technologies</p>
+                
+            </div>
+            
+            
+            
+            <div class="ai-section" style="background: #e8f5e9;">
+                <h4>✨ Suggested Fix</h4>
+                <div class="code-block"><div class="lower-footer " role="contentinfo"></div>
+            </div>
+            
+            
+            
+            <p style="margin-top: 10px; color: #555;"><strong>Recommendation:</strong> Fix any of the following:
+  The contentinfo landmark is contained in another landmark.</p>
+            
+        </div>
+        
+        <div class="issue moderate">
+            <div class="issue-header">
+                <div class="issue-title">Document should not have more than one contentinfo landmark</div>
+                <span class="severity-badge severity-moderate">moderate</span>
+            </div>
+            
+            <p class="issue-description"><strong>Rule:</strong> landmark-no-duplicate-contentinfo</p>
+            
+            
+            <p><a href="https://dequeuniversity.com/rules/axe/4.8/landmark-no-duplicate-contentinfo?application=axeAPI" class="wcag-ref" target="_blank">WCAG Reference →</a></p>
+            
+            
+            
+            <div class="code-block"><div class="upper-footer bg-primary text-white py-5 frontdoor" role="contentinfo"></div>
+            
+            
+            
+            <div class="ai-section">
+                <h4>🤖 AI Explanation</h4>
+                <p>Document should not have more than one contentinfo landmark. This violates accessibility standards and may prevent users with disabilities from accessing content.</p>
+                
+                <p style="margin-top: 8px;"><strong>Impact:</strong> This issue affects users who rely on assistive technologies</p>
+                
+            </div>
+            
+            
+            
+            <div class="ai-section" style="background: #e8f5e9;">
+                <h4>✨ Suggested Fix</h4>
+                <div class="code-block"><div class="upper-footer bg-primary text-white py-5 frontdoor" role="contentinfo"></div>
+            </div>
+            
+            
+            
+            <p style="margin-top: 10px; color: #555;"><strong>Recommendation:</strong> Fix any of the following:
+  Document has more than one contentinfo landmark</p>
+            
+        </div>
+        
+        <div class="issue moderate">
+            <div class="issue-header">
+                <div class="issue-title">Ensures landmarks are unique</div>
+                <span class="severity-badge severity-moderate">moderate</span>
+            </div>
+            
+            <p class="issue-description"><strong>Rule:</strong> landmark-unique</p>
+            
+            
+            <p><a href="https://dequeuniversity.com/rules/axe/4.8/landmark-unique?application=axeAPI" class="wcag-ref" target="_blank">WCAG Reference →</a></p>
+            
+            
+            
+            <div class="code-block"><nav class="header-main-nav"></div>
+            
+            
+            
+            <div class="ai-section">
+                <h4>🤖 AI Explanation</h4>
+                <p>Ensures landmarks are unique. This violates accessibility standards and may prevent users with disabilities from accessing content.</p>
+                
+                <p style="margin-top: 8px;"><strong>Impact:</strong> This issue affects users who rely on assistive technologies</p>
+                
+            </div>
+            
+            
+            
+            <div class="ai-section" style="background: #e8f5e9;">
+                <h4>✨ Suggested Fix</h4>
+                <div class="code-block"><nav class="header-main-nav"></div>
+            </div>
+            
+            
+            
+            <p style="margin-top: 10px; color: #555;"><strong>Recommendation:</strong> Fix any of the following:
+  The landmark must have a unique aria-label, aria-labelledby, or title to make landmarks distinguishable</p>
+            
+        </div>
+        
+        <div class="issue moderate">
+            <div class="issue-header">
+                <div class="issue-title">Ensures landmarks are unique</div>
+                <span class="severity-badge severity-moderate">moderate</span>
+            </div>
+            
+            <p class="issue-description"><strong>Rule:</strong> landmark-unique</p>
+            
+            
+            <p><a href="https://dequeuniversity.com/rules/axe/4.8/landmark-unique?application=axeAPI" class="wcag-ref" target="_blank">WCAG Reference →</a></p>
+            
+            
+            
+            <div class="code-block"><div class="container-fluid fullWidth" style="background-color:#fcfafa" role="region" data-label="services"></div>
+            
+            
+            
+            <div class="ai-section">
+                <h4>🤖 AI Explanation</h4>
+                <p>Ensures landmarks are unique. This violates accessibility standards and may prevent users with disabilities from accessing content.</p>
+                
+                <p style="margin-top: 8px;"><strong>Impact:</strong> This issue affects users who rely on assistive technologies</p>
+                
+            </div>
+            
+            
+            
+            <div class="ai-section" style="background: #e8f5e9;">
+                <h4>✨ Suggested Fix</h4>
+                <div class="code-block"><div class="container-fluid fullWidth" style="background-color:#fcfafa" role="region" data-label="services"></div>
+            </div>
+            
+            
+            
+            <p style="margin-top: 10px; color: #555;"><strong>Recommendation:</strong> Fix any of the following:
+  The landmark must have a unique aria-label, aria-labelledby, or title to make landmarks distinguishable</p>
+            
+        </div>
+        
+        <div class="issue moderate">
+            <div class="issue-header">
+                <div class="issue-title">Ensures landmarks are unique</div>
+                <span class="severity-badge severity-moderate">moderate</span>
+            </div>
+            
+            <p class="issue-description"><strong>Rule:</strong> landmark-unique</p>
+            
+            
+            <p><a href="https://dequeuniversity.com/rules/axe/4.8/landmark-unique?application=axeAPI" class="wcag-ref" target="_blank">WCAG Reference →</a></p>
+            
+            
+            
+            <div class="code-block"><div class="upper-footer bg-primary text-white py-5 frontdoor" role="contentinfo"></div>
+            
+            
+            
+            <div class="ai-section">
+                <h4>🤖 AI Explanation</h4>
+                <p>Ensures landmarks are unique. This violates accessibility standards and may prevent users with disabilities from accessing content.</p>
+                
+                <p style="margin-top: 8px;"><strong>Impact:</strong> This issue affects users who rely on assistive technologies</p>
+                
+            </div>
+            
+            
+            
+            <div class="ai-section" style="background: #e8f5e9;">
+                <h4>✨ Suggested Fix</h4>
+                <div class="code-block"><div class="upper-footer bg-primary text-white py-5 frontdoor" role="contentinfo"></div>
+            </div>
+            
+            
+            
+            <p style="margin-top: 10px; color: #555;"><strong>Recommendation:</strong> Fix any of the following:
+  The landmark must have a unique aria-label, aria-labelledby, or title to make landmarks distinguishable</p>
+            
+        </div>
+        
+        <div class="issue serious">
+            <div class="issue-header">
+                <div class="issue-title"><li> elements must be contained in a <ul> or <ol></div>
+                <span class="severity-badge severity-serious">serious</span>
+            </div>
+            
+            <p class="issue-description"><strong>Rule:</strong> listitem</p>
+            
+            
+            <p><a href="WCAG 1.3.1 (https://dequeuniversity.com/rules/axe/4.8/listitem?application=axeAPI)" class="wcag-ref" target="_blank">WCAG Reference →</a></p>
+            
+            
+            
+            <div class="code-block"><li class="col-12 nav-section" data-section="I want to" data-position="1"></div>
+            
+            
+            
+            <div class="ai-section">
+                <h4>🤖 AI Explanation</h4>
+                <p><li> elements must be contained in a <ul> or <ol>. This violates accessibility standards and may prevent users with disabilities from accessing content.</p>
+                
+                <p style="margin-top: 8px;"><strong>Impact:</strong> This issue affects users who rely on assistive technologies</p>
+                
+            </div>
+            
+            
+            
+            <div class="ai-section" style="background: #e8f5e9;">
+                <h4>✨ Suggested Fix</h4>
+                <div class="code-block"><li class="col-12 nav-section" data-section="I want to" data-position="1"></div>
+            </div>
+            
+            
+            
+            <p style="margin-top: 10px; color: #555;"><strong>Recommendation:</strong> Fix any of the following:
+  List item does not have a <ul>, <ol> parent element without a role, or a role="list"</p>
+            
+        </div>
+        
+        <div class="issue serious">
+            <div class="issue-header">
+                <div class="issue-title"><li> elements must be contained in a <ul> or <ol></div>
+                <span class="severity-badge severity-serious">serious</span>
+            </div>
+            
+            <p class="issue-description"><strong>Rule:</strong> listitem</p>
+            
+            
+            <p><a href="WCAG 1.3.1 (https://dequeuniversity.com/rules/axe/4.8/listitem?application=axeAPI)" class="wcag-ref" target="_blank">WCAG Reference →</a></p>
+            
+            
+            
+            <div class="code-block"><li class="col-12 nav-section" data-section="I am" data-position="2"></div>
+            
+            
+            
+            <div class="ai-section">
+                <h4>🤖 AI Explanation</h4>
+                <p><li> elements must be contained in a <ul> or <ol>. This violates accessibility standards and may prevent users with disabilities from accessing content.</p>
+                
+                <p style="margin-top: 8px;"><strong>Impact:</strong> This issue affects users who rely on assistive technologies</p>
+                
+            </div>
+            
+            
+            
+            <div class="ai-section" style="background: #e8f5e9;">
+                <h4>✨ Suggested Fix</h4>
+                <div class="code-block"><li class="col-12 nav-section" data-section="I am" data-position="2"></div>
+            </div>
+            
+            
+            
+            <p style="margin-top: 10px; color: #555;"><strong>Recommendation:</strong> Fix any of the following:
+  List item does not have a <ul>, <ol> parent element without a role, or a role="list"</p>
+            
+        </div>
+        
+        <div class="issue serious">
+            <div class="issue-header">
+                <div class="issue-title"><li> elements must be contained in a <ul> or <ol></div>
+                <span class="severity-badge severity-serious">serious</span>
+            </div>
+            
+            <p class="issue-description"><strong>Rule:</strong> listitem</p>
+            
+            
+            <p><a href="WCAG 1.3.1 (https://dequeuniversity.com/rules/axe/4.8/listitem?application=axeAPI)" class="wcag-ref" target="_blank">WCAG Reference →</a></p>
+            
+            
+            
+            <div class="code-block"><li class="col-12 nav-section" data-section="Mortgages" data-position="3"></div>
+            
+            
+            
+            <div class="ai-section">
+                <h4>🤖 AI Explanation</h4>
+                <p><li> elements must be contained in a <ul> or <ol>. This violates accessibility standards and may prevent users with disabilities from accessing content.</p>
+                
+                <p style="margin-top: 8px;"><strong>Impact:</strong> This issue affects users who rely on assistive technologies</p>
+                
+            </div>
+            
+            
+            
+            <div class="ai-section" style="background: #e8f5e9;">
+                <h4>✨ Suggested Fix</h4>
+                <div class="code-block"><li class="col-12 nav-section" data-section="Mortgages" data-position="3"></div>
+            </div>
+            
+            
+            
+            <p style="margin-top: 10px; color: #555;"><strong>Recommendation:</strong> Fix any of the following:
+  List item does not have a <ul>, <ol> parent element without a role, or a role="list"</p>
+            
+        </div>
+        
+        <div class="issue serious">
+            <div class="issue-header">
+                <div class="issue-title"><li> elements must be contained in a <ul> or <ol></div>
+                <span class="severity-badge severity-serious">serious</span>
+            </div>
+            
+            <p class="issue-description"><strong>Rule:</strong> listitem</p>
+            
+            
+            <p><a href="WCAG 1.3.1 (https://dequeuniversity.com/rules/axe/4.8/listitem?application=axeAPI)" class="wcag-ref" target="_blank">WCAG Reference →</a></p>
+            
+            
+            
+            <div class="code-block"><li class="col-12 nav-section" data-section="Make a plan " data-position="4"></div>
+            
+            
+            
+            <div class="ai-section">
+                <h4>🤖 AI Explanation</h4>
+                <p><li> elements must be contained in a <ul> or <ol>. This violates accessibility standards and may prevent users with disabilities from accessing content.</p>
+                
+                <p style="margin-top: 8px;"><strong>Impact:</strong> This issue affects users who rely on assistive technologies</p>
+                
+            </div>
+            
+            
+            
+            <div class="ai-section" style="background: #e8f5e9;">
+                <h4>✨ Suggested Fix</h4>
+                <div class="code-block"><li class="col-12 nav-section" data-section="Make a plan " data-position="4"></div>
+            </div>
+            
+            
+            
+            <p style="margin-top: 10px; color: #555;"><strong>Recommendation:</strong> Fix any of the following:
+  List item does not have a <ul>, <ol> parent element without a role, or a role="list"</p>
+            
+        </div>
+        
+        <div class="issue serious">
+            <div class="issue-header">
+                <div class="issue-title"><li> elements must be contained in a <ul> or <ol></div>
+                <span class="severity-badge severity-serious">serious</span>
+            </div>
+            
+            <p class="issue-description"><strong>Rule:</strong> listitem</p>
+            
+            
+            <p><a href="WCAG 1.3.1 (https://dequeuniversity.com/rules/axe/4.8/listitem?application=axeAPI)" class="wcag-ref" target="_blank">WCAG Reference →</a></p>
+            
+            
+            
+            <div class="code-block"><li class="col-12 nav-section" data-section="Products" data-position="5"></div>
+            
+            
+            
+            <div class="ai-section">
+                <h4>🤖 AI Explanation</h4>
+                <p><li> elements must be contained in a <ul> or <ol>. This violates accessibility standards and may prevent users with disabilities from accessing content.</p>
+                
+                <p style="margin-top: 8px;"><strong>Impact:</strong> This issue affects users who rely on assistive technologies</p>
+                
+            </div>
+            
+            
+            
+            <div class="ai-section" style="background: #e8f5e9;">
+                <h4>✨ Suggested Fix</h4>
+                <div class="code-block"><li class="col-12 nav-section" data-section="Products" data-position="5"></div>
+            </div>
+            
+            
+            
+            <p style="margin-top: 10px; color: #555;"><strong>Recommendation:</strong> Fix any of the following:
+  List item does not have a <ul>, <ol> parent element without a role, or a role="list"</p>
+            
+        </div>
+        
+        <div class="issue serious">
+            <div class="issue-header">
+                <div class="issue-title"><li> elements must be contained in a <ul> or <ol></div>
+                <span class="severity-badge severity-serious">serious</span>
+            </div>
+            
+            <p class="issue-description"><strong>Rule:</strong> listitem</p>
+            
+            
+            <p><a href="WCAG 1.3.1 (https://dequeuniversity.com/rules/axe/4.8/listitem?application=axeAPI)" class="wcag-ref" target="_blank">WCAG Reference →</a></p>
+            
+            
+            
+            <div class="code-block"><li class="col-12 nav-section" data-section="Ways to bank" data-position="6"></div>
+            
+            
+            
+            <div class="ai-section">
+                <h4>🤖 AI Explanation</h4>
+                <p><li> elements must be contained in a <ul> or <ol>. This violates accessibility standards and may prevent users with disabilities from accessing content.</p>
+                
+                <p style="margin-top: 8px;"><strong>Impact:</strong> This issue affects users who rely on assistive technologies</p>
+                
+            </div>
+            
+            
+            
+            <div class="ai-section" style="background: #e8f5e9;">
+                <h4>✨ Suggested Fix</h4>
+                <div class="code-block"><li class="col-12 nav-section" data-section="Ways to bank" data-position="6"></div>
+            </div>
+            
+            
+            
+            <p style="margin-top: 10px; color: #555;"><strong>Recommendation:</strong> Fix any of the following:
+  List item does not have a <ul>, <ol> parent element without a role, or a role="list"</p>
+            
+        </div>
+        
+        <div class="issue serious">
+            <div class="issue-header">
+                <div class="issue-title"><li> elements must be contained in a <ul> or <ol></div>
+                <span class="severity-badge severity-serious">serious</span>
+            </div>
+            
+            <p class="issue-description"><strong>Rule:</strong> listitem</p>
+            
+            
+            <p><a href="WCAG 1.3.1 (https://dequeuniversity.com/rules/axe/4.8/listitem?application=axeAPI)" class="wcag-ref" target="_blank">WCAG Reference →</a></p>
+            
+            
+            
+            <div class="code-block"><li class="col-12 nav-section" data-section="Help and guidance" data-position="7"></div>
+            
+            
+            
+            <div class="ai-section">
+                <h4>🤖 AI Explanation</h4>
+                <p><li> elements must be contained in a <ul> or <ol>. This violates accessibility standards and may prevent users with disabilities from accessing content.</p>
+                
+                <p style="margin-top: 8px;"><strong>Impact:</strong> This issue affects users who rely on assistive technologies</p>
+                
+            </div>
+            
+            
+            
+            <div class="ai-section" style="background: #e8f5e9;">
+                <h4>✨ Suggested Fix</h4>
+                <div class="code-block"><li class="col-12 nav-section" data-section="Help and guidance" data-position="7"></div>
+            </div>
+            
+            
+            
+            <p style="margin-top: 10px; color: #555;"><strong>Recommendation:</strong> Fix any of the following:
+  List item does not have a <ul>, <ol> parent element without a role, or a role="list"</p>
+            
+        </div>
+        
+        <div class="issue serious">
+            <div class="issue-header">
+                <div class="issue-title"><li> elements must be contained in a <ul> or <ol></div>
+                <span class="severity-badge severity-serious">serious</span>
+            </div>
+            
+            <p class="issue-description"><strong>Rule:</strong> listitem</p>
+            
+            
+            <p><a href="WCAG 1.3.1 (https://dequeuniversity.com/rules/axe/4.8/listitem?application=axeAPI)" class="wcag-ref" target="_blank">WCAG Reference →</a></p>
+            
+            
+            
+            <div class="code-block"><li class="border-bottom py-3 toggle" data-group="questions"></div>
+            
+            
+            
+            <div class="ai-section">
+                <h4>🤖 AI Explanation</h4>
+                <p><li> elements must be contained in a <ul> or <ol>. This violates accessibility standards and may prevent users with disabilities from accessing content.</p>
+                
+                <p style="margin-top: 8px;"><strong>Impact:</strong> This issue affects users who rely on assistive technologies</p>
+                
+            </div>
+            
+            
+            
+            <div class="ai-section" style="background: #e8f5e9;">
+                <h4>✨ Suggested Fix</h4>
+                <div class="code-block"><li class="border-bottom py-3 toggle" data-group="questions"></div>
+            </div>
+            
+            
+            
+            <p style="margin-top: 10px; color: #555;"><strong>Recommendation:</strong> Fix any of the following:
+  List item does not have a <ul>, <ol> parent element without a role, or a role="list"</p>
+            
+        </div>
+        
+        <div class="issue serious">
+            <div class="issue-header">
+                <div class="issue-title"><li> elements must be contained in a <ul> or <ol></div>
+                <span class="severity-badge severity-serious">serious</span>
+            </div>
+            
+            <p class="issue-description"><strong>Rule:</strong> listitem</p>
+            
+            
+            <p><a href="WCAG 1.3.1 (https://dequeuniversity.com/rules/axe/4.8/listitem?application=axeAPI)" class="wcag-ref" target="_blank">WCAG Reference →</a></p>
+            
+            
+            
+            <div class="code-block"><li class="border-bottom py-3 toggle" data-group="questions"></div>
+            
+            
+            
+            <div class="ai-section">
+                <h4>🤖 AI Explanation</h4>
+                <p><li> elements must be contained in a <ul> or <ol>. This violates accessibility standards and may prevent users with disabilities from accessing content.</p>
+                
+                <p style="margin-top: 8px;"><strong>Impact:</strong> This issue affects users who rely on assistive technologies</p>
+                
+            </div>
+            
+            
+            
+            <div class="ai-section" style="background: #e8f5e9;">
+                <h4>✨ Suggested Fix</h4>
+                <div class="code-block"><li class="border-bottom py-3 toggle" data-group="questions"></div>
+            </div>
+            
+            
+            
+            <p style="margin-top: 10px; color: #555;"><strong>Recommendation:</strong> Fix any of the following:
+  List item does not have a <ul>, <ol> parent element without a role, or a role="list"</p>
+            
+        </div>
+        
+        <div class="issue serious">
+            <div class="issue-header">
+                <div class="issue-title"><li> elements must be contained in a <ul> or <ol></div>
+                <span class="severity-badge severity-serious">serious</span>
+            </div>
+            
+            <p class="issue-description"><strong>Rule:</strong> listitem</p>
+            
+            
+            <p><a href="WCAG 1.3.1 (https://dequeuniversity.com/rules/axe/4.8/listitem?application=axeAPI)" class="wcag-ref" target="_blank">WCAG Reference →</a></p>
+            
+            
+            
+            <div class="code-block"><li class="border-bottom py-3 toggle" data-group="questions"></div>
+            
+            
+            
+            <div class="ai-section">
+                <h4>🤖 AI Explanation</h4>
+                <p><li> elements must be contained in a <ul> or <ol>. This violates accessibility standards and may prevent users with disabilities from accessing content.</p>
+                
+                <p style="margin-top: 8px;"><strong>Impact:</strong> This issue affects users who rely on assistive technologies</p>
+                
+            </div>
+            
+            
+            
+            <div class="ai-section" style="background: #e8f5e9;">
+                <h4>✨ Suggested Fix</h4>
+                <div class="code-block"><li class="border-bottom py-3 toggle" data-group="questions"></div>
+            </div>
+            
+            
+            
+            <p style="margin-top: 10px; color: #555;"><strong>Recommendation:</strong> Fix any of the following:
+  List item does not have a <ul>, <ol> parent element without a role, or a role="list"</p>
+            
+        </div>
+        
+        <div class="issue serious">
+            <div class="issue-header">
+                <div class="issue-title"><li> elements must be contained in a <ul> or <ol></div>
+                <span class="severity-badge severity-serious">serious</span>
+            </div>
+            
+            <p class="issue-description"><strong>Rule:</strong> listitem</p>
+            
+            
+            <p><a href="WCAG 1.3.1 (https://dequeuniversity.com/rules/axe/4.8/listitem?application=axeAPI)" class="wcag-ref" target="_blank">WCAG Reference →</a></p>
+            
+            
+            
+            <div class="code-block"><li class="border-bottom py-3 toggle" data-group="questions"></div>
+            
+            
+            
+            <div class="ai-section">
+                <h4>🤖 AI Explanation</h4>
+                <p><li> elements must be contained in a <ul> or <ol>. This violates accessibility standards and may prevent users with disabilities from accessing content.</p>
+                
+                <p style="margin-top: 8px;"><strong>Impact:</strong> This issue affects users who rely on assistive technologies</p>
+                
+            </div>
+            
+            
+            
+            <div class="ai-section" style="background: #e8f5e9;">
+                <h4>✨ Suggested Fix</h4>
+                <div class="code-block"><li class="border-bottom py-3 toggle" data-group="questions"></div>
+            </div>
+            
+            
+            
+            <p style="margin-top: 10px; color: #555;"><strong>Recommendation:</strong> Fix any of the following:
+  List item does not have a <ul>, <ol> parent element without a role, or a role="list"</p>
+            
+        </div>
+        
+        <div class="issue minor">
+            <div class="issue-header">
+                <div class="issue-title">Users should be able to zoom and scale the text up to 500%</div>
+                <span class="severity-badge severity-minor">minor</span>
+            </div>
+            
+            <p class="issue-description"><strong>Rule:</strong> meta-viewport-large</p>
+            
+            
+            <p><a href="https://dequeuniversity.com/rules/axe/4.8/meta-viewport-large?application=axeAPI" class="wcag-ref" target="_blank">WCAG Reference →</a></p>
+            
+            
+            
+            <div class="code-block"><meta content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=2.0, user-scalable=yes" name="viewport"></div>
+            
+            
+            
+            <div class="ai-section">
+                <h4>🤖 AI Explanation</h4>
+                <p>Users should be able to zoom and scale the text up to 500%. This violates accessibility standards and may prevent users with disabilities from accessing content.</p>
+                
+                <p style="margin-top: 8px;"><strong>Impact:</strong> This issue affects users who rely on assistive technologies</p>
+                
+            </div>
+            
+            
+            
+            <div class="ai-section" style="background: #e8f5e9;">
+                <h4>✨ Suggested Fix</h4>
+                <div class="code-block"><meta content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=2.0, user-scalable=yes" name="viewport"></div>
+            </div>
+            
+            
+            
+            <p style="margin-top: 10px; color: #555;"><strong>Recommendation:</strong> Fix any of the following:
+  <meta> tag limits zooming on mobile devices</p>
+            
+        </div>
+        
+    </div>
+</body>
+</html>

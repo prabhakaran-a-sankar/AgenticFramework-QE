@@ -451,7 +451,7 @@ def main():
         st.caption("Version 2.0.0")
     
     # Main content - tabs
-    tab_names = ["Knowledge Hub", "Test Case Generation", "Test Script Generation", "Test Data Generation"]
+    tab_names = ["Knowledge Hub", "Test Case Generation", "Test Script Generation", "Test Data Generation", "Accessibility Agent"]
     
     # Create tabs and verify count
     try:
@@ -470,8 +470,7 @@ def main():
         TAB_TEST_CASE_GEN = 1
         TAB_TEST_SCRIPT_GEN = 2
         TAB_TEST_DATA_GEN = 3
-        # TAB_CHAT_BOT = 4  # Commented out - tab removed
-        # TAB_API_TEST_CASE_GEN = 5  # Commented out - tab removed
+        TAB_ACCESSIBILITY = 4
         
     except Exception as e:
         st.error(f"Error creating tabs: {str(e)}")
@@ -1469,6 +1468,108 @@ def main():
                         key=f"download_{dataset_name}"
                     )
     
+    # Accessibility Agent Tab
+    with tabs[TAB_ACCESSIBILITY]:
+        st.header("Intelligent Accessibility Agent")
+        st.write("Scan web pages for WCAG accessibility issues with AI-powered explanations and fixes")
+
+        target_url = st.text_input("Target URL", placeholder="https://example.com")
+        ai_enhance = st.checkbox("Enable AI Enhancement", value=True,
+                                  help="Uses the LLM configured in the sidebar to explain issues and suggest fixes")
+
+        if st.button("Start Accessibility Scan", key="run_accessibility_scan"):
+            if not target_url:
+                st.error("Please enter a target URL.")
+            elif ai_enhance and not llm_api_key:
+                st.error("Please enter your API key in the sidebar to use AI enhancement.")
+            else:
+                with st.spinner("Scanning for accessibility issues... (this may take a moment)"):
+                    try:
+                        from quality_engineering_agentic_framework.iaa.core.engine import AccessibilityEngine
+                        from quality_engineering_agentic_framework.iaa.modules.web import WebAccessibilityModule
+                        from quality_engineering_agentic_framework.iaa.modules.ai.enhancer import AIEnhancer
+                        from quality_engineering_agentic_framework.iaa.reporters.html_reporter import HTMLReporter
+                        from quality_engineering_agentic_framework.llm.llm_factory import LLMFactory
+                        from pathlib import Path
+                        import concurrent.futures
+
+                        def run_scan():
+                            loop = asyncio.ProactorEventLoop()
+                            asyncio.set_event_loop(loop)
+                            try:
+                                return loop.run_until_complete(_do_scan())
+                            finally:
+                                loop.close()
+
+                        async def _do_scan():
+                            web_module = WebAccessibilityModule(config={"headless": True})
+                            engine = AccessibilityEngine(modules=[web_module])
+                            r = await engine.execute(target_url)
+                            if ai_enhance and llm_api_key:
+                                llm_instance = LLMFactory.create_llm({
+                                    "provider": llm_provider,
+                                    "model": llm_model,
+                                    "api_key": llm_api_key,
+                                    "temperature": float(llm_temperature),
+                                    "max_tokens": int(llm_max_tokens),
+                                })
+                                enhancer = AIEnhancer(llm=llm_instance, offline=False, enabled=True)
+                            else:
+                                enhancer = AIEnhancer(llm=None, offline=True, enabled=True)
+                            r.issues = await enhancer.enhance_issues(r.issues)
+                            return r
+
+                        with concurrent.futures.ThreadPoolExecutor(max_workers=1) as pool:
+                            result = pool.submit(run_scan).result()
+
+                        reports_dir = Path(__file__).parent / "accessibility_reports"
+                        reports_dir.mkdir(exist_ok=True)
+                        report_path = reports_dir / f"report_{datetime.now().strftime('%Y%m%d_%H%M%S')}.html"
+                        HTMLReporter().generate(result, report_path)
+
+                        st.session_state.accessibility_result = result
+                        st.session_state.accessibility_report_path = str(report_path)
+                        st.success(f"✅ Scan complete! Found {result.total_issues} issues.")
+
+                    except Exception as e:
+                        st.error(f"Scan failed: {str(e)}")
+
+        if "accessibility_result" in st.session_state:
+            result = st.session_state.accessibility_result
+
+            col1, col2, col3, col4 = st.columns(4)
+            col1.metric("🔴 Critical", result.critical_count)
+            col2.metric("🟠 Serious", result.serious_count)
+            col3.metric("🟡 Moderate", result.moderate_count)
+            col4.metric("🟢 Minor", result.minor_count)
+
+            if result.issues:
+                st.subheader(f"Issues Found ({result.total_issues})")
+                for issue in result.issues:
+                    with st.expander(f"[{issue.severity.value.upper()}] {issue.description}"):
+                        st.write(f"**Rule:** `{issue.rule_id}`")
+                        if issue.wcag_reference:
+                            st.markdown(f"[WCAG Reference ↗]({issue.wcag_reference})")
+                        if issue.element:
+                            st.code(issue.element, language="html")
+                        if issue.ai_explanation:
+                            st.info(f"🤖 **AI Explanation:** {issue.ai_explanation}")
+                        if issue.ai_fix:
+                            st.success("✨ **Suggested Fix:**")
+                            st.code(issue.ai_fix, language="html")
+                        if issue.recommendation:
+                            st.write(f"**Recommendation:** {issue.recommendation}")
+            else:
+                st.success("🎉 No accessibility issues found!")
+
+            with open(st.session_state.accessibility_report_path, "r", encoding="utf-8") as f:
+                st.download_button(
+                    "📥 Download Full HTML Report",
+                    data=f.read(),
+                    file_name=f"accessibility_report_{datetime.now().strftime('%Y%m%d_%H%M%S')}.html",
+                    mime="text/html"
+                )
+
     # API Test Case Generation Tab - COMMENTED OUT
     # with tabs[TAB_API_TEST_CASE_GEN]:
     #     st.header("🚧 API Test Case Generation")

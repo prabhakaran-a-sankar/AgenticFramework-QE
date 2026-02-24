@@ -154,3 +154,22 @@ class ChatResponse(BaseModel):
     """Response model for chat."""
     message: ChatMessage
     artifacts: Optional[Union[TestCaseArtifact, TestScriptArtifact, TestDataArtifact]] = Field(None, description="Generated artifacts if any")
+
+
+class JiraFetchRequest(BaseModel):
+    jira_url: str
+    email: str
+    pat: str
+    story_ids: List[str]
+
+
+class JiraStory(BaseModel):
+    id: str
+    summary: str
+    description: Optional[str] = ""
+    acceptance_criteria: Optional[str] = ""
+
+
+class JiraFetchResponse(BaseModel):
+    stories: List[JiraStory]
+    errors: Optional[Dict[str, str]] = {}

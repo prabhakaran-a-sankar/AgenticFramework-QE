@@ -23,7 +23,8 @@ from quality_engineering_agentic_framework.web.api.models import (
     TestDataGenerationRequest, TestDataGenerationResponse,
     PromptTemplate, PromptTemplateListResponse,
     ChatMessage, ChatRequest, ChatResponse,
-    TestCaseArtifact, TestScriptArtifact, TestDataArtifact
+    TestCaseArtifact, TestScriptArtifact, TestDataArtifact,
+    JiraFetchRequest, JiraFetchResponse, JiraStory
 )
 from quality_engineering_agentic_framework.llm.llm_factory import LLMFactory
 from quality_engineering_agentic_framework.agents.requirement_interpreter import TestCaseGenerationAgent
@@ -389,6 +390,64 @@ async def chat_with_agent(request: ChatRequest, session_id: str = Query(None)):
         import traceback
         logger.error(traceback.format_exc())
         raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/api/jira-debug")
+async def debug_jira(request: JiraFetchRequest):
+    """Debug endpoint to inspect raw JIRA auth response."""
+    import httpx
+    from httpx import BasicAuth
+    base = request.jira_url.rstrip("/")
+    story_id = request.story_ids[0] if request.story_ids else "TEST-1"
+    auth = BasicAuth(request.email, request.pat)
+    async with httpx.AsyncClient(verify=False, auth=auth) as client:
+        myself = await client.get(f"{base}/rest/api/2/myself", timeout=15)
+        issue_v2 = await client.get(f"{base}/rest/api/2/issue/{story_id}", timeout=15)
+        issue_v3 = await client.get(f"{base}/rest/api/3/issue/{story_id}", timeout=15)
+        return {
+            "myself_status": myself.status_code,
+            "myself_body": myself.json(),
+            "issue_v2_status": issue_v2.status_code,
+            "issue_v2_body": issue_v2.text[:500],
+            "issue_v3_status": issue_v3.status_code,
+            "issue_v3_body": issue_v3.text[:500],
+        }
+
+
+@app.post("/api/jira-fetch", response_model=JiraFetchResponse)
+async def fetch_jira_stories(request: JiraFetchRequest):
+    """Fetch JIRA user stories by ID using Basic Auth (email + PAT)."""
+    import httpx
+    from httpx import BasicAuth
+    stories, errors = [], {}
+    base = request.jira_url.rstrip("/")
+    auth = BasicAuth(request.email, request.pat)
+    async with httpx.AsyncClient(verify=False, auth=auth) as client:
+        for story_id in request.story_ids:
+            try:
+                # Try v3 first (Atlassian Cloud preferred), fall back to v2
+                r = await client.get(f"{base}/rest/api/3/issue/{story_id.strip()}", timeout=15)
+                if r.status_code == 404:
+                    r = await client.get(f"{base}/rest/api/2/issue/{story_id.strip()}", timeout=15)
+                r.raise_for_status()
+                fields = r.json().get("fields", {})
+                ac = fields.get("customfield_10016") or fields.get("customfield_10014") or ""
+                # v3 description is ADF (dict), v2 is plain string
+                desc = fields.get("description") or ""
+                if isinstance(desc, dict):
+                    desc = " ".join(
+                        c.get("text", "") for block in desc.get("content", [])
+                        for c in block.get("content", []) if c.get("type") == "text"
+                    )
+                stories.append(JiraStory(
+                    id=story_id.strip(),
+                    summary=fields.get("summary", ""),
+                    description=desc,
+                    acceptance_criteria=str(ac) if ac else ""
+                ))
+            except Exception as e:
+                errors[story_id] = str(e)
+    return JiraFetchResponse(stories=stories, errors=errors)
 
 
 def start_api_server(port=8000):

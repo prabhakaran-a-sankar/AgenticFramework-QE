@@ -451,7 +451,7 @@ def main():
         st.caption("Version 2.0.0")
     
     # Main content - tabs
-    tab_names = ["Knowledge Hub", "Test Case Generation", "Test Script Generation", "Test Data Generation", "Accessibility Agent"]
+    tab_names = ["Knowledge Hub", "JIRA Integration", "Test Case Generation", "Test Script Generation", "Test Data Generation", "Accessibility Agent"]
     
     # Create tabs and verify count
     try:
@@ -467,15 +467,97 @@ def main():
         
         # Define tab indices as constants for better maintainability
         TAB_KNOWLEDGE_HUB = 0
-        TAB_TEST_CASE_GEN = 1
-        TAB_TEST_SCRIPT_GEN = 2
-        TAB_TEST_DATA_GEN = 3
-        TAB_ACCESSIBILITY = 4
+        TAB_JIRA = 1
+        TAB_TEST_CASE_GEN = 2
+        TAB_TEST_SCRIPT_GEN = 3
+        TAB_TEST_DATA_GEN = 4
+        TAB_ACCESSIBILITY = 5
         
     except Exception as e:
         st.error(f"Error creating tabs: {str(e)}")
         st.stop()
     
+    # JIRA Integration Tab
+    with tabs[TAB_JIRA]:
+        st.header("JIRA Integration Agent")
+        st.write("Fetch User Stories from JIRA and use them for Test Case Generation")
+
+        with st.form("jira_config_form"):
+            jira_url = st.text_input("JIRA URL", placeholder="https://your-org.atlassian.net")
+            jira_email = st.text_input("Email", placeholder="you@example.com")
+            jira_pat = st.text_input("Personal Access Token (PAT)", type="password")
+            story_ids_input = st.text_area("User Story IDs (one per line or comma-separated)", placeholder="PROJ-123\nPROJ-124")
+            submitted = st.form_submit_button("Fetch User Stories")
+
+        if submitted:
+            if not jira_url or not jira_email or not jira_pat or not story_ids_input.strip():
+                st.error("Please fill in all fields.")
+            else:
+                ids = [s.strip() for s in story_ids_input.replace(",", "\n").splitlines() if s.strip()]
+                with st.spinner(f"Fetching {len(ids)} stories from JIRA..."):
+                    try:
+                        resp = requests.post(f"{API_URL}/api/jira-fetch", json={
+                            "jira_url": jira_url, "email": jira_email, "pat": jira_pat, "story_ids": ids
+                        }, timeout=60)
+                        resp.raise_for_status()
+                        data = resp.json()
+                        st.session_state.jira_stories = data.get("stories", [])
+                        st.session_state.jira_errors = data.get("errors", {})
+                        st.session_state.jira_selected = []
+                        st.session_state._jira_url = jira_url
+                        st.session_state._jira_email = jira_email
+                        st.session_state._jira_pat = jira_pat
+                        st.session_state._jira_ids = ids
+                    except Exception as e:
+                        st.error(f"Failed to fetch stories: {e}")
+
+        if st.session_state.get("jira_errors"):
+            with st.expander("⚠️ Fetch Errors"):
+                for sid, err in st.session_state.jira_errors.items():
+                    st.warning(f"{sid}: {err}")
+
+        with st.expander("🔧 Debug Auth"):
+            if st.button("Test JIRA Auth", key="jira_debug_btn"):
+                _url = st.session_state.get("_jira_url", "")
+                _email = st.session_state.get("_jira_email", "")
+                _pat = st.session_state.get("_jira_pat", "")
+                _ids = st.session_state.get("_jira_ids", ["TEST-1"])
+                if not _url or not _email or not _pat:
+                    st.warning("Submit the form first to cache credentials.")
+                else:
+                    dbg = requests.post(f"{API_URL}/api/jira-debug", json={
+                        "jira_url": _url, "email": _email, "pat": _pat, "story_ids": _ids
+                    }, timeout=30)
+                    st.json(dbg.json())
+
+        if st.session_state.get("jira_stories"):
+            stories = st.session_state.jira_stories
+            st.success(f"✅ Fetched {len(stories)} stories")
+            st.subheader("Select Stories for Test Case Generation")
+
+            selected = []
+            for story in stories:
+                col1, col2 = st.columns([0.05, 0.95])
+                with col1:
+                    checked = st.checkbox("", key=f"jira_{story['id']}", value=story['id'] in st.session_state.get("jira_selected", []))
+                with col2:
+                    with st.expander(f"**{story['id']}** — {story['summary']}"):
+                        if story.get("description"):
+                            st.write("**Description:**", story["description"])
+                        if story.get("acceptance_criteria"):
+                            st.write("**Acceptance Criteria:**", story["acceptance_criteria"])
+                if checked:
+                    selected.append(story['id'])
+            st.session_state.jira_selected = selected
+
+            if st.button("📋 Use Selected Stories in Test Case Generation", disabled=not selected):
+                selected_stories = [s for s in stories if s['id'] in selected]
+                st.session_state.jira_requirements_text = "\n\n".join([
+                    f"User Story {s['id']}: {s['summary']}\n{s.get('description', '')}\nAcceptance Criteria: {s.get('acceptance_criteria', '')}"
+                    for s in selected_stories
+                ])
+                st.success(f"✅ {len(selected)} stories ready. Go to the **Test Case Generation** tab.")
+
     # Test Case Generation Tab
     with tabs[TAB_TEST_CASE_GEN]:
         st.header("Test Case Generation")
@@ -486,7 +568,8 @@ def main():
         
         requirements_text = ""
         if input_method == "Text":
-            requirements_text = st.text_area("Requirements", height=200)
+            default_req = st.session_state.get("jira_requirements_text", "")
+            requirements_text = st.text_area("Requirements", value=default_req, height=200)
         else:
             uploaded_file = st.file_uploader("Upload requirements document", type=["txt", "md"])
             if uploaded_file is not None:

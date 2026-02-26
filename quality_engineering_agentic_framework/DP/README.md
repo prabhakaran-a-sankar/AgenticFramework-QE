@@ -6,7 +6,7 @@ ML system that predicts software bugs at story-level with 88.3% accuracy.
 - JIRA Integration (read + write)
 - Story-level predictions
 - Real-time predictions via AWS Lambda
-- Professional Accenture dashboard
+
 
 ## Tech Stack
 - Python 3.12

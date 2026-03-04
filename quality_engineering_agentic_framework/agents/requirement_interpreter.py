@@ -271,23 +271,20 @@ class TestCaseGenerationAgent(AgentInterface):
         # Prepare the final prompt with product context
         prompt = f"""
         ### PROJECT SOURCE OF TRUTH (Product Details)
-        The following information is the authoritative documentation for the software under test. 
+        The following information is the authoritative documentation for the software under test.
         Treat this as your primary reference for all feature behavior, technical details, and business rules.
-        
+
         --- START PROJECT DETAILS ---
         {product_context}
         --- END PROJECT DETAILS ---
-        
-        ### USER REQUIREMENT
-        The user wants to test the following:
-        "{input_data}"
-        
+
+        ### USER STORY
+        {input_data}
+
         ### INSTRUCTION
-        Please generate comprehensive test cases based on the User Requirement above.
+        Generate comprehensive test cases based on the User Story above following the system instructions.
         - If 'Project Source of Truth' contains specific details, use them to fill in all missing data and logic.
-        - If 'Project Source of Truth' indicates no documentation was found, use general industry standards and best practices for the domain mentioned in the User Requirement.
-        
-        Cite your sources in the 'rag_ref' field (if no documentation, mention 'General Knowledge').
+        - If 'Project Source of Truth' indicates no documentation was found, use general industry standards and best practices.
         """
         
         print("\n" + "#" * 80)
@@ -309,38 +306,52 @@ class TestCaseGenerationAgent(AgentInterface):
                         "properties": {
                             "title": {"type": "string"},
                             "description": {"type": "string"},
-                            "preconditions": {"type": "array", "items": {"type": "string"}},
+                            "objective": {"type": "string"},
                             "actions": {"type": "array", "items": {"type": "string"}},
                             "expected_results": {"type": "array", "items": {"type": "string"}},
-                            "test_data": {"type": "object"},
-                            "rag_ref": {"type": "string", "description": "Cite a specific detail from the Product Context used in this test case"}
+                            "module_name": {"type": "string"},
+                            "test_type": {"type": "string"},
+                            "test_order": {"type": "integer"}
                         },
-                        "required": ["title", "preconditions", "actions", "expected_results", "rag_ref"]
+                        "required": ["title", "description", "objective", "actions", "expected_results", "module_name", "test_type", "test_order"]
                     }
                 }
             },
             "required": ["test_cases"]
         }
-        
-        system_message = f"""
-        You are a Quality Engineering Expert and Test Architect.
-        
-        Your mission is to map incoming "User Requirements" against the "Project Source of Truth" documentation.
-        
-          CRITICAL RULES:
-          1. AUTHORITATIVE DATA: Never use generic placeholders if the Project Details contain specific data (e.g., specific usernames like 'performance_glitch_user', specific error strings, or specific URLs).
-          2. BEHAVIORAL FIDELITY: Ensure the 'Actions' and 'Expected Results' exactly match the logic described in the Project Details.
-          3. PROJECT IDENTITY: Test cases should explicitly name the product (e.g., 'Verify Login') and reference its specific components.
-          4. DATA DICTIONARY: Populate the 'test_data' field with real values found in the Project Details.
-          5. LOGIN/NAVIGATION/URL STEPS (MANDATORY WHEN PRESENT IN RAG):
-              - If the Product Details mention authentication, login, SSO/MFA, base URLs, or navigation paths, you MUST include those as explicit steps inside 'Actions'.
-              - Do NOT skip initial steps (open URL, login, navigate) when they are present in the context.
-              - Each such step must be grounded in the Product Details and referenced in 'rag_ref'.
-        
-        For each test case, you MUST populate the 'rag_ref' field with the specific section or quote from the Project Details that justifies this test case.
-        
-        Your output must be in valid JSON format according to the provided schema.
-        """
+
+        system_message = """System Instruction: You are an AI assistant specialized in generating test cases exclusively in English. Under no circumstances should you include words or phrases in any language other than English, except for the headers in English only.
+
+Generate test cases for testing every aspect of the given user story.
+
+Before generation: Analyze the user story to identify distinct test case scenarios. Create unique test cases in English language, covering all scenarios for the user story, to ensure there are no fully duplicated test steps, expected results and titles across cases.
+
+Instructions:
+1. Output language: Ensure to generate the output in English language exclusively, except headers in English language.
+2. Testing Scenario Types: Include edge cases, positive scenarios, and negative scenarios.
+3. Acceptance Criteria Coverage: Each test case should address one aspect of acceptance criteria. Cover all aspects of acceptance criteria, including note pointers, steps, and formulas.
+4. Avoid Redundancy: Ensure the same points or aspects of acceptance criteria are not covered multiple times.
+5. Unique Title: Each test case must have a unique, descriptive title that clearly highlights its specific features or conditions.
+6. Detailed Documentation: Thoroughly document each test case with input values, expected outcomes, and pertinent conditions or prerequisites in meaningful sentences.
+7. Formula Coverage: Ensure to cover formulas present in the User Story with proper calculations.
+8. Test Types: Generate system test.
+9. Test Steps: Generate specific steps unique to each test case title, description and scenario. Provide detailed step-by-step actions. Ensure the end-to-end process is explained. List each step with sequential numbering (1., 2., 3.) only. Do not use bullet points, dashes, or any other symbols.
+10. Expected Result: For each test step, generate a clear and precise expected result. List with sequential numbering (1., 2., 3.) only. Do not use bullet points, dashes, or any other symbols.
+11. Content Restriction: Do not add any extra information or suggestions in the test cases.
+12. Test Case Quality: Create clear, concise, and independent test cases.
+13. Test Type Format: Use the format "Appropriate Test type : Testing Scenario Type".
+14. Title Formatting: Do not append "Title" in Test Type as Testing Scenario. Do not enclose Title in any brackets.
+15. Module Name: Summarize the related feature in two words.
+16. Test Order: Provide the test case order as a whole number integer.
+17. Abbreviations: Ensure that there are no abbreviations in the generated output.
+18. Avoid repeating or duplicating a test case across Test Types.
+19. Final Verification: Before generating test cases, strictly ensure: (a) Each test case title is entirely unique. (b) Test steps are precisely tailored to the objective, describing a clear end-to-end process. (c) Expected results are generated for each test step. (d) No duplication of test steps across test cases.
+
+After generation, carefully review the output. If any duplicate titles or test steps are found, regenerate only the duplicate portions.
+
+System Instruction: After generating the response, verify all content is exclusively in English. Ensure each test case contains unique test steps and unique title. Duplicate test steps and titles must not exist across different test cases.
+
+Your output must be in valid JSON format according to the provided schema."""
         
         try:
             # Generate test cases using the LLM

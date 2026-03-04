@@ -1,0 +1,21 @@
+sprint,component,component_risk_level,story_points,num_stories,bug_count,num_components,data_source
+Sprint-1,User Authentication,high,34,7,15,3,jira_real
+Sprint-2,Email Service,low,34,6,5,3,jira_real
+Sprint-3,Payment Gateway,critical,29,7,13,3,jira_real
+Sprint-4,Email Service,low,39,8,11,3,jira_real
+Sprint-5,Frontend Dashboard,medium,36,6,13,3,jira_real
+Sprint-6,User Authentication,high,47,8,6,4,jira_real
+Sprint-7,API Gateway,medium,29,6,5,3,jira_real
+Sprint-8,Email Service,low,31,6,7,4,jira_real
+Sprint-9,User Authentication,high,26,7,17,4,jira_real
+Sprint-10,Payment Gateway,critical,40,7,14,3,jira_real
+Sprint-11,User Authentication,high,44,8,12,4,jira_real
+Sprint-12,API Gateway,medium,22,6,14,3,jira_real
+Sprint-13,User Authentication,high,31,6,8,4,jira_real
+Sprint-14,Email Service,low,30,7,7,3,jira_real
+Sprint-15,API Gateway,medium,45,8,11,4,jira_real
+Sprint-16,Billing & Invoicing,high,34,8,14,4,jira_real
+Sprint-17,Payment Gateway,critical,34,6,13,3,jira_real
+Sprint-18,Payment Gateway,critical,39,7,15,3,jira_real
+Sprint-19,Email Service,low,19,6,8,4,jira_real
+Sprint-20,Frontend Dashboard,medium,48,8,16,3,jira_real

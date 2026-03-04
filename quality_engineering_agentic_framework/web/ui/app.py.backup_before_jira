@@ -20,8 +20,6 @@ import random
 import string
 import pandas as pd
 from io import StringIO
-# Import Defect Prediction module
-from quality_engineering_agentic_framework.DP.DP_organized.ui import render_defect_predictor_tab
 # Configure logging
 logging.basicConfig(level=logging.INFO)
 # ...existing code...
@@ -438,8 +436,8 @@ def main():
         )
         
         # Display version in sidebar
-        # st.divider()
-        # st.markdown("### Version 1.0")
+        st.divider()
+        st.markdown("### Version 1.0")
         
         if llm_api_key:
             st.session_state[f"{llm_provider}_api_key"] = llm_api_key
@@ -453,7 +451,7 @@ def main():
         st.caption("Version 2.0.0")
     
     # Main content - tabs
-    tab_names = ["Knowledge Hub", "JIRA Integration", "Requirement Validator", "Test Case Generation", "Test Script Generation", "Test Data Generation", "Defect Prediction", "Accessibility Agent"]
+    tab_names = ["Knowledge Hub", "Test Case Generation", "Test Script Generation", "Test Data Generation", "Accessibility Agent"]
     
     # Create tabs and verify count
     try:
@@ -469,161 +467,15 @@ def main():
         
         # Define tab indices as constants for better maintainability
         TAB_KNOWLEDGE_HUB = 0
-        TAB_JIRA = 1
-        TAB_REQ_VALIDATOR = 2
-        TAB_TEST_CASE_GEN = 3
-        TAB_TEST_SCRIPT_GEN = 4
-        TAB_TEST_DATA_GEN = 5
-        TAB_DEFECT_PREDICTION = 6
-        TAB_ACCESSIBILITY = 7
+        TAB_TEST_CASE_GEN = 1
+        TAB_TEST_SCRIPT_GEN = 2
+        TAB_TEST_DATA_GEN = 3
+        TAB_ACCESSIBILITY = 4
         
     except Exception as e:
         st.error(f"Error creating tabs: {str(e)}")
         st.stop()
     
-    # JIRA Integration Tab
-    with tabs[TAB_JIRA]:
-        st.header("JIRA Integration Agent")
-        st.write("Fetch User Stories from JIRA and use them for Test Case Generation")
-
-        with st.form("jira_config_form"):
-            jira_url = st.text_input("JIRA URL", placeholder="https://your-org.atlassian.net")
-            jira_email = st.text_input("Email", placeholder="you@example.com")
-            jira_pat = st.text_input("Personal Access Token (PAT)", type="password")
-            story_ids_input = st.text_area("User Story IDs (one per line or comma-separated)", placeholder="PROJ-123\nPROJ-124")
-            submitted = st.form_submit_button("Fetch User Stories")
-
-        if submitted:
-            if not jira_url or not jira_email or not jira_pat or not story_ids_input.strip():
-                st.error("Please fill in all fields.")
-            else:
-                ids = [s.strip() for s in story_ids_input.replace(",", "\n").splitlines() if s.strip()]
-                with st.spinner(f"Fetching {len(ids)} stories from JIRA..."):
-                    try:
-                        resp = requests.post(f"{API_URL}/api/jira-fetch", json={
-                            "jira_url": jira_url, "email": jira_email, "pat": jira_pat, "story_ids": ids
-                        }, timeout=60)
-                        resp.raise_for_status()
-                        data = resp.json()
-                        st.session_state.jira_stories = data.get("stories", [])
-                        st.session_state.jira_errors = data.get("errors", {})
-                        st.session_state.jira_selected = []
-                        st.session_state._jira_url = jira_url
-                        st.session_state._jira_email = jira_email
-                        st.session_state._jira_pat = jira_pat
-                        st.session_state._jira_ids = ids
-                    except Exception as e:
-                        st.error(f"Failed to fetch stories: {e}")
-
-        if st.session_state.get("jira_errors"):
-            with st.expander("⚠️ Fetch Errors"):
-                for sid, err in st.session_state.jira_errors.items():
-                    st.warning(f"{sid}: {err}")
-
-        with st.expander("🔧 Debug Auth"):
-            if st.button("Test JIRA Auth", key="jira_debug_btn"):
-                _url = st.session_state.get("_jira_url", "")
-                _email = st.session_state.get("_jira_email", "")
-                _pat = st.session_state.get("_jira_pat", "")
-                _ids = st.session_state.get("_jira_ids", ["TEST-1"])
-                if not _url or not _email or not _pat:
-                    st.warning("Submit the form first to cache credentials.")
-                else:
-                    dbg = requests.post(f"{API_URL}/api/jira-debug", json={
-                        "jira_url": _url, "email": _email, "pat": _pat, "story_ids": _ids
-                    }, timeout=30)
-                    st.json(dbg.json())
-
-        if st.session_state.get("jira_stories"):
-            stories = st.session_state.jira_stories
-            st.success(f"✅ Fetched {len(stories)} stories")
-            st.subheader("Select Stories for Test Case Generation")
-
-            selected = []
-            for story in stories:
-                col1, col2 = st.columns([0.05, 0.95])
-                with col1:
-                    checked = st.checkbox("", key=f"jira_{story['id']}", value=story['id'] in st.session_state.get("jira_selected", []))
-                with col2:
-                    with st.expander(f"**{story['id']}** — {story['summary']}"):
-                        if story.get("description"):
-                            st.write("**Description:**", story["description"])
-                        if story.get("acceptance_criteria"):
-                            st.write("**Acceptance Criteria:**", story["acceptance_criteria"])
-                if checked:
-                    selected.append(story['id'])
-            st.session_state.jira_selected = selected
-
-            if st.button("📋 Use Selected Stories in Test Case Generation", disabled=not selected):
-                selected_stories = [s for s in stories if s['id'] in selected]
-                st.session_state.jira_requirements_text = "\n\n".join([
-                    f"User Story {s['id']}: {s['summary']}\n{s.get('description', '')}\nAcceptance Criteria: {s.get('acceptance_criteria', '')}"
-                    for s in selected_stories
-                ])
-                st.success(f"✅ {len(selected)} stories ready. Go to the **Test Case Generation** tab.")
-
-    # Requirement Validator Tab
-    with tabs[TAB_REQ_VALIDATOR]:
-        st.header("Requirement Validator")
-        st.write("Assess your requirements against the INVEST principle before generating test cases")
-
-        req_input = st.text_area(
-            "Enter Requirements (one per line)", height=200,
-            placeholder="As a user I want to reset my password so that I can regain access when locked out\nThe system should be fast"
-        )
-
-        if st.button("Assess Requirements", key="invest_assess_btn"):
-            if not req_input.strip():
-                st.error("Please enter at least one requirement.")
-            elif not llm_api_key:
-                st.error("Please enter your API key in the sidebar.")
-            else:
-                with st.spinner("Assessing requirements against INVEST criteria..."):
-                    try:
-                        resp = requests.post(f"{API_URL}/api/invest-assess", json={
-                            "requirements": req_input,
-                            "llm_config": {
-                                "provider": llm_provider, "model": llm_model,
-                                "api_key": llm_api_key, "temperature": float(llm_temperature),
-                                "max_tokens": int(llm_max_tokens)
-                            }
-                        }, timeout=60)
-                        resp.raise_for_status()
-                        data = resp.json()
-                        st.session_state.invest_results = data.get("results", [])
-                        st.session_state.invest_requirements = req_input
-                    except Exception as e:
-                        st.error(f"Assessment failed: {e}")
-
-        if st.session_state.get("invest_results"):
-            results = st.session_state.invest_results
-            passing = [r for r in results if r.get("verdict") == "pass"]
-            failing = [r for r in results if r.get("verdict") == "fail"]
-
-            c1, c2, c3 = st.columns(3)
-            c1.metric("Total", len(results))
-            c2.metric("✅ Passed", len(passing))
-            c3.metric("❌ Failed", len(failing))
-            st.divider()
-
-            for r in results:
-                icon = "✅" if r["verdict"] == "pass" else "❌"
-                with st.expander(f"{icon} {r['requirement'][:100]}"):
-                    scores = r.get("invest_scores", {})
-                    cols = st.columns(6)
-                    for col, (k, v) in zip(cols, scores.items()):
-                        col.markdown(f"**{k[0]}**<br>{'✅' if v else '❌'}", unsafe_allow_html=True)
-                    if r.get("reasons"):
-                        st.warning(" | ".join(r["reasons"]))
-
-            st.divider()
-            if passing and st.button(f"➡️ Use {len(passing)} Passing Requirements in Test Case Generation", key="invest_pass_btn"):
-                st.session_state.jira_requirements_text = "\n".join(r["requirement"] for r in passing)
-                st.success("✅ Passing requirements sent to Test Case Generation tab.")
-            if failing and st.button("➡️ Proceed with All Requirements Anyway", key="invest_all_btn"):
-                st.session_state.jira_requirements_text = st.session_state.invest_requirements
-                st.success("✅ All requirements sent to Test Case Generation tab.")
-
     # Test Case Generation Tab
     with tabs[TAB_TEST_CASE_GEN]:
         st.header("Test Case Generation")
@@ -634,8 +486,7 @@ def main():
         
         requirements_text = ""
         if input_method == "Text":
-            default_req = st.session_state.get("jira_requirements_text", "")
-            requirements_text = st.text_area("Requirements", value=default_req, height=200)
+            requirements_text = st.text_area("Requirements", height=200)
         else:
             uploaded_file = st.file_uploader("Upload requirements document", type=["txt", "md"])
             if uploaded_file is not None:
@@ -1616,10 +1467,6 @@ def main():
                         mime=f"application/{file_extension}",
                         key=f"download_{dataset_name}"
                     )
-    
-    # Defect Prediction Tab
-    with tabs[TAB_DEFECT_PREDICTION]:
-        render_defect_predictor_tab()
     
     # Accessibility Agent Tab
     with tabs[TAB_ACCESSIBILITY]:

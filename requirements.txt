@@ -30,3 +30,5 @@ python-docx
 playwright>=1.40.0
 aiofiles>=23.0.0
 jinja2>=3.1.0
+# Defect Prediction module dependencies
+plotly>=5.18.0

@@ -1,0 +1,25 @@
+sprint_id,sprint_name,component,risk_level,story_points,num_stories,actual_bugs,test_coverage,code_churn,team_velocity,team_size,complexity_score,team_experience,dependencies,previous_bugs
+95,Sprint 1,User Authentication,critical,34.0,7,15,65.0,5100.0,50,5,3,3.5,3,15
+96,Sprint 2,Email Service,low,34.0,6,5,65.0,5100.0,50,5,3,3.5,3,5
+97,Sprint 3,Payment Gateway,critical,29.0,7,13,65.0,4350.0,50,5,3,3.5,3,13
+98,Sprint 4,Email Service,low,39.0,8,11,65.0,5850.0,50,5,3,3.5,3,11
+99,Sprint 5,Payment Gateway,critical,36.0,6,13,65.0,5400.0,50,5,3,3.5,3,13
+100,Sprint 6,Email Service,low,47.0,8,6,65.0,7050.0,50,5,3,3.5,3,6
+101,Sprint 7,Email Service,low,29.0,6,5,65.0,4350.0,50,5,3,3.5,3,5
+102,Sprint 8,Email Service,low,31.0,6,7,65.0,4650.0,50,5,3,3.5,3,7
+103,Sprint 9,User Authentication,critical,26.0,7,17,65.0,3900.0,50,5,3,3.5,3,17
+104,Sprint 10,Payment Gateway,critical,40.0,7,14,65.0,6000.0,50,5,3,3.5,3,14
+105,Sprint 11,Email Service,low,44.0,8,12,65.0,6600.0,50,5,3,3.5,3,12
+106,Sprint 12,Payment Gateway,critical,22.0,6,14,65.0,3300.0,50,5,3,3.5,3,14
+107,Sprint 13,User Authentication,critical,31.0,6,8,65.0,4650.0,50,5,3,3.5,3,8
+108,Sprint 14,Email Service,low,30.0,7,7,65.0,4500.0,50,5,3,3.5,3,7
+109,Sprint 15,Email Service,low,45.0,8,11,65.0,6750.0,50,5,3,3.5,3,11
+110,Sprint 16,User Authentication,critical,34.0,8,14,65.0,5100.0,50,5,3,3.5,3,14
+111,Sprint 17,Email Service,low,34.0,6,13,65.0,5100.0,50,5,3,3.5,3,13
+112,Sprint 18,Payment Gateway,critical,39.0,7,15,65.0,5850.0,50,5,3,3.5,3,15
+113,Sprint 19,Email Service,low,19.0,6,8,65.0,2850.0,50,5,3,3.5,3,8
+114,Sprint 20,Frontend Dashboard,medium,48.0,8,16,65.0,7200.0,50,5,3,3.5,3,16
+184,Q1 Platform Modernization,User Authentication,critical,47.0,3,17,65.0,7050.0,50,5,3,3.5,3,17
+185,Mobile App v2.0,API Gateway,medium,24.0,3,7,65.0,3600.0,50,5,3,3.5,3,7
+186,API Performance Sprint,Billing & Invoicing,high,10.0,2,2,65.0,1500.0,50,5,3,3.5,3,2
+187,Documentation Sprint,Frontend Dashboard,medium,5.0,2,0,65.0,750.0,50,5,3,3.5,3,0

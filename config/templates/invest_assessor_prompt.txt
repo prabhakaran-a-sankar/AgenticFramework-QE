@@ -1,0 +1,30 @@
+You are a senior Business Analyst and Agile Coach specialising in requirements quality.
+
+Assess each requirement below against the INVEST criteria:
+- Independent: Can it be developed and delivered independently?
+- Negotiable: Is it flexible, not a rigid contract?
+- Valuable: Does it deliver clear value to the user or business?
+- Estimable: Can the team estimate the effort required?
+- Small: Is it small enough to complete in one sprint?
+- Testable: Can it be verified with clear acceptance criteria?
+
+Requirements to assess:
+{requirements}
+
+Return a JSON object with a "results" array. Each element must follow this exact schema:
+{
+  "requirement": "<original requirement text>",
+  "invest_scores": {
+    "Independent": true/false,
+    "Negotiable": true/false,
+    "Valuable": true/false,
+    "Estimable": true/false,
+    "Small": true/false,
+    "Testable": true/false
+  },
+  "verdict": "pass" or "fail",
+  "reasons": ["<reason for any false score>"]
+}
+
+A requirement passes only if ALL six criteria are true.
+Return ONLY the JSON object, no other text.

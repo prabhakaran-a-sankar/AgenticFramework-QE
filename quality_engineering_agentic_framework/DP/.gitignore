@@ -1,0 +1,30 @@
+# Model files (too large for Git)
+*.pkl
+
+# Training scripts (not needed in production)
+*training*.py
+*train*.py
+augment_and_train.py
+hybrid_*.py
+retrain_*.py
+repackage_*.py
+save_raw_model.py
+
+# Generated data files
+synthetic_*.csv
+jira_bug_history_enhanced.csv
+jira_component_data_enhanced.csv
+
+# Development scripts
+generate_*.py
+populate_*.py
+prepare_*.py
+extract_*.py
+analyze_*.py
+check_aws_permissions.py
+setup_complete_demo_data.py
+api_server.py
+
+# Python cache
+__pycache__/
+*.pyc

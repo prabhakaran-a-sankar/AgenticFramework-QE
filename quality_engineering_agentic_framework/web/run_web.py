@@ -112,6 +112,18 @@ def run_streamlit_app(port: int = 8501) -> subprocess.Popen:
     return process
 
 
+def run_delegate_app(port: int = 8502) -> subprocess.Popen:
+    """Run the QE Delegate Streamlit app on a separate port."""
+    import sys
+    delegate_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "ui", "delegate.py")
+    env = os.environ.copy()
+    env["API_URL"] = "http://localhost:8080"
+    return subprocess.Popen(
+        [sys.executable, "-m", "streamlit", "run", delegate_path, "--server.port", str(port)],
+        env=env, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True
+    )
+
+
 def run_web(api_port: int = 8080, ui_port: int = 8501, open_browser: bool = True) -> None:
     """
     Run the web interface.

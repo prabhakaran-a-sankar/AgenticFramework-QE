@@ -410,20 +410,6 @@ def main():
             help="Set to 4000+ to generate 10 or more test cases.",
         )
         
-        # Backend API URL — configurable
-        st.divider()
-        st.subheader("Backend Configuration")
-        api_url = st.text_input(
-            "Backend API URL",
-            value=st.session_state.api_url,
-            help="URL of the backend API server. Default: http://127.0.0.1:8080",
-        )
-        st.session_state.api_url = api_url
-
-        # Display version in sidebar
-        st.divider()
-        st.markdown("### Version 1.0")
-        
         if llm_api_key:
             st.session_state[f"{llm_provider}_api_key"] = llm_api_key
         

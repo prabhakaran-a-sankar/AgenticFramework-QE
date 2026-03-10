@@ -391,7 +391,7 @@ async def chat_with_agent(request: ChatRequest, session_id: str = Query(None)):
         raise HTTPException(status_code=500, detail=str(e))
 
 
-def start_api_server(port=8000):
+def start_api_server(port=8080):
     """Start the API server."""
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=port)
@@ -399,10 +399,12 @@ def start_api_server(port=8000):
 
 if __name__ == "__main__":
     import sys
-    port = 8000
+    port = 8080
     if len(sys.argv) > 1:
         try:
-            port = int(sys.argv[1])
+            # Strip stray trailing characters (e.g. backslash from copy-paste)
+            port = int(sys.argv[1].strip().rstrip('\\/').strip())
         except ValueError:
-            pass
+            print(f"WARNING: Invalid port '{sys.argv[1]}' — using default 8080")
+    print(f"Starting backend on port {port}")
     start_api_server(port)

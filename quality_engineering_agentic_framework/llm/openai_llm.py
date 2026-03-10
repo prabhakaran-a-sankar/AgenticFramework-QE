@@ -17,6 +17,43 @@ from quality_engineering_agentic_framework.utils.logger import get_logger
 logger = get_logger(__name__)
 
 
+def _recover_truncated_json(content: str) -> str:
+    """
+    Attempt to recover a JSON string that was cut off due to token limits.
+    Strips the truncated tail and closes all open structures so json.loads()
+    can parse whatever complete test cases were generated.
+    """
+    # Find the last complete test case object by locating the last '}' before
+    # the outermost array closes. Strategy: find the deepest safe truncation point.
+    try:
+        # Try a simple parse first — maybe it's fine
+        json.loads(content)
+        return content
+    except json.JSONDecodeError as e:
+        pass
+
+    # Truncate at the last position that had a complete object — find last '},'  or '}]'
+    # Walk backwards to find a point where we can close the JSON cleanly
+    cut = len(content)
+    for i in range(len(content) - 1, -1, -1):
+        ch = content[i]
+        if ch == '}':
+            candidate = content[:i+1]
+            # Count open braces/brackets to figure out what closers we need
+            depth_brace = candidate.count('{') - candidate.count('}')
+            depth_bracket = candidate.count('[') - candidate.count(']')
+            closers = (']' * depth_bracket) + ('}' * depth_brace)
+            try:
+                json.loads(candidate + closers)
+                logger.warning(f"JSON recovery: truncated {len(content) - i - 1} chars, added closers: {repr(closers)}")
+                return candidate + closers
+            except json.JSONDecodeError:
+                continue
+
+    # Could not recover — return original and let the caller handle the error
+    return content
+
+
 class OpenAILLM(LLMInterface):
     """Implementation of LLMInterface for OpenAI."""
     
@@ -97,6 +134,9 @@ class OpenAILLM(LLMInterface):
         
         system_message += f"\nYou must respond with a JSON object that conforms to this schema: {json.dumps(json_schema)}"
         
+        # Ensure enough tokens for comprehensive JSON output (minimum 8000)
+        json_max_tokens = max(self.max_tokens, 8000)
+
         try:
             response = await self.client.chat.completions.create(
                 model=self.model,
@@ -105,11 +145,17 @@ class OpenAILLM(LLMInterface):
                     {"role": "user", "content": prompt}
                 ],
                 temperature=self.temperature,
-                max_tokens=self.max_tokens,
+                max_tokens=json_max_tokens,
                 response_format={"type": "json_object"}
             )
             
             content = response.choices[0].message.content
+            finish_reason = response.choices[0].finish_reason
+
+            if finish_reason == "length":
+                logger.warning("OpenAI response was truncated (finish_reason=length). Attempting JSON recovery.")
+                content = _recover_truncated_json(content)
+
             return json.loads(content)
         
         except Exception as e:

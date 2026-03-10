@@ -283,11 +283,29 @@ class TestCaseGenerationAgent(AgentInterface):
         "{input_data}"
         
         ### INSTRUCTION
-        Please generate comprehensive test cases based on the User Requirement above.
-        - If 'Project Source of Truth' contains specific details, use them to fill in all missing data and logic.
-        - If 'Project Source of Truth' indicates no documentation was found, use general industry standards and best practices for the domain mentioned in the User Requirement.
-        
-        Cite your sources in the 'rag_ref' field (if no documentation, mention 'General Knowledge').
+        Generate ALL possible, unique, non-redundant test cases that cover every valid combination of inputs, states, 
+        and behaviors derived from the User Requirement above. The number of test cases is not fixed — it must reflect 
+        the true combinatorial complexity of the requirement.
+
+        For every requirement, exhaustively cover:
+        - Every happy path and positive flow (all valid input combinations, user roles, and data states)
+        - Every negative and error-handling flow (invalid inputs, missing data, unauthorized access, system failures)
+        - Every edge case and boundary condition (min/max values, empty inputs, special characters, timeouts, limits)
+        - Every domain-specific scenario found in the Project Details (specific rules, workflows, roles, configurations)
+        - Every combination of conditions where behavior may differ (e.g., role A + state B + input C = outcome D)
+
+        KEY PRINCIPLE: If a requirement has N conditions that can independently vary, generate test cases for each 
+        meaningful combination — do not collapse them into a single generic case.
+
+        - If 'Project Source of Truth' contains specific details (URLs, usernames, rules, workflows), use them to 
+          produce precise, grounded test cases — not generic ones.
+        - If no documentation is available, apply industry best practices and domain knowledge to infer all scenarios.
+
+        Do NOT stop generating until all meaningful combinations have been covered.
+        Cite your sources in the 'rag_ref' field (if no documentation found, mention 'General Knowledge').
+
+        FINAL REMINDER: Review your output before finishing. If any combination of inputs, roles, states, 
+        or error conditions is not represented by a dedicated test case, add it. Completeness is mandatory.
         """
         
         print("\n" + "#" * 80)
@@ -336,6 +354,9 @@ class TestCaseGenerationAgent(AgentInterface):
               - If the Product Details mention authentication, login, SSO/MFA, base URLs, or navigation paths, you MUST include those as explicit steps inside 'Actions'.
               - Do NOT skip initial steps (open URL, login, navigate) when they are present in the context.
               - Each such step must be grounded in the Product Details and referenced in 'rag_ref'.
+          6. COMBINATORIAL COVERAGE: Generate as many test cases as needed to cover every meaningful combination
+             derived from the requirement. Do NOT cap or limit the count — completeness and combinatorial
+             coverage take priority over brevity. A simple requirement may yield 5 cases; a complex one may yield 20+.
         
         For each test case, you MUST populate the 'rag_ref' field with the specific section or quote from the Project Details that justifies this test case.
         
@@ -609,14 +630,12 @@ def generate_test_cases_from_requirements(requirements_text: str, llm_config: Di
         Formatted test cases as a string
     """
     try:
-        # Default LLM config if none provided
-        if llm_config is None:
-            llm_config = {
-                "provider": "openai",
-                "model": "gpt-3.5-turbo", 
-                "temperature": 0.7,
-                "max_tokens": 2000
-            }
+        # llm_config must be passed by the caller — no hardcoded defaults here.
+        # This function is a legacy wrapper; the main flow uses TestCaseGenerationAgent via the API.
+        if not llm_config:
+            raise ValueError(
+                "llm_config is required. Pass the LLM configuration from the UI (provider, model, api_key, temperature, max_tokens)."
+            )
         
         # You'll need to implement this based on your LLM interface
         # For now, return a simple formatted response

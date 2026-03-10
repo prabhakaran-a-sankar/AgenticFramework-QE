@@ -22,27 +22,13 @@ import pandas as pd
 from io import StringIO
 # Configure logging
 logging.basicConfig(level=logging.INFO)
-# ...existing code...
-import streamlit as st
-import os
 
-# Load shared CSS from file
-shared_css_path = os.path.join(os.path.dirname(__file__), "shared_styles.css")
-with open(shared_css_path, encoding="utf-8") as f:
-    st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
-if 'generate_data' not in st.session_state:
-    st.session_state.generate_data = False
-    st.session_state.test_data = None
-    st.session_state.data_format = "JSON"
-    st.session_state.data_size = 10
-    st.session_state.llm_provider = "openai"  # Default values, will be overridden
-    st.session_state.llm_model = "gpt-3.5-turbo"
-    st.session_state.llm_api_key = ""
-    st.session_state.llm_temperature = 0.7
-    st.session_state.llm_max_tokens = 1000
+# Default backend URL — overridden by sidebar input at runtime
+_DEFAULT_API_URL = os.environ.get("API_URL", "http://127.0.0.1:8080")
 
-async def generate_test_cases(requirements, llm_provider, llm_model, llm_api_key, llm_temperature, llm_max_tokens, mode="requirement", selected_documents=None):
+async def generate_test_cases(requirements, llm_provider, llm_model, llm_api_key, llm_temperature, llm_max_tokens, mode="requirement", selected_documents=None, backend_url=None):
     """Generate test cases by calling the correct backend API based on mode."""
+    base_url = backend_url or _DEFAULT_API_URL
     print("\n=== Starting generate_test_cases ===")
     print(f"Requirements: {requirements[:100]}...")
     try:
@@ -71,7 +57,7 @@ async def generate_test_cases(requirements, llm_provider, llm_model, llm_api_key
                     "max_tokens": int(llm_max_tokens)
                 }
             }
-            api_url = f"{API_URL}/api/api-test-case-generation"
+            api_url = f"{base_url}/api/api-test-case-generation"
         else:
             # Requirement-based test case generation
             request_data = {
@@ -85,7 +71,7 @@ async def generate_test_cases(requirements, llm_provider, llm_model, llm_api_key
                 },
                 "selected_documents": selected_documents
             }
-            api_url = f"{API_URL}/api/test-case-generation"
+            api_url = f"{base_url}/api/test-case-generation"
 
         
         print("\n=== Sending request to API ===")
@@ -96,7 +82,7 @@ async def generate_test_cases(requirements, llm_provider, llm_model, llm_api_key
         response = requests.post(
             api_url,
             json=request_data,
-            timeout=60
+            timeout=300
         )
         
         print("\n=== Received response ===")
@@ -199,25 +185,8 @@ async def generate_test_cases(requirements, llm_provider, llm_model, llm_api_key
         traceback.print_exc()
         return []
 
-# Set page configuration
-st.set_page_config(
-    page_title="Quality Engineering Agentic Framework",
-    page_icon="🧪",
-    layout="wide",
-    initial_sidebar_state="expanded",
-)
-
-# Apply Accenture Engage theme - ULTRA AGGRESSIVE
-st.markdown(
-    """
-    """,
-    unsafe_allow_html=True,
-)
-
-# Define API URL
-# Define API URL
-API_URL = os.environ.get("API_URL", "http://127.0.0.1:8080")
-# API_URL = "https://agenticframework-qe-4.onrender.com"
+# API_URL is now controlled via the sidebar at runtime (st.session_state.api_url).
+# _DEFAULT_API_URL above is the fallback when session state is not yet initialised.
 
 def generate_sample_data(data_format: str, size: int, fields: List[Dict[str, str]]) -> Union[dict, str]:
     """Generate sample test data in the specified format.
@@ -343,12 +312,16 @@ def main():
     # Initialize session state with proper structure
     if 'test_cases' not in st.session_state:
         st.session_state.test_cases = []
-    
     if 'test_scripts' not in st.session_state:
         st.session_state.test_scripts = {}
-        
     if 'selected_documents' not in st.session_state:
         st.session_state.selected_documents = []
+    if 'generate_data' not in st.session_state:
+        st.session_state.generate_data = False
+    if 'test_data' not in st.session_state:
+        st.session_state.test_data = None
+    if 'api_url' not in st.session_state:
+        st.session_state.api_url = _DEFAULT_API_URL
     
     # Add header banner (Engage style) - ROBUST VERSION
     banner_html = """
@@ -403,8 +376,9 @@ def main():
         if llm_provider == "openai":
             llm_model = st.selectbox(
                 "OpenAI Model",
-                options=["gpt-3.5-turbo", "gpt-4", "gpt-4-turbo"],
+                options=["gpt-4.1", "gpt-4o", "gpt-4o-mini", "gpt-4-turbo", "gpt-4", "gpt-3.5-turbo"],
                 index=0,
+                help="gpt-4o recommended — large context window ensures more test cases can be generated.",
             )
         else:
             llm_model = st.selectbox(
@@ -430,11 +404,22 @@ def main():
         llm_max_tokens = st.number_input(
             "Max Tokens",
             min_value=1,
-            max_value=4000,
-            value=2000,
+            max_value=8000,
+            value=4000,
             step=100,
+            help="Set to 4000+ to generate 10 or more test cases.",
         )
         
+        # Backend API URL — configurable
+        st.divider()
+        st.subheader("Backend Configuration")
+        api_url = st.text_input(
+            "Backend API URL",
+            value=st.session_state.api_url,
+            help="URL of the backend API server. Default: http://127.0.0.1:8080",
+        )
+        st.session_state.api_url = api_url
+
         # Display version in sidebar
         st.divider()
         st.markdown("### Version 1.0")
@@ -514,7 +499,8 @@ def main():
                             llm_api_key=llm_api_key,
                             llm_temperature=llm_temperature,
                             llm_max_tokens=llm_max_tokens,
-                            selected_documents=st.session_state.get('selected_documents', [])
+                            selected_documents=st.session_state.get('selected_documents', []),
+                            backend_url=st.session_state.get('api_url', _DEFAULT_API_URL)
                         ))
                         
                         if isinstance(result, dict):
@@ -1045,7 +1031,7 @@ def main():
                         # Call API with better error handling
                         try:
                             response = requests.post(
-                                f"{API_URL}/api/test-script-generation",
+                                f"{st.session_state.get('api_url', _DEFAULT_API_URL)}/api/test-script-generation",
                                 json=request_data,
                                 timeout=30  # 30 seconds timeout
                             )
@@ -1266,7 +1252,7 @@ def main():
                             # Call API with better error handling
                             try:
                                 response = requests.post(
-                                    f"{API_URL}/api/test-script-generation",
+                                    f"{st.session_state.get('api_url', _DEFAULT_API_URL)}/api/test-script-generation",
                                     json=request_data,
                                     timeout=30  # 30 seconds timeout
                                 )
@@ -1368,7 +1354,7 @@ def main():
             llm_api_key = st.session_state[f"{llm_provider}_api_key"]
             
         llm_temperature = float(st.session_state.get('llm_temperature', 0.7))
-        llm_max_tokens = int(st.session_state.get('llm_max_tokens', 1000))
+        llm_max_tokens = int(st.session_state.get('llm_max_tokens', 4000))
         
         # Debug info
         if debug:
@@ -1424,7 +1410,7 @@ def main():
             with st.spinner("Generating test data..."):
                 try:
                     resp = requests.post(
-                        f"{API_URL}/api/test-data-generation",
+                        f"{st.session_state.get('api_url', _DEFAULT_API_URL)}/api/test-data-generation",
                         json=request_payload,
                         timeout=60,
                     )
@@ -1486,7 +1472,8 @@ def main():
 def load_prompt_template(template_name: str) -> Optional[str]:
     """Load a prompt template from the API."""
     try:
-        response = requests.get(f"{API_URL}/api/prompt-templates?name={template_name}")
+        base = st.session_state.get('api_url', _DEFAULT_API_URL)
+        response = requests.get(f"{base}/api/prompt-templates?name={template_name}")
         
         if response.status_code == 200:
             templates = response.json().get("templates", [])
@@ -1508,7 +1495,8 @@ def save_prompt_template(template_name: str, content: str) -> bool:
             "content": content
         }
         
-        response = requests.post(f"{API_URL}/api/prompt-templates", json=request_data)
+        base = st.session_state.get('api_url', _DEFAULT_API_URL)
+        response = requests.post(f"{base}/api/prompt-templates", json=request_data)
         
         return response.status_code == 200
     except Exception as e:

@@ -97,28 +97,32 @@ class GeminiLLM(LLMInterface):
         
         system_message += f"\nYou must respond with a JSON object that conforms to this schema: {json.dumps(json_schema)}"
         
+        # Ensure enough tokens for comprehensive JSON output (minimum 8000)
+        json_max_tokens = max(self.max_tokens, 8000)
+
         try:
             response = await self.model_instance.generate_content_async(
                 [system_message, prompt],
                 generation_config={
                     "temperature": self.temperature,
-                    "max_output_tokens": self.max_tokens,
+                    "max_output_tokens": json_max_tokens,
                 }
             )
             
             # Extract JSON from the response
             content = response.text
-            # Find JSON content (assuming it's properly formatted)
             try:
                 return json.loads(content)
             except json.JSONDecodeError:
-                # If the response isn't valid JSON, try to extract JSON part
+                # Try to extract from markdown code block
                 import re
                 json_match = re.search(r'```json\n(.*?)\n```', content, re.DOTALL)
                 if json_match:
                     return json.loads(json_match.group(1))
-                else:
-                    raise ValueError("Could not extract valid JSON from Gemini response")
+                # Last resort: attempt truncation recovery
+                from quality_engineering_agentic_framework.llm.openai_llm import _recover_truncated_json
+                recovered = _recover_truncated_json(content)
+                return json.loads(recovered)
         
         except Exception as e:
             logger.error(f"Error generating JSON with Gemini: {str(e)}")

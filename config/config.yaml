@@ -6,7 +6,7 @@ llm:
   model: gpt-5-nano      # Model name depends on the provider
   api_key: ""       # Your API key here
   temperature: 0.2  # Lower for more deterministic outputs
-  max_tokens: 2000  # Maximum tokens for response
+  max_tokens: 4000  # Maximum tokens for response
 
 # Agent Configuration
 agents:

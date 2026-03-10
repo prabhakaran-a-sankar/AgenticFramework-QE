@@ -15,7 +15,7 @@ class LLMConfig(BaseModel):
     model: str = Field(..., description="Model name")
     api_key: str = Field(..., description="API key")
     temperature: float = Field(0.2, description="Temperature parameter")
-    max_tokens: int = Field(2000, description="Maximum tokens")
+    max_tokens: int = Field(4000, description="Maximum tokens")
 
 
 class AgentConfig(BaseModel):

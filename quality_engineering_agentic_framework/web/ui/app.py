@@ -694,8 +694,8 @@ def main():
                             tc.get('title', ''),
                             tc.get('description', ''),
                             '; '.join(safe_get_list(tc, 'preconditions')),
-                            '; '.join(safe_get_list(tc, 'actions')),
-                            '; '.join(safe_get_list(tc, 'expected_results'))
+                            '\n'.join(safe_get_list(tc, 'actions')),
+                            '\n'.join(safe_get_list(tc, 'expected_results'))
                         ])
                     
                     return output.getvalue()

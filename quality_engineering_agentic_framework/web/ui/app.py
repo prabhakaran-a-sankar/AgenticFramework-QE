@@ -669,42 +669,77 @@ def main():
                 # CSV download
                 import csv
                 import io
-                
+
+                def _safe_get_list(data, key):
+                    val = data.get(key, [])
+                    if isinstance(val, str):
+                        return [val]
+                    return val if isinstance(val, list) else []
+
                 def generate_csv_data(test_cases):
+                    """Standard CSV — one row per step with ID, Title, Description, Preconditions."""
                     output = io.StringIO()
                     writer = csv.writer(output)
-                    
-                    # Write header
-                    writer.writerow(["ID", "Title", "Description", "Preconditions", "Actions", "Expected Results"])
-                    
-                    # Write test cases
+                    writer.writerow(["ID", "Title", "Description", "Preconditions", "Action", "Expected Result"])
                     for i, tc in enumerate(test_cases, 1):
                         if not isinstance(tc, dict):
                             continue
-                            
-                        # Helper function to safely get list values
-                        def safe_get_list(data, key):
-                            val = data.get(key, [])
-                            if isinstance(val, str):
-                                return [val]
-                            return val if isinstance(val, list) else []
-                        
-                        writer.writerow([
-                            i,
-                            tc.get('title', ''),
-                            tc.get('description', ''),
-                            '; '.join(safe_get_list(tc, 'preconditions')),
-                            '\n'.join(safe_get_list(tc, 'actions')),
-                            '\n'.join(safe_get_list(tc, 'expected_results'))
-                        ])
-                    
+                        actions = _safe_get_list(tc, 'actions')
+                        results = _safe_get_list(tc, 'expected_results')
+                        max_len = max(len(actions), len(results), 1)
+                        actions += [''] * (max_len - len(actions))
+                        results += [''] * (max_len - len(results))
+                        title         = tc.get('title', '')
+                        description   = tc.get('description', '')
+                        preconditions = '; '.join(_safe_get_list(tc, 'preconditions'))
+                        for step_idx, (action, result) in enumerate(zip(actions, results)):
+                            writer.writerow([
+                                i if step_idx == 0 else '',
+                                title if step_idx == 0 else '',
+                                description if step_idx == 0 else '',
+                                preconditions if step_idx == 0 else '',
+                                action, result
+                            ])
                     return output.getvalue()
-                
+
+                def generate_testrail_csv_data(test_cases):
+                    """TestRail CSV import format — ready for direct upload."""
+                    output = io.StringIO()
+                    writer = csv.writer(output)
+                    writer.writerow(["Title", "Section", "Type", "Priority", "Preconditions", "Step Description", "Step Expected Result"])
+                    for tc in test_cases:
+                        if not isinstance(tc, dict):
+                            continue
+                        actions = _safe_get_list(tc, 'actions')
+                        results = _safe_get_list(tc, 'expected_results')
+                        max_len = max(len(actions), len(results), 1)
+                        actions += [''] * (max_len - len(actions))
+                        results += [''] * (max_len - len(results))
+                        title         = tc.get('title', '')
+                        preconditions = '\n'.join(_safe_get_list(tc, 'preconditions'))
+                        for step_idx, (action, result) in enumerate(zip(actions, results)):
+                            if step_idx == 0:
+                                writer.writerow([title, '', 'Functional', 'Medium', preconditions, action, result])
+                            else:
+                                writer.writerow(['', '', '', '', '', action, result])
+                    return output.getvalue()
+
                 try:
                     if test_cases and isinstance(test_cases, list):
-                        csv_data = generate_csv_data(test_cases)
+                        csv_format = st.radio(
+                            "CSV Format",
+                            options=["Standard", "TestRail"],
+                            horizontal=True,
+                            key="csv_format_radio"
+                        )
+                        if csv_format == "TestRail":
+                            csv_data = generate_testrail_csv_data(test_cases)
+                            file_label = "Download for TestRail"
+                        else:
+                            csv_data = generate_csv_data(test_cases)
+                            file_label = "Download as CSV"
                         st.download_button(
-                            label="Download as CSV",
+                            label=file_label,
                             data=csv_data,
                             file_name=f"test_cases_{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv",
                             mime="text/csv"

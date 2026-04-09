@@ -1,6 +1,11 @@
 # Python
 __pycache__/
 *.py[cod]
+*.pyc
+
+# RAG generated files
+quality_engineering_agentic_framework/utils/rag/vectordb*/
+quality_engineering_agentic_framework/utils/rag/fingerprint_cache.json
 *$py.class
 *.so
 .Python

@@ -121,7 +121,11 @@ class TestCaseGenerationAgent(AgentInterface):
             logger.info("Calling RAG: load_documents")
             print(f"[RAG DEBUG] Starting RAG system with selected_documents: {selected_documents}")
             
-            api_key = self.llm.config.get('api_key') if hasattr(self.llm, 'config') else None
+            # Prefer openai_api_key for RAG embeddings (set when LLM is Copilot)
+            # Fall back to api_key for OpenAI/Gemini providers
+            api_key = (
+                self.llm.config.get('openai_api_key') or self.llm.config.get('api_key')
+            ) if hasattr(self.llm, 'config') else None
             llm_model = self.llm.config.get('model') if hasattr(self.llm, 'config') else None
             
             # FAST PATH: Check fingerprint before loading anything

@@ -138,7 +138,7 @@ def load_documents(file_list=None):
 # -----------------------------
 def summarize_document(doc_content, source_name, openai_api_key=None, model=None):
     """
-    Generates a high-level summary of a single document and 
+    Generates a high-level summary of a single document and
     classifies it as 'spec' or 'narrative'.
     """
     llm_model = model if model else LLM_MODEL
@@ -152,11 +152,11 @@ def summarize_document(doc_content, source_name, openai_api_key=None, model=None
         Analyze the following requirement document and:
         1. Classify it as either 'Authoritative Spec' (if it contains technical details, API endpoints, error codes, or exact business rules) or 'Narrative' (if it is a high-level overview, user story description, or general context).
         2. Generate a concise but comprehensive summary.
-        
+
         Document Content Start:
         {content}
         Document Content End
-        
+
         Provide the output in the following format:
         TYPE: [Authoritative Spec / Narrative]
         SUMMARY: [Your summary here]
@@ -167,15 +167,15 @@ def summarize_document(doc_content, source_name, openai_api_key=None, model=None
     # Truncate content if too long
     truncated_content = doc_content[:15000]
     response = llm.invoke(prompt.format(content=truncated_content))
-    
+
     # Simple parser for the structured response
     resp_text = response.content
     doc_type = "narrative"
     if "TYPE: Authoritative Spec" in resp_text:
         doc_type = "spec"
-    
+
     summary = resp_text.split("SUMMARY:")[-1].strip() if "SUMMARY:" in resp_text else resp_text
-    
+
     return summary, doc_type
 
 

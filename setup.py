@@ -34,6 +34,7 @@ setup(
         "docx2txt",
         "fpdf2",
         "python-docx",
+        "mcp>=1.0.0",
     ],
     entry_points={
         "console_scripts": [

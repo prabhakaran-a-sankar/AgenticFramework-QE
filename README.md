@@ -214,6 +214,40 @@ and selected_documents: "my_requirements.txt"
 | `generate_test_data` | Test cases → synthetic test data (JSON/CSV/SQL) |
 | `generate_api_test_cases` | API endpoint → Java RestAssured test class |
 | `add_requirement_document` | Copy a doc from any repo into the QEAF Knowledge Hub |
+| `standalone_automation` | Reads your open project, reuses its existing methods, and generates UI/API automation for any framework — runs on the host's model via MCP sampling (no key; falls back to `GITHUB_TOKEN`) |
+
+#### Controlling which tools are exposed (feature flags)
+
+Every MCP tool has an on/off flag, defined in [`mcp_tool_flags.py`](mcp_tool_flags.py).
+**By default only `standalone_automation` is enabled**; all other tools are off and
+won't appear in the client's tool list. There are two ways to change this:
+
+**1. Permanent — edit the defaults** in `mcp_tool_flags.py`:
+
+```python
+DEFAULT_FLAGS = {
+    "generate_test_cases": False,
+    "generate_test_scripts": False,
+    "generate_test_data": False,
+    "generate_api_test_cases": False,
+    "add_requirement_document": False,
+    "standalone_automation": True,   # only this on by default
+}
+```
+
+**2. Runtime — set an environment variable** (no file edit needed). The name is
+`QEAF_ENABLE_<TOOL_NAME_IN_UPPERCASE>`; truthy values are `1/true/yes/on`,
+falsy are `0/false/no/off`:
+
+```bash
+# Enable an extra tool just for this run
+QEAF_ENABLE_GENERATE_TEST_CASES=true \
+MCP_TRANSPORT=sse MCP_HOST=0.0.0.0 MCP_PORT=8080 \
+python mcp_server.py
+```
+
+A disabled tool is **not registered at all**. The server prints the active set on
+startup, e.g. `Enabled MCP tools: ['standalone_automation']`.
 
 #### Adding requirement documents from another repo
 

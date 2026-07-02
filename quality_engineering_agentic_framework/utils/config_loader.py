@@ -55,7 +55,7 @@ class ConfigLoader:
             ValueError: If the configuration is invalid
         """
         # Check for required sections
-        required_sections = ["llm", "agents"]
+        required_sections = ["llm"]
         for section in required_sections:
             if section not in config:
                 raise ValueError(f"Missing required configuration section: {section}")
@@ -64,13 +64,6 @@ class ConfigLoader:
         llm_config = config.get("llm", {})
         if not llm_config.get("provider"):
             raise ValueError("LLM provider must be specified in configuration")
-        
-        # Validate agent configurations
-        agents_config = config.get("agents", {})
-        required_agents = ["test_case_generation", "test_script_generator", "test_data_generator"]
-        for agent in required_agents:
-            if agent not in agents_config:
-                raise ValueError(f"Missing configuration for required agent: {agent}")
         
         logger.info("Configuration validation successful")
     

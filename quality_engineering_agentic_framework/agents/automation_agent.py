@@ -96,7 +96,7 @@ _FRAMEWORK_SIGNALS = {
 }
 
 
-class StandaloneAutomationAgent(AgentInterface):
+class AutomationAgent(AgentInterface):
     """Generates automation scripts that fit an existing UI/API framework."""
 
     def __init__(self, llm: LLMInterface, config: Dict[str, Any]):
@@ -107,7 +107,7 @@ class StandaloneAutomationAgent(AgentInterface):
         self.automation_type = self._norm(config.get("automation_type")) or "ui"
         self.browser = self._norm(config.get("browser")) or "chrome"
         logger.info(
-            f"Initialized StandaloneAutomationAgent "
+            f"Initialized AutomationAgent "
             f"(type={self.automation_type}, language={self.language or 'auto'}, "
             f"framework={self.framework or 'auto'})"
         )
@@ -325,7 +325,7 @@ class StandaloneAutomationAgent(AgentInterface):
             if not pkg and project_path:
                 pp = os.path.join(project_path, "package.json")
                 if os.path.isfile(pp):
-                    pkg = StandaloneAutomationAgent._read(pp)
+                    pkg = AutomationAgent._read(pp)
             if '"type"' in pkg and '"module"' in pkg:
                 return ("ES Modules (ESM) — use `import ... from` / `export`; "
                         "package.json declares \"type\": \"module\".")
@@ -865,7 +865,7 @@ GUIDELINES:
         return files
 
     def get_name(self) -> str:
-        return "standalone_automation_agent"
+        return "automation_agent"
 
     def get_description(self) -> str:
         return (

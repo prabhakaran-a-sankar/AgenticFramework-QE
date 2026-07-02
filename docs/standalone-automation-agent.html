@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Standalone Automation Agent | Accenture</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: #ffffff;
+    color: #1a1a1a;
+    width: 210mm;
+    min-height: 297mm;
+    margin: 0 auto;
+  }
+
+  /* TOP BAR */
+  .top-bar {
+    background: #A100FF;
+    height: 6px;
+    width: 100%;
+  }
+
+  /* HEADER */
+  .header {
+    background: #1a1a1a;
+    padding: 28px 40px 24px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+  }
+  .header-left { flex: 1; }
+  .accenture-logo {
+    font-size: 22px;
+    font-weight: 700;
+    color: #ffffff;
+    letter-spacing: -0.5px;
+  }
+  .accenture-logo span { color: #A100FF; }
+  .header-tag {
+    font-size: 10px;
+    color: #999;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-top: 4px;
+  }
+  .agent-badge {
+    background: #A100FF;
+    color: #fff;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 2px;
+    margin-top: 4px;
+    display: inline-block;
+  }
+
+  /* HERO */
+  .hero {
+    background: linear-gradient(135deg, #1a1a1a 0%, #2d0047 100%);
+    padding: 36px 40px 30px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    right: -60px;
+    top: -60px;
+    width: 280px;
+    height: 280px;
+    border-radius: 50%;
+    background: rgba(161, 0, 255, 0.12);
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    right: 60px;
+    bottom: -80px;
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    background: rgba(161, 0, 255, 0.08);
+  }
+  .hero-title {
+    font-size: 30px;
+    font-weight: 300;
+    color: #ffffff;
+    line-height: 1.2;
+    position: relative;
+    z-index: 1;
+  }
+  .hero-title strong { font-weight: 700; color: #A100FF; }
+  .hero-subtitle {
+    font-size: 13px;
+    color: #cccccc;
+    margin-top: 10px;
+    max-width: 520px;
+    line-height: 1.6;
+    position: relative;
+    z-index: 1;
+  }
+  .hero-stats {
+    display: flex;
+    gap: 32px;
+    margin-top: 24px;
+    position: relative;
+    z-index: 1;
+  }
+  .stat {
+    text-align: left;
+  }
+  .stat-number {
+    font-size: 28px;
+    font-weight: 700;
+    color: #A100FF;
+    line-height: 1;
+  }
+  .stat-label {
+    font-size: 10px;
+    color: #aaaaaa;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 3px;
+  }
+
+  /* DIVIDER LINE */
+  .purple-line {
+    height: 3px;
+    background: linear-gradient(to right, #A100FF, #6600aa);
+  }
+
+  /* MAIN CONTENT */
+  .content {
+    padding: 32px 40px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 28px;
+  }
+
+  .full-width { grid-column: 1 / -1; }
+
+  /* SECTION CARDS */
+  .section {
+    background: #f9f9f9;
+    border-left: 3px solid #A100FF;
+    padding: 18px 20px;
+    border-radius: 0 4px 4px 0;
+  }
+  .section.dark {
+    background: #1a1a1a;
+    color: #fff;
+  }
+  .section-title {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #A100FF;
+    margin-bottom: 12px;
+  }
+  .section p {
+    font-size: 12px;
+    line-height: 1.65;
+    color: #444;
+  }
+  .section.dark p { color: #ccc; }
+
+  /* LIST ITEMS */
+  .feature-list { list-style: none; }
+  .feature-list li {
+    font-size: 12px;
+    color: #333;
+    padding: 5px 0 5px 16px;
+    position: relative;
+    line-height: 1.5;
+    border-bottom: 1px solid #eeeeee;
+  }
+  .feature-list li:last-child { border-bottom: none; }
+  .feature-list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 12px;
+    width: 6px;
+    height: 6px;
+    background: #A100FF;
+    border-radius: 50%;
+  }
+  .feature-list li strong { color: #1a1a1a; }
+
+  /* BENEFIT CHIPS */
+  .benefit-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 4px;
+  }
+  .benefit-chip {
+    background: #fff;
+    border: 1px solid #e0c8ff;
+    border-radius: 4px;
+    padding: 10px 12px;
+    text-align: center;
+  }
+  .benefit-chip .icon { font-size: 18px; margin-bottom: 4px; }
+  .benefit-chip .label {
+    font-size: 10.5px;
+    font-weight: 600;
+    color: #1a1a1a;
+    line-height: 1.4;
+  }
+  .benefit-chip .sublabel {
+    font-size: 9.5px;
+    color: #888;
+    margin-top: 2px;
+  }
+
+  /* FLOW DIAGRAM */
+  .flow {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    flex-wrap: wrap;
+    margin-top: 8px;
+  }
+  .flow-step {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 8px 12px;
+    text-align: center;
+    flex: 1;
+    min-width: 80px;
+  }
+  .flow-step .step-num {
+    font-size: 9px;
+    color: #A100FF;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  .flow-step .step-label {
+    font-size: 10px;
+    color: #333;
+    font-weight: 600;
+    margin-top: 2px;
+    line-height: 1.3;
+  }
+  .flow-arrow {
+    font-size: 14px;
+    color: #A100FF;
+    padding: 0 4px;
+    flex-shrink: 0;
+  }
+
+  /* INTEGRATION TAGS */
+  .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+  .tag {
+    background: #1a1a1a;
+    color: #fff;
+    font-size: 10px;
+    font-weight: 600;
+    padding: 3px 9px;
+    border-radius: 2px;
+    letter-spacing: 0.5px;
+  }
+  .tag.purple { background: #A100FF; }
+  .tag.outline {
+    background: transparent;
+    color: #1a1a1a;
+    border: 1px solid #ccc;
+  }
+
+  /* FOOTER */
+  .footer {
+    background: #1a1a1a;
+    padding: 16px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 4px;
+  }
+  .footer-left { font-size: 10px; color: #888; }
+  .footer-left strong { color: #fff; }
+  .footer-right { font-size: 10px; color: #666; }
+  .footer-logo {
+    font-size: 13px;
+    font-weight: 700;
+    color: #fff;
+  }
+  .footer-logo span { color: #A100FF; }
+
+  /* QUOTE BLOCK */
+  .quote-block {
+    background: linear-gradient(135deg, #A100FF 0%, #6600aa 100%);
+    padding: 18px 22px;
+    border-radius: 4px;
+    color: #fff;
+    grid-column: 1 / -1;
+  }
+  .quote-block .quote-text {
+    font-size: 13px;
+    font-style: italic;
+    font-weight: 300;
+    line-height: 1.6;
+    color: #fff;
+  }
+  .quote-block .quote-source {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.7);
+    margin-top: 8px;
+  }
+</style>
+</head>
+<body>
+
+<div class="top-bar"></div>
+
+<div class="header">
+  <div class="header-left">
+    <div class="accenture-logo">Accenture<span>.</span></div>
+    <div class="header-tag">Quality Engineering Agentic Framework</div>
+  </div>
+  <div>
+    <div class="agent-badge">AI-Powered Agent</div>
+  </div>
+</div>
+
+<div class="hero">
+  <div class="hero-title">Standalone <strong>Automation Agent</strong></div>
+  <div class="hero-subtitle">
+    An intelligent AI agent that generates production-ready test automation scripts that integrate seamlessly into your existing framework — learning your team's patterns, conventions, and architecture before writing a single line of code.
+  </div>
+  <div class="hero-stats">
+    <div class="stat">
+      <div class="stat-number">4+</div>
+      <div class="stat-label">Languages Supported</div>
+    </div>
+    <div class="stat">
+      <div class="stat-number">6+</div>
+      <div class="stat-label">Frameworks Detected</div>
+    </div>
+    <div class="stat">
+      <div class="stat-number">3-step</div>
+      <div class="stat-label">Fallback Strategy</div>
+    </div>
+    <div class="stat">
+      <div class="stat-number">Auto</div>
+      <div class="stat-label">Self-Healing Code</div>
+    </div>
+  </div>
+</div>
+
+<div class="purple-line"></div>
+
+<div class="content">
+
+  <!-- What Is It -->
+  <div class="section full-width">
+    <div class="section-title">What Is It</div>
+    <p>
+      The Standalone Automation Agent is an AI-powered code generation agent built within Accenture's Quality Engineering Agentic Framework (QEAF). Unlike generic code generators, it first <strong>reads and understands your existing test automation project</strong> — its structure, page objects, helper methods, configuration, and coding conventions — then generates scripts that behave as if a senior engineer on your team wrote them. It supports both local (on-server) and remote (cloud-hosted) project delivery models, making it suitable for standalone developer use as well as enterprise CI/CD pipelines.
+    </p>
+  </div>
+
+  <!-- What It Does -->
+  <div class="section">
+    <div class="section-title">Key Capabilities</div>
+    <ul class="feature-list">
+      <li><strong>Framework Profiling</strong> — Scans project markers (pom.xml, package.json, requirements.txt) to auto-detect language and framework without configuration</li>
+      <li><strong>Pattern Learning</strong> — Extracts real class names, method signatures, page objects, and API clients from the existing codebase</li>
+      <li><strong>Style Replication</strong> — Analyzes a sample test file to mirror fixture patterns, locator strategies, and assertion style exactly</li>
+      <li><strong>Self-Healing</strong> — Validates generated code for syntax errors and automatically requests LLM fixes (up to 2 healing passes)</li>
+      <li><strong>Multi-Host Compatibility</strong> — Falls back across prompt sizes when hosted on small-context environments like VS Code Copilot Bridge</li>
+      <li><strong>Dual Delivery</strong> — Works locally (direct disk write) or remotely (base64 file map for cloud MCP servers)</li>
+    </ul>
+  </div>
+
+  <!-- Benefits -->
+  <div class="section">
+    <div class="section-title">Business Benefits</div>
+    <div class="benefit-grid">
+      <div class="benefit-chip">
+        <div class="icon">⚡</div>
+        <div class="label">Faster Script Delivery</div>
+        <div class="sublabel">Hours → minutes for new test scripts</div>
+      </div>
+      <div class="benefit-chip">
+        <div class="icon">🔁</div>
+        <div class="label">Zero Framework Divergence</div>
+        <div class="sublabel">Code fits existing project, no refactor needed</div>
+      </div>
+      <div class="benefit-chip">
+        <div class="icon">🛡️</div>
+        <div class="label">Consistent Quality</div>
+        <div class="sublabel">Enforces team conventions automatically</div>
+      </div>
+      <div class="benefit-chip">
+        <div class="icon">☁️</div>
+        <div class="label">Cloud-Ready</div>
+        <div class="sublabel">Hosted MCP server, no local setup needed</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- How It Works -->
+  <div class="section full-width">
+    <div class="section-title">How It Works — Agent Workflow</div>
+    <div class="flow">
+      <div class="flow-step"><div class="step-num">01</div><div class="step-label">Profile Framework</div></div>
+      <div class="flow-arrow">›</div>
+      <div class="flow-step"><div class="step-num">02</div><div class="step-label">Extract Reusable Patterns</div></div>
+      <div class="flow-arrow">›</div>
+      <div class="flow-step"><div class="step-num">03</div><div class="step-label">Build Adaptive Prompt</div></div>
+      <div class="flow-arrow">›</div>
+      <div class="flow-step"><div class="step-num">04</div><div class="step-label">Generate Code</div></div>
+      <div class="flow-arrow">›</div>
+      <div class="flow-step"><div class="step-num">05</div><div class="step-label">Validate &amp; Heal</div></div>
+      <div class="flow-arrow">›</div>
+      <div class="flow-step"><div class="step-num">06</div><div class="step-label">Review &amp; Apply</div></div>
+    </div>
+  </div>
+
+  <!-- Inputs / Outputs -->
+  <div class="section">
+    <div class="section-title">Inputs</div>
+    <ul class="feature-list">
+      <li><strong>Test cases</strong> — JSON from test case generator or plain text</li>
+      <li><strong>Automation type</strong> — UI, API, or both</li>
+      <li><strong>Project path or file map</strong> — existing framework (local or remote)</li>
+      <li><strong>Optional</strong> — DOM snapshot, API details, language override</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Outputs</div>
+    <ul class="feature-list">
+      <li><strong>Runnable test scripts</strong> — complete files with imports, classes, assertions</li>
+      <li><strong>Validation report</strong> — per-file syntax check results</li>
+      <li><strong>Healing log</strong> — auto-fix record for any broken files</li>
+      <li><strong>Review mode</strong> — diff + Allow/Skip per file before applying</li>
+    </ul>
+  </div>
+
+  <!-- Quote -->
+  <div class="quote-block">
+    <div class="quote-text">"Stop generating code that doesn't fit. The Standalone Automation Agent learns your team's framework first — then writes scripts as if your best automation engineer wrote them, in minutes."</div>
+    <div class="quote-source">Accenture Quality Engineering Agentic Framework</div>
+  </div>
+
+  <!-- Tech Stack -->
+  <div class="section full-width">
+    <div class="section-title">Languages &amp; Framework Support</div>
+    <div class="tags">
+      <span class="tag purple">Python</span>
+      <span class="tag purple">Java</span>
+      <span class="tag purple">JavaScript / TypeScript</span>
+      <span class="tag purple">C#</span>
+      <span class="tag">Selenium</span>
+      <span class="tag">Playwright</span>
+      <span class="tag">Cypress</span>
+      <span class="tag">RestAssured</span>
+      <span class="tag">requests</span>
+      <span class="tag">supertest</span>
+      <span class="tag outline">MCP Server</span>
+      <span class="tag outline">VS Code Extension</span>
+      <span class="tag outline">Self-Healing LLM</span>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  <div class="footer-left">
+    <strong>Quality Engineering Agentic Framework</strong> &nbsp;|&nbsp; Standalone Automation Agent
+  </div>
+  <div class="footer-logo">Accenture<span>.</span></div>
+  <div class="footer-right">© 2025 Accenture. All rights reserved.</div>
+</div>
+
+</body>
+</html>

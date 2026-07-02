@@ -3,12 +3,11 @@ MCP Tool Feature Flags
 
 Central on/off switch for every tool exposed by mcp_server.py.
 
-By default ONLY 'standalone_automation' is enabled; all other tools are off.
 Edit DEFAULT_FLAGS below to change the defaults, or override at runtime
 (without editing this file) using environment variables:
 
-    QEAF_ENABLE_GENERATE_TEST_CASES=true
     QEAF_ENABLE_STANDALONE_AUTOMATION=false
+    QEAF_ENABLE_TEST_ANALYSER=false
 
 The env var name is QEAF_ENABLE_<TOOL_NAME_IN_UPPERCASE>.
 Truthy values: 1, true, yes, on.  Falsy values: 0, false, no, off.
@@ -25,15 +24,10 @@ logger = get_logger(__name__)
 
 # ---------------------------------------------------------------------------
 # Defaults — flip these to change what is on out of the box.
-# Only 'standalone_automation' is enabled by default.
 # ---------------------------------------------------------------------------
 DEFAULT_FLAGS = {
-    "generate_test_cases": False,
-    "generate_test_scripts": False,
-    "generate_test_data": False,
-    "generate_api_test_cases": False,
-    "add_requirement_document": False,
     "standalone_automation": True,
+    "test_analyser": True,
 }
 
 _TRUE_VALUES = {"1", "true", "yes", "on"}

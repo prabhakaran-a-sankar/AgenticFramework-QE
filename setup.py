@@ -11,10 +11,7 @@ setup(
         "selenium>=4.10.0",
         "webdriver-manager>=4.0.0",
         "pytest>=7.0.0",
-        "click>=8.0.0",
         "pandas>=2.0.0",
-        "streamlit>=1.22.0",
-        "fastapi>=0.95.0",
         "uvicorn>=0.22.0",
         "python-dotenv>=1.0.0",
         "pydantic>=2.0.0",
@@ -36,11 +33,7 @@ setup(
         "python-docx",
         "mcp>=1.0.0",
     ],
-    entry_points={
-        "console_scripts": [
-            "qeaf=quality_engineering_agentic_framework.cli.cli:main",
-        ],
-    },
+    entry_points={},
     author="Your Name",
     author_email="your.email@example.com",
     description="Quality Engineering Agentic Framework for automated test generation using LLMs",

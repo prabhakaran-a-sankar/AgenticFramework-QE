@@ -28,6 +28,7 @@ logger = get_logger(__name__)
 DEFAULT_FLAGS = {
     "standalone_automation": True,
     "test_analyser": True,
+    "validate_generated_code": True,
 }
 
 _TRUE_VALUES = {"1", "true", "yes", "on"}

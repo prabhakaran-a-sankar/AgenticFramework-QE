@@ -138,3 +138,5 @@ quality_engineering_agentic_framework/utils/rag/fingerprint_cache.json
 .venv/share/jupyter/nbextensions/pydeck/index.js
 .venv/share/jupyter/nbextensions/pydeck/index.js.map
 .venv/share/man/man1/ttx.1
+# local MCP client config (machine-specific absolute paths)
+.mcp.json

@@ -31,7 +31,7 @@ setup(
         "docx2txt",
         "fpdf2",
         "python-docx",
-        "mcp>=1.0.0",
+        "mcp>=1.27,<2",  # 2.x renames FastMCP->MCPServer; migrate deliberately
     ],
     entry_points={},
     author="Your Name",

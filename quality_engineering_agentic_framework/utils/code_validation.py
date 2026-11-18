@@ -14,6 +14,7 @@ Principles:
 """
 
 import os
+import re
 import shutil
 import subprocess
 from typing import Dict, List, Tuple, Optional
@@ -124,7 +125,61 @@ def _validate_generic(code: str, path: str) -> Tuple[str, List[str]]:
     return code, [f"brackets: {bal}" if bal else "brackets: ok"]
 
 
+def _validate_gherkin(code: str, path: str) -> Tuple[str, List[str]]:
+    """Structural checks for a .feature file. Only unambiguous problems are hard failures:
+    no `Feature:`, a `Scenario Outline` without `Examples`, or a table whose rows have
+    different column counts. (Free-text descriptions are legal Gherkin, so unknown lines
+    are not errors.)"""
+    lines = code.splitlines()
+    if not any(re.match(r"\s*Feature:", ln) for ln in lines):
+        return code, ["syntax: ERROR (line 1: missing a 'Feature:' line)"]
+
+    outline_line, has_examples, in_doc = None, False, False
+    table_cols, table_start = None, 0
+
+    def close_outline(at: int):
+        nonlocal outline_line, has_examples
+        problem = None
+        if outline_line is not None and not has_examples:
+            problem = f"syntax: ERROR (line {outline_line}: 'Scenario Outline' has no 'Examples:')"
+        outline_line, has_examples = None, False
+        return problem
+
+    for n, raw in enumerate(lines, 1):
+        s = raw.strip()
+        if s.startswith('"""') or s.startswith("```"):
+            in_doc = not in_doc
+            continue
+        if in_doc:
+            continue
+        if s.startswith("|"):
+            cols = len(re.findall(r"(?<!\\)\|", s)) - 1
+            if table_cols is None:
+                table_cols, table_start = cols, n
+            elif cols != table_cols:
+                return code, [f"syntax: ERROR (line {n}: table row has {cols} columns, "
+                              f"the table starting at line {table_start} has {table_cols})"]
+            continue
+        table_cols = None
+        if re.match(r"(Scenario Outline|Scenario Template)\s*:", s):
+            problem = close_outline(n)
+            if problem:
+                return code, [problem]
+            outline_line = n
+        elif re.match(r"(Scenario|Example)\s*:", s) or re.match(r"(Rule|Background)\s*:", s):
+            problem = close_outline(n)
+            if problem:
+                return code, [problem]
+        elif re.match(r"(Examples|Scenarios)\s*:", s):
+            has_examples = True
+    problem = close_outline(len(lines))
+    if problem:
+        return code, [problem]
+    return code, ["syntax: ok (gherkin structure)"]
+
+
 _DISPATCH = {
+    ".feature": _validate_gherkin,
     ".py": _validate_python,
     ".js": _validate_js_ts,
     ".jsx": _validate_js_ts,

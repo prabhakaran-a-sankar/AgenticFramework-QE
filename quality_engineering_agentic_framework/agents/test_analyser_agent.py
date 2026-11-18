@@ -28,6 +28,8 @@ from quality_engineering_agentic_framework.agents.agent_interface import AgentIn
 from quality_engineering_agentic_framework.llm.llm_interface import LLMInterface
 from quality_engineering_agentic_framework.utils.logger import get_logger
 
+from quality_engineering_agentic_framework.utils.redaction import maybe_redact
+
 logger = get_logger(__name__)
 
 # ── Directories to skip while walking the project ────────────────────────────
@@ -190,6 +192,21 @@ class TestAnalyserAgent(AgentInterface):
                     return "c#"
                 break  # only top level for markers
 
+            # No marker file: fall back to the most common test-source extension.
+            counts = {lang: 0 for lang in _LANG_CFG}
+            seen = 0
+            for root, dirs, files in os.walk(project_path):
+                dirs[:] = [d for d in dirs if d not in _SKIP_DIRS]
+                for f in files:
+                    seen += 1
+                    for lang, cfg in _LANG_CFG.items():
+                        if any(f.endswith(e) for e in cfg["exts"]):
+                            counts[lang] += 1
+                if seen >= 2000:
+                    break
+            if any(counts.values()):
+                return max(counts, key=counts.get)
+
         return "python"
 
     # ── quick scan (no LLM — used for elicitation) ───────────────────────────
@@ -240,7 +257,7 @@ class TestAnalyserAgent(AgentInterface):
         for m in cfg["method_re"].finditer(code):
             name  = m.group(1)
             start = m.end()
-            body  = code[start: start + _MAX_BODY_CHARS].strip()
+            body  = maybe_redact(code[start: start + _MAX_BODY_CHARS].strip())
             line  = code[: m.start()].count("\n") + 1
             tests.append({
                 "class": class_name,
